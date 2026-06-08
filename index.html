@@ -367,8 +367,8 @@
 
     /* ── Premium emoji alignment helpers ── */
     .premium-icon { display: inline-flex; align-items: center; justify-content: center; }
-    
-    
+
+
     /* =========================================================
    TEACHMATE ADMIN — FIXED LAYOUT SYSTEM
 ========================================================= */
@@ -406,14 +406,14 @@ header {
   min-height: 72px;
   background: #0f172a;
   color: white;
-  
+
   display: flex;
   align-items: center;
   justify-content: space-between;
-  
+
   padding: 0 22px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-  
+
   z-index: 100;
 }
 
@@ -428,11 +428,11 @@ header {
   height: 42px;
   border-radius: 12px;
   background: linear-gradient(135deg, #2563eb, #1d4ed8);
-  
+
   display: flex;
   align-items: center;
   justify-content: center;
-  
+
   font-size: 20px;
 }
 
@@ -481,13 +481,13 @@ header {
   width: 270px;
   min-width: 270px;
   height: 100%;
-  
+
   background: #111827;
   color: white;
-  
+
   overflow-y: auto;
   padding: 20px 14px;
-  
+
   border-right: 1px solid rgba(255, 255, 255, 0.06);
 }
 
@@ -505,16 +505,16 @@ header {
   display: flex;
   align-items: center;
   gap: 12px;
-  
+
   padding: 14px 14px;
   border-radius: 12px;
-  
+
   cursor: pointer;
   transition: .2s;
-  
+
   font-size: 14px;
   font-weight: 500;
-  
+
   margin-bottom: 6px;
 }
 
@@ -533,7 +533,7 @@ header {
 .content {
   flex: 1;
   overflow-y: auto;
-  
+
   padding: 24px;
   background: #f8fafc;
 }
@@ -558,7 +558,7 @@ header {
   background: white;
   border-radius: 18px;
   padding: 22px;
-  
+
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
   margin-bottom: 20px;
 }
@@ -597,9 +597,9 @@ header {
   color: #475569;
   font-size: 14px;
 }
-    
-    
-    
+
+
+
     .school-info-msg {
   margin-top: 8px;
   padding: 10px 14px;
@@ -630,9 +630,9 @@ header {
   border: 1px solid #bfdbfe;
   color: #1e40af;
 }
-    
-    
-    
+
+
+
   </style>
 </head>
 <body>
@@ -746,6 +746,19 @@ header {
       <div class="nav-item" data-section="teachers" onclick="window.navTo('teachers',this)">
         <i class="fas fa-chalkboard-teacher"></i> Teacher Directory
       </div>
+
+
+<button class="btn btn-blue write-action" onclick="window.openExcelImportModal()" style="margin-bottom:16px;">
+  <i class="fas fa-file-excel"></i>📥 Import Studends from exel
+</button>
+
+
+
+
+
+
+
+
 
       <div class="sidebar-label">⚙️ Operations</div>
       <div class="nav-item" data-section="transfers" onclick="window.navTo('transfers',this)">
@@ -935,6 +948,39 @@ header {
               <button id="admit-student-btn" class="btn btn-primary" onclick="window.admitStudent()" style="padding:12px 24px; font-size:1rem;">
                 <i class="fas fa-check-double"></i> Officially Admit Student
               </button>
+              
+           <style>
+  .btn-bulk-recording {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 10px 25px -5px rgba(99,102,241,0.4);
+    transition: transform 0.2s, box-shadow 0.2s;
+    letter-spacing: 0.3px;
+  }
+  .btn-bulk-recording:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 30px -5px rgba(79,70,229,0.5);
+  }
+  .btn-bulk-recording:active {
+    transform: translateY(0);
+    box-shadow: 0 8px 20px -5px rgba(99,102,241,0.4);
+  }
+</style>
+
+<button class="btn-bulk-recording" onclick="openBulkUpdatePage()">
+  📋 Bulk Students Info Recording
+</button>
+
+              
               <button class="btn btn-ghost" onclick="window.clearAdmissionForm()" style="padding:12px 24px;">
                 <i class="fas fa-eraser"></i> Clear Form
               </button>
@@ -1015,6 +1061,112 @@ header {
 
 
 
+<div id="bulk-update-page" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:1000; font-family:'Inter', system-ui, -apple-system, sans-serif; box-sizing:border-box; background:#fafafa;">
+  
+  <div style="width:100%; height:100%; display:flex; flex-direction:column; box-sizing:border-box; overflow:hidden;">
+    
+    <div style="background:linear-gradient(135deg, #0f172a, #1e293b); padding:24px 32px; display:flex; justify-content:space-between; align-items:center; flex-shrink:0; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);">
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="font-size:24px;">✨</span>
+        <h2 style="margin:0; font-weight:800; color:#ffffff; font-size:22px; letter-spacing:-0.5px;">
+          Bulk Student Info Recording
+        </h2>
+      </div>
+      <button onclick="closeBulkUpdatePage()" style="background:rgba(255,255,255,0.08); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,0.15); padding:10px 22px; border-radius:12px; font-weight:600; font-size:14px; cursor:pointer; color:#ffffff; transition:all 0.2s ease; display:flex; align-items:center; gap:6px;">✕ Close</button>
+    </div>
+
+    <div style="flex-grow:1; overflow-y:auto; padding:32px 4%; background:#fafafa;">
+
+      <div style="margin-bottom:32px; background:#ffffff; padding:24px; border-radius:18px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.01);">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+          <span style="background:linear-gradient(135deg, #6366f1, #4f46e5); color:#ffffff; width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; box-shadow:0 4px 10px rgba(79,70,229,0.25);">1</span>
+          <label style="font-weight:700; color:#0f172a; font-size:16px; letter-spacing:-0.2px;">🏫 Select Target Class</label>
+        </div>
+        <div style="position:relative;">
+          <select id="bulk-class-select" onchange="loadStudentsForBulk()" style="width:100%; padding:14px 18px; border:1px solid #cbd5e1; border-radius:12px; background:#ffffff; font-size:15px; font-weight:500; color:#0f172a; outline:none; transition:all 0.2s ease; appearance:none; background-image:url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;%2364748b&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;><path d=&quot;M6 9l6 6 6-6&quot;/></svg>'); background-repeat:no-repeat; background-position:right 18px center; box-shadow:0 1px 2px rgba(0,0,0,0.02);">
+            <option value="">-- Choose a class --</option>
+            </select>
+        </div>
+      </div>
+
+      <div style="margin-bottom:32px; background:#ffffff; padding:24px; border-radius:18px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.01);">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+          <span style="background:linear-gradient(135deg, #8b5cf6, #7c3aed); color:#ffffff; width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; box-shadow:0 4px 10px rgba(124,58,237,0.25);">2</span>
+          <label style="font-weight:700; color:#0f172a; font-size:16px; letter-spacing:-0.2px;">👥 Pick Target Students</label>
+        </div>
+        
+        <div style="background:#f8fafc; border-radius:14px; padding:20px; border:1px solid #e2e8f0; width:100%; box-sizing:border-box;">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
+            <div style="display:flex; gap:16px; align-items:center;">
+              <label style="display:flex; align-items:center; gap:10px; cursor:pointer; font-weight:700; color:#1e293b; font-size:14px; user-select:none;">
+                <input type="checkbox" id="bulk-select-all" onchange="toggleBulkSelectAll(this.checked)" style="accent-color:#4f46e5; width:18px; height:18px; cursor:pointer;"> Select All
+              </label>
+              <div style="width:1px; height:14px; background:#cbd5e1;"></div>
+              <button onclick="clearBulkSelection()" style="background:none; border:none; color:#ef4444; font-weight:700; cursor:pointer; font-size:13px; padding:0; transition:color 0.2s ease;">🗑 Clear Selection</button>
+            </div>
+            <div id="bulk-selected-count" style="font-size:13px; color:#4f46e5; font-weight:800; background:#eef2ff; padding:4px 10px; border-radius:20px;"></div>
+          </div>
+          
+          <input type="text" id="bulk-student-search" placeholder="🔍 Search by name or ID..." oninput="renderBulkStudentList()" style="width:100%; padding:14px 16px; border:1px solid #cbd5e1; border-radius:10px; background:#ffffff; font-size:14px; margin-bottom:14px; outline:none; transition:all 0.2s ease; box-shadow:inset 0 1px 2px rgba(0,0,0,0.02); box-sizing:border-box; font-weight:600; color:#1e293b;">
+          
+          <div id="bulk-student-list" style="width:100%; min-height:200px; max-height:55vh; overflow-y:auto; border-radius:10px; background:#ffffff; padding:12px; border:1px solid #e2e8f0; box-shadow:inset 0 1px 3px rgba(0,0,0,0.03); box-sizing:border-box; font-size:13px; font-weight:700; color:#334155;">
+            <p style="color:#64748b; margin:0; font-size:14px; padding:24px; text-align:center; font-weight:600;">📋 Select a class above first</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:24px; background:#ffffff; padding:24px; border-radius:18px; border:1px solid #e2e8f0; box-shadow:0 2px 4px rgba(0,0,0,0.01);">
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:16px;">
+          <span style="background:linear-gradient(135deg, #f59e0b, #d97706); color:#ffffff; width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; box-shadow:0 4px 10px rgba(217,119,6,0.25);">3</span>
+          <label style="font-weight:700; color:#0f172a; font-size:16px; letter-spacing:-0.2px;">✏️ What to Update</label>
+        </div>
+        <select id="bulk-field-select" onchange="handleBulkFieldChange()" style="width:100%; padding:14px 16px; border:1px solid #cbd5e1; border-radius:12px; background:#ffffff; font-size:15px; font-weight:500; color:#0f172a; outline:none; margin-bottom:16px; appearance:none; background-image:url('data:image/svg+xml;utf8,<svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;%2364748b&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot;><path d=&quot;M6 9l6 6 6-6&quot;/></svg>'); background-repeat:no-repeat; background-position:right 16px center; box-shadow:0 1px 2px rgba(0,0,0,0.02);">
+          <option value="">-- Select field --</option>
+          <option value="guardianName">👨‍👩‍👧 Guardian (Mother/Father…)</option>
+          <option value="gender">⚧ Gender</option>
+          <option value="dob">🎂 Date of Birth</option>
+          <option value="medical">🩺 Health / Medical Status</option>
+        </select>
+        
+        <div id="bulk-value-container" style="display:none; background:#f0fdf4; border-radius:14px; padding:20px; border:1px solid #bbf7d0; box-shadow:0 2px 8px rgba(22,163,74,0.04);">
+          <label style="display:block; font-weight:700; margin-bottom:12px; color:#166534; font-size:14px; letter-spacing:-0.1px;">📝 Set New Value</label>
+          <div id="bulk-value-dynamic-area">
+            </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="background:#ffffff; padding:20px 4%; border-top:1px solid #e2e8f0; flex-shrink:0; box-shadow:0 -4px 10px rgba(0,0,0,0.02);">
+      <button onclick="applyBulkUpdate()" style="width:100%; padding:18px; background:linear-gradient(135deg, #10b981, #059669); color:#ffffff; border:none; border-radius:14px; font-weight:700; font-size:16px; cursor:pointer; letter-spacing:0.3px; box-shadow:0 8px 15px -3px rgba(16,185,129,0.3); transition:all 0.2s ease;">
+        💾 Save Bulk Update
+      </button>
+      <p id="bulk-msg" style="margin-top:10px; font-weight:600; min-height:20px; text-align:center; font-size:14px; margin-bottom:0; color:#334155;"></p>
+    </div>
+
+  </div>
+
+  <style>
+    #bulk-student-list::-webkit-scrollbar { width:8px; }
+    #bulk-student-list::-webkit-scrollbar-track { background:#f1f5f9; border-radius:10px; }
+    #bulk-student-list::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:10px; }
+    
+    #bulk-class-select:focus, #bulk-field-select:focus, #bulk-student-search:focus {
+      border-color: #6366f1 !important;
+      box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12) !important;
+    }
+
+    /* Force all child labels, text, and inputs inside the list to inherit the premium typography */
+    #bulk-student-list, 
+    #bulk-student-list * {
+      font-size: 13px !important;
+      font-weight: 700 !important;
+      color: #334155 !important; /* Semi-deep charcoal slate for heavy contrast */
+    }
+  </style>
+</div>
+
+
 
 
 <script type="module"> 
@@ -1090,6 +1242,21 @@ let _pendingSchoolId         = null;
 let _authLock                = false;
 let _pendingRouteUser        = null;
 let _observerBusy            = false;
+
+
+
+// Add this at the top of your JS file
+window._dme = {
+  targetClassId: null,
+  selectedRowIdx: new Set(),
+  targetClassStudents: [],
+  dataMode: 'students',
+  rawRows: [],
+  rawHeaders: [],
+  columnTypes: {},
+  studentMatches: {}
+};
+
 
 
 // ═══════════════════════════════════════════════════════════════════
@@ -1384,8 +1551,8 @@ window.lookupAdminSchoolCode = async function() {
   let   lastError   = null;
 
   for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
-    
-    
+
+
     // Add this at the top of lookupAdminSchoolCode, 
 // replacing the existing try block opening:
 
@@ -1398,12 +1565,12 @@ try {
     );
     await signInAnonymously(auth);
   }
-  
+
   const q = query(collection(db, 'schools'), where('schoolCode', '==', code));
   const snap = await getDocs(q);
   // ... rest of your existing lookup code
-    
-    
+
+
       // ── 4. Handle result ───────────────────────────────────────
       if (snap.empty) {
         _setSchoolInfo(
@@ -2441,6 +2608,359 @@ window.previewAdmissionPhoto = function(input) {
 };
 
 
+// Ensure you have these Firestore imports at the top of your file:
+// import { writeBatch, collection, query, where, getDocs, doc } from "firebase/firestore";
+
+// ══════════════════════════════════════════════════
+//  TEACHMATE PREMIUM BULK UPDATE ENGINE
+//  Assumes global: db, schoolId, allClasses[], allStudents[], idbSet()
+// ══════════════════════════════════════════════════
+
+// ─── Internal State ──────────────────────────────
+let _bulkState = {
+  classId: '',
+  students: [],               // current class students
+  selectedIds: new Set(),
+  searchText: '',
+  unsubscribe: null          // onSnapshot cleanup
+};
+
+const BULK_FIELDS = {
+  guardianName: {
+    type: 'select',
+    options: ['Mother', 'Father', 'Grandmother', 'Grandfather', 'Aunt', 'Uncle', 'Other']
+  },
+  gender: {
+    type: 'select',
+    options: ['Male', 'Female']
+  },
+  dob: {
+    type: 'date'
+  },
+  medical: {
+    type: 'select',
+    options: ['Healthy', 'Asthma', 'Diabetes', 'Epilepsy', 'Allergy', 'Other']
+  }
+};
+
+// ─── 1. OPEN / CLOSE & INIT ─────────────────────
+window.openBulkUpdatePage = function () {
+  document.getElementById('bulk-update-page').style.display = 'block';
+  populateBulkClassDropdown();
+  resetBulkUI();
+};
+
+window.closeBulkUpdatePage = function () {
+  document.getElementById('bulk-update-page').style.display = 'none';
+  resetBulkState();
+  resetBulkUI();
+};
+
+function resetBulkState() {
+  // Unsubscribe from real-time listener if active
+  if (_bulkState.unsubscribe) {
+    _bulkState.unsubscribe();
+    _bulkState.unsubscribe = null;
+  }
+  _bulkState.classId = '';
+  _bulkState.students = [];
+  _bulkState.selectedIds.clear();
+  _bulkState.searchText = '';
+}
+
+function resetBulkUI() {
+  document.getElementById('bulk-class-select').value = '';
+  document.getElementById('bulk-student-search').value = '';
+  document.getElementById('bulk-field-select').value = '';
+  document.getElementById('bulk-value-container').style.display = 'none';
+  document.getElementById('bulk-value-dynamic-area').innerHTML = '';
+  document.getElementById('bulk-student-list').innerHTML =
+    '<p style="color:#94a3b8; margin:0;">Select a class above first</p>';
+  document.getElementById('bulk-selected-count').textContent = '';
+  document.getElementById('bulk-msg').textContent = '';
+  document.getElementById('bulk-select-all').checked = false;
+}
+
+
+function populateBulkClassDropdown() {
+  const bulkSelect = document.getElementById('bulk-class-select');
+  const sourceSelect = document.getElementById('adm-class');
+  
+  bulkSelect.innerHTML = '<option value="">-- Choose a class --</option>';
+  
+  if (!sourceSelect || sourceSelect.options.length <= 1) {
+    console.warn('adm-class not ready yet');
+    return;
+  }
+  
+  Array.from(sourceSelect.options).forEach(opt => {
+    if (!opt.value) return;
+    
+    const option = document.createElement('option');
+    option.value = opt.value;
+    option.textContent = opt.textContent;
+    
+    bulkSelect.appendChild(option);
+  });
+}
+
+
+// ─── 3. REAL‑TIME STUDENT LOADING ────────────────
+window.loadStudentsForBulk = function () {
+  const classId = document.getElementById('bulk-class-select').value;
+  const listEl = document.getElementById('bulk-student-list');
+
+  // Clean up previous listener
+  if (_bulkState.unsubscribe) {
+    _bulkState.unsubscribe();
+    _bulkState.unsubscribe = null;
+  }
+
+  if (!classId) {
+    _bulkState.classId = '';
+    _bulkState.students = [];
+    _bulkState.selectedIds.clear();
+    listEl.innerHTML = '<p style="color:#94a3b8;">Select a class above first</p>';
+    return;
+  }
+
+  _bulkState.classId = classId;
+  listEl.innerHTML = '<p style="color:#3b82f6;">⏳ Loading live data...</p>';
+
+  const studentsRef = collection(db, 'schools', schoolId, 'students');
+  const q = query(studentsRef, where('classId', '==', classId));
+
+  _bulkState.unsubscribe = onSnapshot(q, (snapshot) => {
+    const freshStudents = [];
+    snapshot.forEach(doc => {
+      freshStudents.push({ id: doc.id, ...doc.data() });
+    });
+    // Keep previously selected IDs that still exist
+    const freshIds = new Set(freshStudents.map(s => s.id));
+    for (const id of _bulkState.selectedIds) {
+      if (!freshIds.has(id)) _bulkState.selectedIds.delete(id);
+    }
+    _bulkState.students = freshStudents;
+    renderBulkStudentList(); // will apply search filter
+  }, (error) => {
+    listEl.innerHTML = '<p style="color:red;">❌ Failed to load students live.</p>';
+    console.error(error);
+  });
+};
+
+// ─── 4. RENDER STUDENT LIST (with search) ────────
+window.renderBulkStudentList = function () {
+  const search = document.getElementById('bulk-student-search')?.value.toLowerCase().trim() || '';
+  _bulkState.searchText = search;
+
+  const container = document.getElementById('bulk-student-list');
+  if (!_bulkState.classId) {
+    container.innerHTML = '<p style="color:#94a3b8;">Select a class above first</p>';
+    return;
+  }
+
+  const filtered = _bulkState.students.filter(s =>
+    !search || s.name.toLowerCase().includes(search)
+  );
+
+  if (filtered.length === 0) {
+    container.innerHTML = '<p style="color:#94a3b8;">No students match.</p>';
+    return;
+  }
+
+  container.innerHTML = '';
+  filtered.forEach(student => {
+    const checked = _bulkState.selectedIds.has(student.id);
+    const row = document.createElement('div');
+    row.style.display = 'flex';
+    row.style.alignItems = 'center';
+    row.style.padding = '6px 4px';
+    row.style.borderBottom = '1px solid #f1f5f9';
+
+    const cb = document.createElement('input');
+    cb.type = 'checkbox';
+    cb.checked = checked;
+    cb.id = `bulk-chk-${student.id}`;
+    cb.onchange = () => toggleBulkStudent(student.id);
+
+    const label = document.createElement('label');
+    label.htmlFor = cb.id;
+    label.style.flex = '1';
+    label.style.marginLeft = '10px';
+    
+label.innerHTML = `
+  <strong>${student.name}</strong>
+  <div style="font-size:12px; color:#64748b; margin-top:2px;">
+    ⚧ ${student.gender || '—'} |
+    👨‍👩‍👧 ${student.guardianName || '—'} |
+    ❤️ ${student.medical || '—'}
+  </div>
+`;
+    
+    
+    label.style.cursor = 'pointer';
+
+    row.appendChild(cb);
+    row.appendChild(label);
+    container.appendChild(row);
+  });
+
+  updateBulkSelectedCount();
+  // Sync "Select All" checkbox state
+  const allVisible = filtered.every(s => _bulkState.selectedIds.has(s.id));
+  document.getElementById('bulk-select-all').checked =
+    filtered.length > 0 && allVisible;
+};
+
+function toggleBulkStudent(studentId) {
+  if (_bulkState.selectedIds.has(studentId)) {
+    _bulkState.selectedIds.delete(studentId);
+  } else {
+    _bulkState.selectedIds.add(studentId);
+  }
+  renderBulkStudentList();
+}
+
+window.toggleBulkSelectAll = function (checked) {
+  const search = _bulkState.searchText;
+  const visible = _bulkState.students.filter(s =>
+    !search || s.name.toLowerCase().includes(search)
+  );
+  if (checked) {
+    visible.forEach(s => _bulkState.selectedIds.add(s.id));
+  } else {
+    visible.forEach(s => _bulkState.selectedIds.delete(s.id));
+  }
+  renderBulkStudentList();
+};
+
+window.clearBulkSelection = function () {
+  _bulkState.selectedIds.clear();
+  renderBulkStudentList();
+};
+
+function updateBulkSelectedCount() {
+  const count = _bulkState.selectedIds.size;
+  document.getElementById('bulk-selected-count').textContent =
+    count ? `${count} student(s) selected` : '';
+}
+
+// ─── 5. DYNAMIC FIELD VALUE INPUT ────────────────
+window.handleBulkFieldChange = function () {
+  const field = document.getElementById('bulk-field-select').value;
+  const container = document.getElementById('bulk-value-container');
+  const area = document.getElementById('bulk-value-dynamic-area');
+
+  if (!field) {
+    container.style.display = 'none';
+    return;
+  }
+  container.style.display = 'block';
+  area.innerHTML = '';
+
+  const config = BULK_FIELDS[field];
+  if (!config) return;
+
+  if (config.type === 'select') {
+    const select = document.createElement('select');
+    select.id = 'bulk-value-input';
+    select.style = 'width:100%; padding:12px; border:1.5px solid #e2e8f0; border-radius:10px; font-size:15px;';
+    select.innerHTML = '<option value="">-- Choose --</option>';
+    config.options.forEach(opt => {
+      const o = document.createElement('option');
+      o.value = opt;
+      o.textContent = opt;
+      select.appendChild(o);
+    });
+    area.appendChild(select);
+  } else if (config.type === 'date') {
+    const input = document.createElement('input');
+    input.type = 'date';
+    input.id = 'bulk-value-input';
+    input.style = 'width:100%; padding:12px; border:1.5px solid #e2e8f0; border-radius:10px; font-size:15px;';
+    area.appendChild(input);
+  }
+};
+
+// ─── 6. APPLY BATCH UPDATE ───────────────────────
+window.applyBulkUpdate = async function () {
+  const field = document.getElementById('bulk-field-select').value;
+  const valueEl = document.getElementById('bulk-value-input');
+  const newValue = valueEl ? valueEl.value.trim() : '';
+  const msgEl = document.getElementById('bulk-msg');
+  const selectedIds = Array.from(_bulkState.selectedIds);
+
+  // Validations
+  if (selectedIds.length === 0) {
+    msgEl.textContent = '❌ Please select at least one student.';
+    msgEl.style.color = '#dc2626';
+    return;
+  }
+  if (!field) {
+    msgEl.textContent = '❌ Please choose a field to update.';
+    msgEl.style.color = '#dc2626';
+    return;
+  }
+  if (!newValue) {
+    msgEl.textContent = '❌ Please provide a new value.';
+    msgEl.style.color = '#dc2626';
+    return;
+  }
+
+  msgEl.textContent = '⏳ Updating…';
+  msgEl.style.color = '#2563eb';
+
+  try {
+    const batch = writeBatch(db);
+    const now = new Date().toISOString();
+    const updatedBy = window.currentUser?.uid || 'admin'; // fallback
+
+    selectedIds.forEach(studentId => {
+      const studentRef = doc(db, 'schools', schoolId, 'students', studentId);
+      batch.update(studentRef, {
+        [field]: newValue,
+        updatedAt: now,
+        updatedBy: updatedBy
+      });
+    });
+
+    await batch.commit();
+
+    // ── 7. UPDATE LOCAL CACHE (allStudents + IndexedDB) ──
+    if (window.allStudents && Array.isArray(allStudents)) {
+      allStudents.forEach(student => {
+        if (selectedIds.includes(student.id)) {
+          student[field] = newValue;
+          student.updatedAt = now;
+        }
+      });
+      // Persist updated cache to IndexedDB using your existing helper
+      if (typeof idbSet === 'function') {
+        await idbSet('students', 'all', allStudents);
+      }
+    }
+
+    // ── 8. SUCCESS HANDLING ──
+    msgEl.textContent = `✅ Successfully updated ${selectedIds.length} student(s). Field: ${field} → "${newValue}"`;
+    msgEl.style.color = '#059669';
+
+    // Clear selections for next batch, but keep class loaded
+    _bulkState.selectedIds.clear();
+    document.getElementById('bulk-select-all').checked = false;
+    renderBulkStudentList();
+    // Reset field/value UI
+    document.getElementById('bulk-field-select').value = '';
+    document.getElementById('bulk-value-container').style.display = 'none';
+    document.getElementById('bulk-value-dynamic-area').innerHTML = '';
+
+  } catch (error) {
+    console.error('Batch update error:', error);
+    msgEl.textContent = '❌ Update failed. No records were changed. Please try again.';
+    msgEl.style.color = '#dc2626';
+    // Do NOT clear selections so teacher can retry
+  }
+};
+
 // ═══════════════════════════════════════════════════════════════════
 //  CLASSES
 // ═══════════════════════════════════════════════════════════════════
@@ -2484,18 +3004,18 @@ function renderClassesTable() {
 
 
 window.createClass = async function() {
-  
+
   const name = document.getElementById('cls-name')?.value.trim();
   const grade = document.getElementById('cls-grade')?.value.trim();
   const stream = document.getElementById('cls-stream')?.value.trim();
   const cap = document.getElementById('cls-capacity')?.value.trim();
   const tch = document.getElementById('cls-teacher')?.value.trim();
-  
+
   if (!name || !grade) {
     setMsg('cls-msg', 'Name and grade are required', 'error');
     return;
   }
-  
+
   // ─────────────────────────────────────────────
   // CLEAN NORMALIZATION
   // ─────────────────────────────────────────────
@@ -2503,12 +3023,12 @@ window.createClass = async function() {
   const cleanStream = stream ?
     String(stream).trim().toLowerCase() :
     '';
-  
+
   const cleanName = String(name)
     .trim()
     .toLowerCase()
     .replace(/\s+/g, '');
-  
+
   // FINAL CLASS ID
   // Example:
   // grade12_b_grade12b
@@ -2516,64 +3036,64 @@ window.createClass = async function() {
     `${cleanGrade}_${cleanStream}_${cleanName}`
     .replace(/__+/g, '_')
     .replace(/^_|_$/g, '');
-  
+
   // DISPLAY NAME
   // Example:
   // Grade 12 B
   const displayName =
     `Grade ${grade}${stream ? ' ' + stream.toUpperCase() : ''}`;
-  
+
   showLoad('Creating class…');
-  
+
   try {
-    
+
     const data = {
-      
+
       // CORE IDS
       id: classId,
       classId,
-      
+
       // DISPLAY
       name: displayName,
       displayName,
       className: displayName,
-      
+
       // RAW DATA
       grade: parseInt(grade),
       stream: stream || '',
-      
+
       // SETTINGS
       capacity: parseInt(cap) || 45,
-      
+
       // STAFF
       classTeacher: tch || null,
       assignedTeachers: [],
-      
+
       // META
       schoolId,
       createdAt: new Date().toISOString()
     };
-    
+
     // SAVE TO FIRESTORE
     await setDoc(
       doc(db, 'schools', schoolId, 'classes', classId),
       data
     );
-    
+
     // LOCAL CACHE
     allClasses.push(data);
-    
+
     await idbSet('classes', 'all', allClasses).catch(() => {});
-    
+
     // UI REFRESH
     populateClassDropdowns();
     renderClassesTable();
     loadDashboard();
-    
+
     closeModal('modal-add-class');
-    
+
     toast(`Class "${displayName}" created 🏫`, 'success');
-    
+
     // RESET FORM
     [
       'cls-name',
@@ -2585,15 +3105,15 @@ window.createClass = async function() {
       const el = document.getElementById(id);
       if (el) el.value = '';
     });
-    
+
   } catch (e) {
-    
+
     console.error('Create class failed:', e);
-    
+
     setMsg('cls-msg', e.message, 'error');
-    
+
   } finally {
-    
+
     hideLoad();
   }
 };
@@ -3040,7 +3560,3197 @@ window.saveTeacherAssignment = async function() {
 console.log('[TeachMate Admin] ✅ Production engine loaded');
 
 
+// ═══════════════════════════════════════════════════════════════════════════════
+//  TEACHMATE ⚡ UNIVERSAL DATA MIGRATION ENGINE  v6.0
+//  "Any file. Any format. Any school."
+//
+//  v6.0 FIXES:
+//  ✅ TOTAL FIX: Student name matching — single source of truth _dmeGetName()
+//  ✅ TOTAL FIX: Multi-sheet/multi-page document handling with sheet switcher UI
+//  ✅ TOTAL FIX: Natural browser scrolling (no virtual scroll hacks)
+//  ✅ TOTAL FIX: _dmeCheckStudentMatches no longer false-blocks valid data
+//  ✅ TOTAL FIX: _dmeNameSimilarity handles ALL-CAPS, split columns, reversed names
+//  ✅ Bulk Admit Mode fully preserved and working
+//  ✅ All import flows (students, attendance, results, fees) unchanged
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ─── Engine State ──────────────────────────────────────────────────────────────
+const _dme = {
+  fileName: '', fileType: '',
+  rawHeaders: [], rawRows: [], columnTypes: {},
+  selectedRowIdx: new Set(), targetClassId: null, targetClassStudents: [],
+  columnMappings: {}, dataMode: 'students',
+  studentMatches: {},
+  parsedStudents: [], parsedAttendance: [], parsedResults: [], parsedFees: [],
+  currentStep: 0, searchQuery: '', sortCol: null, sortDir: 'asc',
+  importJobId: null, learnedMappings: {}, importReport: null,
+
+  // Multi-sheet support
+  allSheets: {},          // { sheetName: { headers, rows } }
+  activeSheet: '',        // currently viewed sheet name
+
+  // Bulk Admit Mode state
+  bulkAdmitMode: false,
+  bulkAdmitSelectedCols: [],
+};
+
+// ─── TeachMate Fields ──────────────────────────────────────────────────────────
+const _dmeTMFields = {
+  studentName:   { label: '👤 Student Name',  required: true  },
+  firstName:     { label: '🅰️ First Name',     required: false },
+  lastName:      { label: '🅱️ Last Name',      required: false },
+  studentId:     { label: '🆔 Student ID',     required: false },
+  gender:        { label: '⚤ Gender',          required: false },
+  dob:           { label: '🎂 Date of Birth',  required: false },
+  guardianName:  { label: '👪 Guardian Name',  required: false },
+  guardianPhone: { label: '📞 Guardian Phone', required: false },
+  address:       { label: '🏠 Address',        required: false },
+  medical:       { label: '💊 Medical Notes',  required: false },
+};
+
+// ─── Column Aliases ────────────────────────────────────────────────────────────
+const _dmeAliases = {
+  studentName:   ['name','full name','fullname','student','pupil','learner','candidate',
+                  'beneficiary','member','participant','project owner','scholar','person',
+                  'individual','client','attendee','child','benefactor','student name',
+                  'learner name','pupil name','full_name','student_name'],
+  firstName:     ['first','given','forename','fname','first name','given name','name 1',
+                  'first_name','given_name','forename'],
+  lastName:      ['last','surname','family','lname','last name','family name','name 2',
+                  'last_name','family_name','surname'],
+  studentId:     ['id','no','number','admission','reg','reference','code','serial',
+                  'student id','admission no','learner id','pupil id','ref no','roll no',
+                  'student_id','admno','reg no','reg_no'],
+  gender:        ['gender','sex','m/f'],
+  dob:           ['dob','birth','born','birthday','date of birth','birth date','date_of_birth'],
+  guardianName:  ['guardian','parent','mother','father','kin','contact person',
+                  'next of kin','emergency contact','caregiver'],
+  guardianPhone: ['phone','mobile','cell','contact','tel','telephone','number',
+                  'guardian phone','parent phone','parent contact','guardian contact'],
+  address:       ['address','location','home','area','village','residence','district'],
+  medical:       ['medical','health','condition','allergy','allergies','special needs','disability'],
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  OPEN / RESET
+// ═══════════════════════════════════════════════════════════════════════════════
+window.openDataMigrationEngine = function () {
+  _dmeReset(); _dmeLoadLearned(); _dmeGoto(0); openModal('modal-udme');
+};
+window.openExcelImportModal = window.openDataMigrationEngine;
+
+function _dmeReset() {
+  Object.assign(_dme, {
+    fileName: '', fileType: '',
+    rawHeaders: [], rawRows: [], columnTypes: {},
+    selectedRowIdx: new Set(), targetClassId: null, targetClassStudents: [],
+    columnMappings: {}, dataMode: 'students', studentMatches: {},
+    parsedStudents: [], parsedAttendance: [], parsedResults: [], parsedFees: [],
+    currentStep: 0, searchQuery: '', sortCol: null, sortDir: 'asc',
+    importJobId: null, importReport: null,
+    allSheets: {}, activeSheet: '',
+    bulkAdmitMode: false, bulkAdmitSelectedCols: [],
+  });
+  const fi = document.getElementById('udme-file-input');
+  if (fi) fi.value = '';
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  STEP 0 ▸ FILE READING
+// ═══════════════════════════════════════════════════════════════════════════════
+window.dmeHandleFile = async function (file) {
+  if (!file) return;
+  _dme.fileName = file.name;
+  _dme.fileType = file.name.split('.').pop().toLowerCase();
+  showLoad('📡 Reading file…');
+  try {
+    await _dmeExtract(file);
+    if (_dme.rawRows.length === 0) {
+      toast('⚠️ No readable data found in this file.', 'warning');
+      hideLoad(); return;
+    }
+    _dmeClassifyColumns();
+    _dmeSuggestMappings();
+    _dmeGoto(1);
+  } catch (err) {
+    console.error('[DME v6.0]', err);
+    toast('❌ ' + err.message, 'error');
+  } finally { hideLoad(); }
+};
+
+async function _dmeExtract(file) {
+  const buf   = await file.arrayBuffer();
+  const bytes = new Uint8Array(buf);
+  const magic = Array.from(bytes.slice(0, 4)).map(b => b.toString(16).padStart(2, '0')).join('');
+
+  if (magic.startsWith('504b')) {
+    if (['docx', 'odt'].includes(_dme.fileType)) await _dmeReadDocx(buf);
+    else await _dmeReadSpreadsheet(buf);
+    return;
+  }
+  if (magic.startsWith('25504446')) { await _dmeReadPDF(buf); return; }
+  if (magic.startsWith('d0cf11e0')) { await _dmeReadSpreadsheet(buf); return; }
+  _dmeReadText(_dmeSafeDecodeText(bytes));
+}
+
+function _dmeSafeDecodeText(bytes) {
+  if (bytes[0] === 0xFF && bytes[1] === 0xFE) return new TextDecoder('utf-16le').decode(bytes.slice(2));
+  if (bytes[0] === 0xFE && bytes[1] === 0xFF) return new TextDecoder('utf-16be').decode(bytes.slice(2));
+  if (bytes[0] === 0xEF && bytes[1] === 0xBB && bytes[2] === 0xBF) return new TextDecoder('utf-8').decode(bytes.slice(3));
+  try { return new TextDecoder('utf-8', { fatal: true }).decode(bytes); }
+  catch { return new TextDecoder('iso-8859-1').decode(bytes); }
+}
+
+// ── Spreadsheet: preserve ALL sheets separately ───────────────────────────────
+async function _dmeReadSpreadsheet(buf) {
+  const XLSX = await _dmeEnsureLib('xlsx',
+    'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js', () => window.XLSX);
+  const wb = XLSX.read(new Uint8Array(buf), { type: 'array', cellDates: true, raw: false });
+
+  _dme.allSheets = {};
+
+  for (const sheetName of wb.SheetNames) {
+    const ws   = wb.Sheets[sheetName];
+    const rows = XLSX.utils.sheet_to_json(ws, { defval: '', header: 1, raw: false });
+    if (rows.length < 2) continue;
+
+    const hdrs = rows[0].map((h, i) => String(h || '').trim() || `Col_${i + 1}`);
+    const sheetRows = [];
+
+    for (let i = 1; i < rows.length; i++) {
+      const row = { __sheet: sheetName, __rownum: i };
+      let hasData = false;
+      hdrs.forEach((h, j) => {
+        const v = String(rows[i][j] ?? '').trim();
+        row[h] = v;
+        if (v) hasData = true;
+      });
+      if (hasData) sheetRows.push(row);
+    }
+
+    if (sheetRows.length > 0) {
+      _dme.allSheets[sheetName] = { headers: hdrs, rows: sheetRows };
+    }
+  }
+
+  // Default to first sheet with data
+  const firstSheet = Object.keys(_dme.allSheets)[0];
+  if (!firstSheet) { _dme.rawRows = []; return; }
+  _dmeActivateSheet(firstSheet);
+}
+
+// ── Activate a sheet (sets rawHeaders + rawRows) ──────────────────────────────
+window.dmeActivateSheet = function (sheetName) {
+  _dmeActivateSheet(sheetName);
+  _dme.selectedRowIdx.clear();
+  _dme.searchQuery = '';
+  _dme.sortCol = null;
+  _dmeClassifyColumns();
+  _dmeSuggestMappings();
+  _dmeRenderWorkspace();
+};
+
+function _dmeActivateSheet(sheetName) {
+  const sheet = _dme.allSheets[sheetName];
+  if (!sheet) return;
+  _dme.activeSheet  = sheetName;
+  _dme.rawHeaders   = sheet.headers;
+  _dme.rawRows      = sheet.rows;
+}
+
+// ── Text / CSV ────────────────────────────────────────────────────────────────
+function _dmeReadText(text) {
+  const lines = text.split(/\r?\n/).filter(l => l.trim());
+  if (lines.length < 2) { _dme.rawRows = []; return; }
+
+  const delim = _dmeDetectDelim(lines[0]);
+  const parse = line => {
+    const res = []; let cur = ''; let inQ = false;
+    for (const ch of line) {
+      if (ch === '"') { inQ = !inQ; continue; }
+      if (ch === delim && !inQ) { res.push(cur.trim()); cur = ''; continue; }
+      cur += ch;
+    }
+    res.push(cur.trim()); return res;
+  };
+
+  const hdrs = parse(lines[0]).map((h, i) => String(h || '').trim() || `Col_${i + 1}`);
+  _dme.rawHeaders = hdrs;
+  _dme.rawRows    = [];
+
+  for (let i = 1; i < lines.length; i++) {
+    if (!lines[i].trim()) continue;
+    const parts = parse(lines[i]);
+    const row   = { __sheet: 'Text/CSV', __rownum: i };
+    let hasData = false;
+    hdrs.forEach((h, j) => {
+      const v = (parts[j] ?? '').trim();
+      row[h]  = v;
+      if (v) hasData = true;
+    });
+    if (hasData) _dme.rawRows.push(row);
+  }
+
+  _dme.allSheets['Text/CSV'] = { headers: _dme.rawHeaders, rows: _dme.rawRows };
+  _dme.activeSheet = 'Text/CSV';
+}
+
+function _dmeDetectDelim(line) {
+  const counts = { ',': 0, '\t': 0, '|': 0, ';': 0 };
+  for (const ch of line) if (ch in counts) counts[ch]++;
+  return Object.entries(counts).sort((a, b) => b[1] - a[1])[0][0];
+}
+
+// ── PDF: extract per-page, store each page as a "sheet" ──────────────────────
+async function _dmeReadPDF(buf) {
+  const pdfjsLib = await _dmeEnsureLib('pdfjsLib',
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js', () => window.pdfjsLib);
+  pdfjsLib.GlobalWorkerOptions.workerSrc =
+    'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
+  const pdfDoc = await pdfjsLib.getDocument({ data: new Uint8Array(buf) }).promise;
+  _dme.allSheets = {};
+
+  // Collect ALL items across all pages first so we can build a global column layout
+  const allPageData = [];
+  for (let p = 1; p <= pdfDoc.numPages; p++) {
+    const page    = await pdfDoc.getPage(p);
+    const content = await page.getTextContent();
+    const items   = content.items
+      .map(item => ({ text: item.str.trim(), x: item.transform[4], y: item.transform[5], page: p }))
+      .filter(i => i.text);
+    allPageData.push(items);
+  }
+
+  // Build global X-column clusters from all pages combined
+  const allX   = allPageData.flat().map(i => i.x).sort((a, b) => a - b);
+  const colXs  = _dmeClusterXPositions(allX, 15);
+
+  // Helper: snap item.x to nearest column index
+  const snapCol = x => {
+    let best = 0, bestD = Infinity;
+    colXs.forEach((cx, idx) => { const d = Math.abs(x - cx); if (d < bestD) { bestD = d; best = idx; } });
+    return best;
+  };
+
+  // Helper: convert a page's items into table rows
+  const pageToRows = (items) => {
+    if (!items.length) return [];
+    items.sort((a, b) => b.y - a.y);
+    const rowGroups = [];
+    let cur = [];
+    items.forEach(item => {
+      if (!cur.length) { cur.push(item); return; }
+      const avgY = cur.reduce((s, i) => s + i.y, 0) / cur.length;
+      if (Math.abs(item.y - avgY) <= 6) { cur.push(item); }
+      else { rowGroups.push(cur); cur = [item]; }
+    });
+    if (cur.length) rowGroups.push(cur);
+
+    return rowGroups.map(grp => {
+      const row = new Array(colXs.length).fill('');
+      grp.forEach(item => {
+        const ci = snapCol(item.x);
+        row[ci] = row[ci] ? row[ci] + ' ' + item.text : item.text;
+      });
+      return row;
+    }).filter(r => r.some(c => c));
+  };
+
+  // Detect global headers from first page with sufficient data
+  let globalHeaders = null;
+  const allTableRows = [];
+
+  for (let p = 0; p < allPageData.length; p++) {
+    const tableRows = pageToRows(allPageData[p]);
+    if (!tableRows.length) continue;
+
+    if (!globalHeaders) {
+      // First content page: treat first row as headers
+      globalHeaders = tableRows[0].map((h, i) => h || `Col_${i + 1}`);
+      // Skip header row on first page
+      for (let r = 1; r < tableRows.length; r++) allTableRows.push({ row: tableRows[r], page: p + 1 });
+    } else {
+      // Subsequent pages: check if first row looks like the same header (skip if so)
+      const firstRowStr  = tableRows[0].join('').toLowerCase().trim();
+      const headerStr    = globalHeaders.join('').toLowerCase().trim();
+      const isRepeatHdr  = firstRowStr === headerStr ||
+        globalHeaders.filter(h => h && h !== '-').every(h => firstRowStr.includes(h.toLowerCase().trim()));
+      const startRow = isRepeatHdr ? 1 : 0;
+      for (let r = startRow; r < tableRows.length; r++) allTableRows.push({ row: tableRows[r], page: p + 1 });
+    }
+  }
+
+  if (!globalHeaders || allTableRows.length === 0) { _dme.rawRows = []; return; }
+
+  // Store as a single combined sheet PLUS per-page sheets
+  const makeSheetRows = (entries) => entries.map(({ row, page }, i) => {
+    const obj = { __sheet: `Page ${page}`, __rownum: i + 1 };
+    globalHeaders.forEach((h, j) => { obj[h] = row[j] || ''; });
+    return obj;
+  }).filter(r => Object.entries(r).some(([k, v]) => !k.startsWith('__') && v));
+
+  // Combined sheet
+  const combinedRows = makeSheetRows(allTableRows);
+  _dme.allSheets['All Pages'] = { headers: globalHeaders, rows: combinedRows };
+
+  // Per-page sheets (only if more than 1 page has data)
+  const pages = [...new Set(allTableRows.map(e => e.page))];
+  if (pages.length > 1) {
+    pages.forEach(pg => {
+      const pgEntries = allTableRows.filter(e => e.page === pg);
+      const pgRows    = makeSheetRows(pgEntries);
+      if (pgRows.length > 0) _dme.allSheets[`Page ${pg}`] = { headers: globalHeaders, rows: pgRows };
+    });
+  }
+
+  _dmeActivateSheet('All Pages');
+}
+
+function _dmeClusterXPositions(sortedXs, tolerance) {
+  if (!sortedXs.length) return [];
+  const clusters = [];
+  let cur = [sortedXs[0]];
+  for (let i = 1; i < sortedXs.length; i++) {
+    const avg = cur.reduce((a, b) => a + b, 0) / cur.length;
+    if (Math.abs(sortedXs[i] - avg) <= tolerance) cur.push(sortedXs[i]);
+    else { clusters.push(avg); cur = [sortedXs[i]]; }
+  }
+  clusters.push(cur.reduce((a, b) => a + b, 0) / cur.length);
+  return clusters;
+}
+
+async function _dmeReadDocx(buf) {
+  const mammoth = await _dmeEnsureLib('mammoth',
+    'https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js', () => window.mammoth);
+  const result = await mammoth.extractRawText({ arrayBuffer: buf });
+  _dmeReadText(result.value);
+}
+
+function _dmeEnsureLib(globalKey, cdnUrl, getter) {
+  if (getter()) return Promise.resolve(getter());
+  return new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src     = cdnUrl;
+    s.onload  = () => res(getter());
+    s.onerror = () => rej(new Error(`Failed to load ${cdnUrl}`));
+    document.head.appendChild(s);
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  COLUMN CLASSIFIER
+// ═══════════════════════════════════════════════════════════════════════════════
+function _dmeClassifyColumns() {
+  const sample = _dme.rawRows.slice(0, 20);
+  _dme.columnTypes = {};
+  _dme.rawHeaders.filter(h => !['__sheet', '__rownum'].includes(h)).forEach(h => {
+    const vals = sample.map(r => String(r[h] || '').trim()).filter(Boolean);
+    if (!vals.length) { _dme.columnTypes[h] = 'unknown'; return; }
+    const hLow  = h.toLowerCase();
+    const score = { student: 0, attendance: 0, results: 0, fees: 0 };
+    if (/name|student|pupil|learner|candidate|owner|member|first|last|surname|forename/.test(hLow)) score.student += 40;
+    if (/date|day|\d{2}[\-\/]\w+|jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec/.test(hLow)) score.attendance += 30;
+    if (/present|absent|p\/a|attend/.test(hLow)) score.attendance += 50;
+    if (/mark|score|grade|result|test|exam|subject|biology|english|math|chemistry|physics|science/.test(hLow)) score.results += 50;
+    if (/fee|paid|amount|payment|balance|owing|k\d|zk/.test(hLow)) score.fees += 50;
+    const pACount   = vals.filter(v => /^[PApa]$/.test(v.trim())).length;
+    const numCount  = vals.filter(v => /^\d+(\.\d+)?$/.test(v)).length;
+    const dateCount = vals.filter(v => /\d{1,2}[-\/]\d{1,2}/.test(v) || /\d{4}-\d{2}-\d{2}/.test(v)).length;
+    if (pACount   / vals.length > 0.5)  score.attendance += 60;
+    if (dateCount / vals.length > 0.4)  score.attendance += 30;
+    if (numCount  / vals.length > 0.6) {
+      const avg = vals.filter(v => /^\d+$/.test(v)).reduce((a, b) => a + Number(b), 0) / numCount;
+      if (avg <= 100) score.results += 40;
+      if (avg > 100)  score.fees    += 40;
+    }
+    const best = Object.entries(score).sort((a, b) => b[1] - a[1])[0];
+    _dme.columnTypes[h] = best[1] > 20 ? best[0] : 'unknown';
+  });
+  const types  = Object.values(_dme.columnTypes);
+  const hasAtt = types.includes('attendance');
+  const hasRes = types.includes('results');
+  const hasFee = types.includes('fees');
+  if (hasAtt && !hasRes && !hasFee)      _dme.dataMode = 'attendance';
+  else if (hasRes && !hasAtt && !hasFee) _dme.dataMode = 'results';
+  else if (hasFee && !hasAtt && !hasRes) _dme.dataMode = 'fees';
+  else if (hasAtt || hasRes || hasFee)   _dme.dataMode = 'mixed';
+  else _dme.dataMode = 'students';
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  ★★★  UNIFIED NAME EXTRACTOR  ★★★
+//  Single source of truth used by ALL matching, checking, and preview functions.
+//  Tries 6 strategies in order. Never fails silently.
+// ═══════════════════════════════════════════════════════════════════════════════
+function _dmeGetName(row, headers) {
+  if (!row || !headers) return '';
+
+  const clean = headers.filter(h => !['__sheet', '__rownum'].includes(h));
+
+  // Strategy 1 — Columns explicitly mapped by user
+  const mappedFirst  = Object.entries(_dme.columnMappings || {}).find(([, v]) => v === 'firstName')?.[0];
+  const mappedMiddle = Object.entries(_dme.columnMappings || {}).find(([, v]) => v === 'middleName')?.[0];
+  const mappedLast   = Object.entries(_dme.columnMappings || {}).find(([, v]) => v === 'lastName')?.[0];
+  const mappedFull   = Object.entries(_dme.columnMappings || {}).find(([, v]) => v === 'studentName')?.[0];
+
+  if (mappedFull && String(row[mappedFull] || '').trim())
+    return String(row[mappedFull]).trim();
+
+  if (mappedFirst || mappedLast) {
+    const parts = [mappedFirst, mappedMiddle, mappedLast]
+      .filter(Boolean).map(c => String(row[c] || '').trim()).filter(Boolean);
+    if (parts.length) return parts.join(' ').replace(/\s+/g, ' ').trim();
+  }
+
+  // Strategy 2 — Bulk admit selected columns (if in bulk mode)
+  if (_dme.bulkAdmitMode && _dme.bulkAdmitSelectedCols.length) {
+    const parts = _dme.bulkAdmitSelectedCols
+      .map(c => String(row[c] || '').trim()).filter(Boolean);
+    if (parts.length) return parts.join(' ').replace(/\s+/g, ' ').trim();
+  }
+
+  // Strategy 3 — Auto-detected name columns via _dmeDetectNameColumns
+  const detected = _dmeDetectNameColumns(clean);
+  const multiCols = [detected.first, detected.middle, detected.last].filter(Boolean);
+  if (multiCols.length) {
+    const parts = multiCols.map(c => String(row[c] || '').trim()).filter(Boolean);
+    if (parts.length) return parts.join(' ').replace(/\s+/g, ' ').trim();
+  }
+  if (detected.full) {
+    const v = String(row[detected.full] || '').trim();
+    if (v) return v;
+  }
+
+  // Strategy 4 — Column classified as 'student' type by classifier
+  const studentCol = clean.find(h => _dme.columnTypes[h] === 'student');
+  if (studentCol) {
+    const v = String(row[studentCol] || '').trim();
+    if (v) return v;
+  }
+
+  // Strategy 5 — Any column whose header contains name-related keywords
+  const nameKeyCol = clean.find(h =>
+    /\b(name|student|pupil|learner|candidate|person|member)\b/i.test(h));
+  if (nameKeyCol) {
+    const v = String(row[nameKeyCol] || '').trim();
+    if (v) return v;
+  }
+
+  // Strategy 6 — First non-numeric, non-empty value in the row
+  for (const h of clean) {
+    const v = String(row[h] || '').trim();
+    if (v && v.length > 1 && isNaN(Number(v)) && !/^[PApa]$/.test(v)) return v;
+  }
+
+  return '';
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  ★★★  IMPROVED NAME SIMILARITY  ★★★
+//  Handles: ALL-CAPS, reversed name order, partial matches, abbreviations
+// ═══════════════════════════════════════════════════════════════════════════════
+function _dmeNameSimilarity(a, b) {
+  if (!a || !b) return 0;
+
+  const norm = s => s.toLowerCase()
+    .replace(/[^a-z\s]/g, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+
+  const an = norm(a);
+  const bn = norm(b);
+
+  if (!an || !bn) return 0;
+  if (an === bn) return 1;
+
+  // Direct Jaro-Winkler
+  const jwDirect = _dmeJW(an, bn);
+
+  // Token-based matching
+  const aToks = an.split(' ').filter(Boolean);
+  const bToks = bn.split(' ').filter(Boolean);
+
+  // Try reversed name order (e.g. "Phiri John" vs "John Phiri")
+  const anRev = [...aToks].reverse().join(' ');
+  const jwRev = _dmeJW(anRev, bn);
+
+  // Each token in A best-matched to any token in B
+  let tokenScoreSum = 0;
+  aToks.forEach(at => {
+    const best = Math.max(0, ...bToks.map(bt => {
+      if (at === bt) return 1;
+      // Handle abbreviation: first char matches + length 1
+      if (at.length === 1 && bt.startsWith(at)) return 0.85;
+      if (bt.length === 1 && at.startsWith(bt)) return 0.85;
+      return _dmeJW(at, bt);
+    }));
+    tokenScoreSum += best;
+  });
+  const avgTokenScore = aToks.length ? tokenScoreSum / aToks.length : 0;
+
+  // Check if ALL tokens of the shorter name appear somewhere in the longer
+  const [shorter, longer] = aToks.length <= bToks.length ? [aToks, bToks] : [bToks, aToks];
+  const allContained = shorter.length > 0 && shorter.every(st =>
+    longer.some(lt => lt === st || _dmeJW(st, lt) >= 0.88));
+
+  const base = Math.max(jwDirect, jwRev, avgTokenScore);
+  return Math.min(1, allContained ? Math.max(base, 0.90) : base);
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  ★★★  FIXED _dmeCheckStudentMatches  ★★★
+//  ONLY blocks if class is empty OR genuinely zero matches after real attempt.
+//  No longer false-blocks based on low confidence on multi-column name files.
+// ═══════════════════════════════════════════════════════════════════════════════
+function _dmeCheckStudentMatches() {
+  if (_dme.targetClassStudents.length === 0) {
+    return { needsAdmission: true, reason: 'empty' };
+  }
+
+  const selectedRows = [..._dme.selectedRowIdx].map(i => _dme.rawRows[i]);
+  if (!selectedRows.length) return { needsAdmission: false };
+
+  const headers = _dme.rawHeaders.filter(h => !['__sheet', '__rownum'].includes(h));
+
+  // Run actual matching with the unified name extractor
+  let goodMatches = 0;
+  selectedRows.forEach(row => {
+    const importedName = _dmeGetName(row, headers);
+    if (!importedName) return;
+    const best = Math.max(0, ..._dme.targetClassStudents.map(s =>
+      _dmeNameSimilarity(importedName, s.name || '') * 100));
+    // Use 70 here (not 85) — we want to proceed to studio where user can fix edge cases
+    if (best >= 70) goodMatches++;
+  });
+
+  // Only block if truly ZERO matches at all
+  if (goodMatches === 0) {
+    // Do one more desperate check: try individual token matching
+    let anyPartialMatch = false;
+    selectedRows.slice(0, 10).forEach(row => {
+      const importedName = _dmeGetName(row, headers);
+      if (!importedName) return;
+      const importedToks = importedName.toLowerCase().split(/\s+/).filter(t => t.length > 1);
+      _dme.targetClassStudents.forEach(s => {
+        const studentToks = (s.name || '').toLowerCase().split(/\s+/).filter(t => t.length > 1);
+        if (importedToks.some(it => studentToks.some(st => it === st || (it.length > 3 && st.startsWith(it))))) {
+          anyPartialMatch = true;
+        }
+      });
+    });
+
+    if (!anyPartialMatch) {
+      return { needsAdmission: true, reason: 'no_match' };
+    }
+  }
+
+  return { needsAdmission: false };
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  ★★★  FIXED _dmeRunStudentMatcher  ★★★
+// ═══════════════════════════════════════════════════════════════════════════════
+function _dmeRunStudentMatcher() {
+  const selectedRows = [..._dme.selectedRowIdx].map(i => _dme.rawRows[i]);
+  const headers      = _dme.rawHeaders.filter(h => !['__sheet', '__rownum'].includes(h));
+
+  _dme.studentMatches = {};
+  const classStudents = _dme.targetClassStudents;
+
+  selectedRows.forEach(row => {
+    const importedName = _dmeGetName(row, headers);
+    if (!importedName) return;
+
+    let bestStudent = null, bestScore = 0;
+    classStudents.forEach(s => {
+      const sc = _dmeNameSimilarity(importedName, s.name || '');
+      if (sc > bestScore) { bestScore = sc; bestStudent = s; }
+    });
+
+    const confidence = Math.round(bestScore * 100);
+    _dme.studentMatches[importedName] = {
+      rowData:     row,
+      studentId:   confidence >= 85 ? (bestStudent?.id   || null) : null,
+      studentName: confidence >= 85 ? (bestStudent?.name || '')   : '',
+      confidence,
+      overridden:  false,
+    };
+  });
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  STEP 1 ▸ WORKSPACE  (natural scroll, sheet tabs)
+// ═══════════════════════════════════════════════════════════════════════════════
+function _dmeRenderWorkspace() {
+  const headers = _dme.rawHeaders.filter(h => !['__sheet', '__rownum'].includes(h));
+  const q       = (_dme.searchQuery || '').toLowerCase();
+  let visible   = _dme.rawRows;
+
+  if (q) visible = visible.filter(r => headers.some(h => (r[h] || '').toLowerCase().includes(q)));
+  if (_dme.sortCol) {
+    visible = [...visible].sort((a, b) => {
+      const av = (a[_dme.sortCol] || '').toLowerCase();
+      const bv = (b[_dme.sortCol] || '').toLowerCase();
+      return _dme.sortDir === 'asc' ? av.localeCompare(bv) : bv.localeCompare(av);
+    });
+  }
+
+  // ── Info bar ─────────────────────────────────────────────────────────────
+  const info = document.getElementById('udme-ws-info');
+  if (info) {
+    const selN = _dme.selectedRowIdx.size;
+    const typeLabel = {
+      students: '👤 Student Data', attendance: '📅 Attendance',
+      results: '📊 Results', fees: '💰 Fees', mixed: '🗂️ Mixed Data', unknown: '❓ Unknown'
+    };
+    const sheetCount = Object.keys(_dme.allSheets).length;
+    info.innerHTML = `
+      <span class="udme-chip">📄 ${_dmeEsc(_dme.fileName)}</span>
+      <span class="udme-chip">📊 ${_dme.rawRows.length.toLocaleString()} rows</span>
+      <span class="udme-chip">🗂️ ${headers.length} cols</span>
+      ${sheetCount > 1 ? `<span class="udme-chip purple">📑 ${sheetCount} sheets/pages</span>` : ''}
+      <span class="udme-chip blue">${typeLabel[_dme.dataMode] || 'Data'}</span>
+      ${selN > 0 ? `<span class="udme-chip green">✅ ${selN} selected</span>` : ''}
+      ${_dme.bulkAdmitMode ? `<span class="udme-chip amber">⚡ Bulk Admit Mode</span>` : ''}`;
+  }
+
+  // ── Sheet/page tabs ───────────────────────────────────────────────────────
+  _dmeRenderSheetTabs();
+
+  // ── Bulk admit panel ──────────────────────────────────────────────────────
+  _dmeRenderBulkAdmitPanel(headers, visible);
+
+  // ── Main table (NATURAL SCROLL — no virtual scroll) ───────────────────────
+  _dmeRenderNaturalTable(headers, visible);
+
+  // ── Action bar ────────────────────────────────────────────────────────────
+  _dmeRenderActionBar();
+  _dmeRenderDataModeHints(headers);
+}
+
+// ── Sheet / Page Tabs ─────────────────────────────────────────────────────────
+function _dmeRenderSheetTabs() {
+  const sheetNames = Object.keys(_dme.allSheets);
+  let tabBar = document.getElementById('udme-sheet-tabs');
+
+  if (sheetNames.length <= 1) {
+    if (tabBar) tabBar.style.display = 'none';
+    return;
+  }
+
+  if (!tabBar) {
+    tabBar = document.createElement('div');
+    tabBar.id = 'udme-sheet-tabs';
+    const wrap = document.getElementById('udme-table-wrap');
+    if (wrap) wrap.parentNode.insertBefore(tabBar, wrap);
+  }
+  tabBar.style.display = 'flex';
+  tabBar.className     = 'udme-sheet-tabs';
+  tabBar.innerHTML     = sheetNames.map(name => `
+    <button class="udme-sheet-tab ${name === _dme.activeSheet ? 'active' : ''}"
+            onclick="dmeActivateSheet('${_dmeEsc(name)}')">
+      ${name.startsWith('Page ') ? '📄' : '📊'} ${_dmeEsc(name)}
+      <span class="udme-tab-count">${_dme.allSheets[name].rows.length}</span>
+    </button>`).join('');
+}
+
+// ── Natural Scroll Table (replaces virtual scroll entirely) ───────────────────
+function _dmeRenderNaturalTable(headers, visible) {
+  const wrap = document.getElementById('udme-table-wrap');
+  if (!wrap) return;
+  const isBulk = _dme.bulkAdmitMode;
+  const allSel = visible.length > 0 && visible.every((r, _) => {
+    const ri = _dme.rawRows.indexOf(r);
+    return _dme.selectedRowIdx.has(ri);
+  });
+
+  wrap.innerHTML = `
+    <div class="udme-table-scroll">
+      <table class="udme-table ${isBulk ? 'udme-table-bulk' : ''}">
+        <thead>
+          <tr>
+            <th class="udme-th-fix">
+              <input type="checkbox" ${allSel ? 'checked' : ''} onchange="dmeSelectAll(this.checked)">
+            </th>
+            <th class="udme-th-fix">#</th>
+            ${headers.map(h => {
+              const typeBadge = _dme.columnTypes[h] && _dme.columnTypes[h] !== 'unknown'
+                ? `<span class="udme-col-type ${_dme.columnTypes[h]}">${_dme.columnTypes[h][0].toUpperCase()}</span>` : '';
+              const bulkSel   = isBulk && _dme.bulkAdmitSelectedCols.includes(h);
+              const bulkOrder = _dme.bulkAdmitSelectedCols.indexOf(h);
+              const dir       = _dme.sortCol === h ? (_dme.sortDir === 'asc' ? '↑' : '↓') : '⇅';
+              return `<th class="udme-th-sort ${bulkSel ? 'ba-th-selected' : ''}"
+                          onclick="${isBulk ? `dmeBulkAdmitToggleCol('${_dmeEsc(h)}')` : `dmeSortBy('${_dmeEsc(h)}')`}">
+                ${bulkSel ? `<span class="ba-th-order">${bulkOrder + 1}</span>` : ''}
+                ${typeBadge}${_dmeEsc(h)}
+                ${isBulk
+                  ? (bulkSel ? `<span class="ba-th-check">✓</span>` : `<span class="ba-th-add">+</span>`)
+                  : `<span class="sort-i">${dir}</span>`}
+              </th>`;
+            }).join('')}
+          </tr>
+        </thead>
+        <tbody>
+          ${visible.map((row, visIdx) => {
+            const realIdx = _dme.rawRows.indexOf(row);
+            const sel     = _dme.selectedRowIdx.has(realIdx);
+            let bulkNamePreview = '';
+            if (isBulk && sel && _dme.bulkAdmitSelectedCols.length) {
+              bulkNamePreview = _dme.bulkAdmitSelectedCols
+                .map(c => String(row[c] || '').trim()).filter(Boolean).join(' ');
+            }
+            return `
+              <tr class="${sel ? 'sel-row' : ''} ${isBulk && sel ? 'bulk-sel-row' : ''}"
+                  onclick="dmeToggleRow(${realIdx}, event)">
+                <td class="udme-td-fix">
+                  <input type="checkbox" ${sel ? 'checked' : ''}
+                    onclick="event.stopPropagation()"
+                    onchange="dmeToggleRow(${realIdx}, event)">
+                </td>
+                <td class="udme-td-fix num">${visIdx + 1}
+                  ${isBulk && sel ? `<span class="ba-row-badge">👤</span>` : ''}
+                </td>
+                ${headers.map(h => {
+                  const isNameCol = isBulk && _dme.bulkAdmitSelectedCols.includes(h);
+                  return `<td ${!isBulk ? `contenteditable="true"` : ''}
+                              class="udme-td ${isNameCol ? 'ba-td-name' : ''}"
+                              ${!isBulk ? `onblur="dmeCellEdit(${realIdx},'${_dmeEsc(h)}',this.textContent)"` : ''}
+                              title="${_dmeEsc(String(row[h] || ''))}">
+                            ${_dmeEsc(String(row[h] || ''))}
+                          </td>`;
+                }).join('')}
+              </tr>
+              ${isBulk && sel && bulkNamePreview ? `
+                <tr class="bulk-preview-row">
+                  <td></td>
+                  <td colspan="${headers.length + 1}" class="bulk-preview-cell">
+                    <span class="bulk-preview-label">🏷️ Will be admitted as:</span>
+                    <span class="bulk-preview-name">${_dmeEsc(bulkNamePreview)}</span>
+                  </td>
+                </tr>` : ''}`;
+          }).join('')}
+        </tbody>
+      </table>
+    </div>`;
+}
+
+// ── Bulk Admit Column Panel (unchanged logic, kept intact) ────────────────────
+function _dmeRenderBulkAdmitPanel(headers, visible) {
+  let panel = document.getElementById('udme-bulk-admit-panel');
+  if (!_dme.bulkAdmitMode) {
+    if (panel) panel.style.display = 'none';
+    return;
+  }
+  if (!panel) {
+    panel = document.createElement('div');
+    panel.id = 'udme-bulk-admit-panel';
+    const tableWrap = document.getElementById('udme-table-wrap');
+    tableWrap && tableWrap.parentNode.insertBefore(panel, tableWrap);
+  }
+  panel.style.display = 'block';
+
+  const cls   = (allClasses || []).find(c => c.id === _dme.targetClassId);
+  const names = _dmeBulkAdmitComputeNames();
+
+  panel.innerHTML = `
+    <div class="ba-panel">
+      <div class="ba-panel-header">
+        <div class="ba-panel-icon">⚡</div>
+        <div class="ba-panel-info">
+          <div class="ba-panel-title">Bulk Admit Mode — Select Name Columns</div>
+          <div class="ba-panel-sub">
+            Select columns to compose student names. Each <strong>selected row</strong> = one student.
+            Values at row × column intersections are joined with a space.<br>
+            <em>Example: selecting "First Name" + "Last Name" → "Joel Phiri"</em>
+          </div>
+        </div>
+        <button class="udme-btn danger ba-exit-btn" onclick="dmeExitBulkAdmit()">✕ Exit Mode</button>
+      </div>
+
+      <div class="ba-cols-label">📋 Available Columns — click to add/remove from name composition:</div>
+      <div class="ba-col-chips">
+        ${headers.map(h => {
+          const sel   = _dme.bulkAdmitSelectedCols.includes(h);
+          const order = _dme.bulkAdmitSelectedCols.indexOf(h);
+          return `<button class="ba-col-chip ${sel ? 'ba-col-selected' : ''}"
+                          onclick="dmeBulkAdmitToggleCol('${_dmeEsc(h)}')">
+                    ${sel ? `<span class="ba-col-order">${order + 1}</span>` : ''}
+                    ${_dmeEsc(h)}
+                    ${sel ? '<span class="ba-col-check">✓</span>' : '<span class="ba-col-plus">+</span>'}
+                  </button>`;
+        }).join('')}
+      </div>
+
+      ${_dme.bulkAdmitSelectedCols.length > 0 ? `
+        <div class="ba-name-order">
+          <span class="ba-name-order-label">🔤 Name order:</span>
+          ${_dme.bulkAdmitSelectedCols.map((c, i) => `
+            <span class="ba-name-order-col">
+              ${_dmeEsc(c)}
+              <button onclick="dmeBulkAdmitMoveCol(${i}, -1)" ${i === 0 ? 'disabled' : ''}>◀</button>
+              <button onclick="dmeBulkAdmitMoveCol(${i}, 1)" ${i === _dme.bulkAdmitSelectedCols.length - 1 ? 'disabled' : ''}>▶</button>
+              <button class="ba-remove-col" onclick="dmeBulkAdmitToggleCol('${_dmeEsc(c)}')">✕</button>
+            </span>`).join('<span class="ba-plus-sign">+</span>')}
+        </div>` : ''}
+
+      ${_dme.bulkAdmitSelectedCols.length > 0 && _dme.selectedRowIdx.size > 0 ? `
+        <div class="ba-preview-section">
+          <div class="ba-preview-label">👁️ Live preview — ${_dme.selectedRowIdx.size} selected row(s):</div>
+          <div class="ba-preview-names">
+            ${names.slice(0, 8).map(n => `<span class="ba-preview-name">${_dmeEsc(n)}</span>`).join('')}
+            ${names.length > 8 ? `<span class="ba-preview-more">+${names.length - 8} more</span>` : ''}
+          </div>
+        </div>` : ''}
+
+      ${_dme.bulkAdmitSelectedCols.length === 0
+        ? `<div class="ba-hint">👆 Select at least one column above to define student names.</div>`
+        : _dme.selectedRowIdx.size === 0
+          ? `<div class="ba-hint">☑️ Now select the rows (students) you want to admit from the table below.</div>`
+          : `<div class="ba-admit-footer">
+              <button class="udme-btn green ba-admit-btn" onclick="dmeBulkAdmitConfirm()">
+                🚀 Admit ${_dme.selectedRowIdx.size} Student${_dme.selectedRowIdx.size !== 1 ? 's' : ''}
+                to ${_dmeEsc(cls?.name || _dme.targetClassId)}
+              </button>
+              <div class="ba-admit-note">Names auto-generated from selected columns. IDs auto-assigned.</div>
+            </div>`}
+    </div>`;
+}
+
+function _dmeBulkAdmitComputeNames() {
+  if (!_dme.bulkAdmitSelectedCols.length) return [];
+  return [..._dme.selectedRowIdx].map(ri => {
+    const row = _dme.rawRows[ri];
+    if (!row) return '';
+    return _dme.bulkAdmitSelectedCols
+      .map(col => String(row[col] || '').trim())
+      .filter(Boolean).join(' ').replace(/\s+/g, ' ').trim();
+  }).filter(Boolean);
+}
+
+// ── Bulk Admit Interactions ───────────────────────────────────────────────────
+window.dmeBulkAdmitToggleCol = function (colName) {
+  const idx = _dme.bulkAdmitSelectedCols.indexOf(colName);
+  if (idx >= 0) _dme.bulkAdmitSelectedCols.splice(idx, 1);
+  else _dme.bulkAdmitSelectedCols.push(colName);
+  _dmeRenderWorkspace();
+};
+window.dmeBulkAdmitMoveCol = function (idx, dir) {
+  const cols   = _dme.bulkAdmitSelectedCols;
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= cols.length) return;
+  [cols[idx], cols[newIdx]] = [cols[newIdx], cols[idx]];
+  _dmeRenderWorkspace();
+};
+window.dmeExitBulkAdmit = function () {
+  _dme.bulkAdmitMode = false;
+  _dme.bulkAdmitSelectedCols = [];
+  _dme.selectedRowIdx.clear();
+  _dmeRenderWorkspace();
+};
+
+// ─── Bulk Admit Confirm & Write ───────────────────────────────────────────────
+window.dmeBulkAdmitConfirm = async function () {
+  const names = _dmeBulkAdmitComputeNames();
+  if (!names.length)          { toast('⚠️ No names to admit. Select columns and rows.', 'warning'); return; }
+  if (!_dme.targetClassId)    { toast('⚠️ No target class selected.', 'warning'); return; }
+
+  const uniqueNames = [...new Set(names.map(n => n.trim()).filter(n => n.length >= 2))];
+  if (!uniqueNames.length)    { toast('⚠️ No valid names found.', 'warning'); return; }
+
+  const cls = (allClasses || []).find(c => c.id === _dme.targetClassId);
+  if (!confirm(`Admit ${uniqueNames.length} student(s) to "${cls?.name || _dme.targetClassId}"?\n\n${
+    uniqueNames.slice(0, 8).join('\n')}${uniqueNames.length > 8 ? `\n...and ${uniqueNames.length - 8} more` : ''}`)) return;
+
+  showLoad(`🚀 Admitting ${uniqueNames.length} students…`);
+  const admitted = []; let failCount = 0;
+
+  try {
+    const batch = writeBatch(db); let batchCount = 0;
+    for (const fullName of uniqueNames) {
+      const existingNorm = (allStudents || []).find(s =>
+        s.classId === _dme.targetClassId &&
+        (s.name || '').toLowerCase().trim() === fullName.toLowerCase().trim());
+      if (existingNorm) { failCount++; continue; }
+
+      const num   = await _dmeGetNextId();
+      const yr    = new Date().getFullYear();
+      const parts = fullName.trim().split(/\s+/);
+      const fn    = (parts[0] || 'XX').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 2).padEnd(2, 'X');
+      const sid   = `TM-${yr}-${fn}${String(num).padStart(4, '0')}`;
+
+      const studentData = {
+        id: sid, studentId: sid,
+        name: fullName.trim(),
+        firstName: parts[0] || '',
+        lastName: parts.slice(1).join(' ') || '',
+        gender: '', classId: _dme.targetClassId,
+        dob: '', guardianName: '', guardianPhone: '',
+        address: '', medical: '',
+        status: 'active',
+        admittedAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        schoolId, source: 'dme_bulk_admit',
+      };
+      batch.set(doc(db, 'schools', schoolId, 'students', sid), studentData);
+      admitted.push({ ...studentData });
+      batchCount++;
+      if (batchCount >= 400) { await batch.commit(); batchCount = 0; }
+    }
+    if (batchCount > 0) await batch.commit();
+
+    admitted.forEach(s => { if (!allStudents.find(e => e.id === s.id)) allStudents.push(s); });
+    await idbSet('students', 'all', allStudents).catch(() => {});
+    _dme.targetClassStudents = (allStudents || []).filter(s => s.classId === _dme.targetClassId);
+
+    if (typeof renderStudentsTable    === 'function') renderStudentsTable();
+    if (typeof loadDashboard          === 'function') loadDashboard();
+    if (typeof populateClassDropdowns === 'function') populateClassDropdowns();
+
+    toast(`✅ ${admitted.length} student${admitted.length !== 1 ? 's' : ''} admitted!${
+      failCount > 0 ? ` (${failCount} skipped as duplicates)` : ''}`, 'success', 4000);
+
+    _dme.bulkAdmitMode = false;
+    _dme.bulkAdmitSelectedCols = [];
+    _dme.selectedRowIdx.clear();
+
+    if (_dme.dataMode !== 'students') {
+      _dmeRunStudentMatcher(); _dmeGoto(3); _dmeRenderAssignmentStudio();
+    } else {
+      _dmeRenderWorkspace();
+    }
+  } catch (e) {
+    console.error('[DME BulkAdmit]', e);
+    toast('❌ Bulk admit failed: ' + e.message, 'error');
+  } finally { hideLoad(); }
+};
+
+window.dmeEnterBulkAdmitMode = function () {
+  const classId = document.getElementById('udme-class-select')?.value;
+  if (!classId) { toast('⚠️ Select a target class first.', 'warning'); return; }
+  _dme.targetClassId          = classId;
+  _dme.bulkAdmitMode          = true;
+  _dme.bulkAdmitSelectedCols  = [];
+
+  const headers  = _dme.rawHeaders.filter(h => !['__sheet', '__rownum'].includes(h));
+  const detected = _dmeDetectNameColumns(headers);
+  if (detected.first)  _dme.bulkAdmitSelectedCols.push(detected.first);
+  if (detected.middle) _dme.bulkAdmitSelectedCols.push(detected.middle);
+  if (detected.last)   _dme.bulkAdmitSelectedCols.push(detected.last);
+  if (!_dme.bulkAdmitSelectedCols.length && detected.full)
+    _dme.bulkAdmitSelectedCols.push(detected.full);
+
+  _dmeRenderWorkspace();
+  setTimeout(() => {
+    document.getElementById('udme-bulk-admit-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 80);
+};
+
+// ─── Action Bar ───────────────────────────────────────────────────────────────
+function _dmeRenderActionBar() {
+  const bar = document.getElementById('udme-action-bar');
+  if (!bar) return;
+  const n = _dme.selectedRowIdx.size;
+
+  if (_dme.bulkAdmitMode) {
+    bar.innerHTML = `<div class="udme-hint-text ba-mode-hint">
+      ⚡ <strong>Bulk Admit Mode active.</strong> Use the panel above to select columns.
+      Tick rows below to mark students for admission.
+      ${n > 0 ? `<span class="udme-chip green" style="margin-left:8px;">☑️ ${n} rows selected</span>` : ''}
+    </div>`;
+    return;
+  }
+
+  if (n === 0) {
+    bar.innerHTML = `<div class="udme-hint-text">👆 Tap rows to select · Assign a class to continue</div>`;
+    return;
+  }
+
+  const classOptions = (allClasses || []).map(c =>
+    `<option value="${_dmeEsc(c.id)}" ${c.id === _dme.targetClassId ? 'selected' : ''}>${_dmeEsc(c.name || c.id)}</option>`).join('');
+
+  bar.innerHTML = `
+    <div class="udme-action-row">
+      <div class="udme-action-info">✅ <strong>${n}</strong> row${n !== 1 ? 's' : ''} selected</div>
+      <div class="udme-action-controls">
+        <select id="udme-class-select" class="udme-sel" onchange="_dme.targetClassId=this.value">
+          <option value="">🏫 Select Class…</option>
+          ${classOptions}
+        </select>
+        <button class="udme-btn primary" onclick="dmeProceedFromWorkspace()">Continue →</button>
+        <button class="udme-btn ghost" style="background:rgba(245,158,11,0.12);border-color:rgba(245,158,11,0.3);color:#fbbf24;"
+                onclick="dmeEnterBulkAdmitMode()">⚡ Bulk Admit</button>
+        <button class="udme-btn danger" onclick="dmeDeleteSelected()">🗑️</button>
+      </div>
+    </div>`;
+}
+
+function _dmeRenderDataModeHints(headers) {
+  const hintsEl = document.getElementById('udme-col-hints');
+  if (!hintsEl) return;
+  if (_dme.bulkAdmitMode) { hintsEl.innerHTML = ''; return; }
+  const grouped = {};
+  headers.forEach(h => { const t = _dme.columnTypes[h] || 'unknown'; if (!grouped[t]) grouped[t] = []; grouped[t].push(h); });
+  const labels = { student: '👤 Student', attendance: '📅 Attendance', results: '📊 Results', fees: '💰 Fees', unknown: '❓ Unknown' };
+  hintsEl.innerHTML = Object.entries(grouped).map(([type, cols]) =>
+    `<div class="udme-hint-group">
+      <span class="udme-hint-label ${type}">${labels[type] || type}:</span>
+      ${cols.slice(0, 6).map(c => `<span class="udme-hint-col">${_dmeEsc(c)}</span>`).join('')}
+      ${cols.length > 6 ? `<span class="udme-hint-more">+${cols.length - 6} more</span>` : ''}
+    </div>`).join('');
+}
+
+// ─── Row interactions ─────────────────────────────────────────────────────────
+window.dmeToggleRow = function (idx, e) {
+  if (e && e.target && e.target.contentEditable === 'true') return;
+  if (_dme.selectedRowIdx.has(idx)) _dme.selectedRowIdx.delete(idx);
+  else _dme.selectedRowIdx.add(idx);
+  _dmeRenderWorkspace();
+};
+window.dmeSelectAll = function (checked) {
+  if (checked) _dme.rawRows.forEach((_, i) => _dme.selectedRowIdx.add(i));
+  else _dme.selectedRowIdx.clear();
+  _dmeRenderWorkspace();
+};
+window.dmeSortBy = function (col) {
+  if (_dme.bulkAdmitMode) return;
+  _dme.sortDir = (_dme.sortCol === col && _dme.sortDir === 'asc') ? 'desc' : 'asc';
+  _dme.sortCol = col;
+  _dmeRenderWorkspace();
+};
+window.dmeCellEdit = function (idx, col, val) {
+  if (_dme.rawRows[idx]) _dme.rawRows[idx][col] = val.trim();
+};
+window.dmeWorkspaceSearch = function (q) {
+  _dme.searchQuery = q; _dmeRenderWorkspace();
+};
+window.dmeDeleteSelected = function () {
+  if (!_dme.selectedRowIdx.size) return;
+  if (!confirm(`Remove ${_dme.selectedRowIdx.size} row(s)?`)) return;
+  _dme.rawRows = _dme.rawRows.filter((_, i) => !_dme.selectedRowIdx.has(i));
+  // Sync back to active sheet
+  if (_dme.allSheets[_dme.activeSheet]) _dme.allSheets[_dme.activeSheet].rows = _dme.rawRows;
+  _dme.selectedRowIdx.clear();
+  _dmeRenderWorkspace();
+  toast(`🗑️ ${_dme.rawRows.length} rows remaining`, 'info', 2000);
+};
+window.dmeClearWorkspace = function () {
+  if (!confirm('Clear entire workspace?')) return;
+  _dme.rawRows = []; _dme.selectedRowIdx.clear(); _dmeRenderWorkspace();
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  STEP 1 → 2  ▸ PROCEED
+// ═══════════════════════════════════════════════════════════════════════════════
+window.dmeProceedFromWorkspace = async function () {
+  const classId = document.getElementById('udme-class-select')?.value || _dme.targetClassId;
+  if (!classId)                    { toast('⚠️ Select a target class first.', 'warning'); return; }
+  if (_dme.selectedRowIdx.size === 0) { toast('⚠️ Select at least one row.', 'warning'); return; }
+  _dme.targetClassId = classId;
+  showLoad('🔍 Loading class roster…');
+  try { _dme.targetClassStudents = (allStudents || []).filter(s => s.classId === classId); }
+  finally { hideLoad(); }
+
+  if (_dme.dataMode === 'students') {
+    _dmeSuggestMappings(); _dmeGoto(2); _dmeRenderMappingUI();
+  } else {
+    const matchResult = _dmeCheckStudentMatches();
+    if (matchResult.needsAdmission) {
+      _dmeRenderEmptyClassPanel(matchResult.reason);
+      return;
+    }
+    _dmeRunStudentMatcher(); _dmeGoto(3); _dmeRenderAssignmentStudio();
+  }
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  STEP 2 ▸ COLUMN MAPPING
+// ═══════════════════════════════════════════════════════════════════════════════
+function _dmeSuggestMappings() {
+  _dme.columnMappings = {};
+  const headers = _dme.rawHeaders.filter(h => !['__sheet', '__rownum'].includes(h));
+  headers.forEach(header => {
+    const h = header.toLowerCase().replace(/[_\-]/g, ' ').trim();
+    if (_dme.learnedMappings[h]) { _dme.columnMappings[header] = _dme.learnedMappings[h]; return; }
+    let best = '', bestScore = 0;
+    for (const [field, aliases] of Object.entries(_dmeAliases)) {
+      for (const alias of aliases) {
+        const a = alias.toLowerCase().trim();
+        let sc = 0;
+        if (h === a) sc = 100;
+        else if (h.replace(/\s+/g, '') === a.replace(/\s+/g, '')) sc = 95;
+        else if (h.startsWith(a) || a.startsWith(h)) sc = 80;
+        else if (h.includes(a) || a.includes(h)) sc = 65;
+        else { const jw = _dmeJW(h, a); if (jw >= 0.85) sc = Math.round(jw * 60); }
+        if (sc > bestScore) { bestScore = sc; best = field; }
+      }
+    }
+    _dme.columnMappings[header] = bestScore >= 55 ? best : '';
+  });
+}
+
+function _dmeRenderMappingUI() {
+  const headers = _dme.rawHeaders.filter(h => !['__sheet', '__rownum'].includes(h));
+  const grid    = document.getElementById('udme-map-grid');
+  if (!grid) return;
+  const sample = [..._dme.selectedRowIdx].slice(0, 3).map(i => _dme.rawRows[i]);
+  grid.innerHTML = headers.map(h => {
+    const suggested = _dme.columnMappings[h] || '';
+    const samples   = sample.map(r => r[h]).filter(Boolean).slice(0, 2)
+      .map(v => `<span class="sv">${_dmeEsc(String(v).slice(0, 18))}</span>`).join('');
+    const colType   = _dme.columnTypes[h] || 'unknown';
+    return `
+      <div class="map-card ${suggested ? 'mapped' : ''}">
+        <div class="mc-left">
+          <span class="mc-name">${_dmeEsc(h)}</span>
+          <span class="mc-type ${colType}">${colType}</span>
+          <div class="mc-samples">${samples || '<span class="no-s">empty</span>'}</div>
+        </div>
+        <span class="mc-arrow">→</span>
+        <div class="mc-right">
+          <select class="mc-sel" data-col="${_dmeEsc(h)}"
+                  onchange="dmeMapCol('${_dmeEsc(h)}',this.value)">
+            <option value="">🚫 Ignore</option>
+            ${Object.entries(_dmeTMFields).map(([f, m]) =>
+              `<option value="${f}" ${f === suggested ? 'selected' : ''}>${m.label}</option>`).join('')}
+          </select>
+          ${suggested ? `<div class="mc-ai">🤖 AI suggested</div>` : ''}
+        </div>
+      </div>`;
+  }).join('');
+  const warnEl = document.getElementById('udme-map-warn');
+  if (warnEl) _dmeCheckMappingRequired(warnEl);
+}
+
+window.dmeMapCol = function (col, field) {
+  _dme.columnMappings[col] = field;
+  if (field) {
+    const norm = col.toLowerCase().replace(/[_\-]/g, ' ').trim();
+    _dme.learnedMappings[norm] = field; _dmeSaveLearned();
+  }
+  const warnEl = document.getElementById('udme-map-warn');
+  if (warnEl) _dmeCheckMappingRequired(warnEl);
+};
+
+function _dmeCheckMappingRequired(el) {
+  const mapped = Object.values(_dme.columnMappings).filter(Boolean);
+  const ok = mapped.includes('studentName') || (mapped.includes('firstName') && mapped.includes('lastName'));
+  el.style.display = ok ? 'none' : 'block';
+}
+
+window.dmeConfirmMapping = function () {
+  document.querySelectorAll('.mc-sel').forEach(s => { _dme.columnMappings[s.dataset.col] = s.value; });
+  const mapped = Object.values(_dme.columnMappings).filter(Boolean);
+  const ok = mapped.includes('studentName') || (mapped.includes('firstName') && mapped.includes('lastName'));
+  if (!ok) { toast('⚠️ Map at least a Student Name column.', 'error'); return; }
+  _dmeBuildStudentCards(); _dmeGoto(4); _dmeRenderPreviewCards();
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  STEP 3 ▸ DATA ASSIGNMENT STUDIO
+// ═══════════════════════════════════════════════════════════════════════════════
+function _dmeRenderAssignmentStudio() {
+  const container = document.getElementById('udme-studio-body');
+  if (!container) return;
+  const cls     = (allClasses || []).find(c => c.id === _dme.targetClassId);
+  const headers = _dme.rawHeaders.filter(h => !['__sheet', '__rownum'].includes(h));
+  const attCols = headers.filter(h => _dme.columnTypes[h] === 'attendance');
+  const resCols = headers.filter(h => _dme.columnTypes[h] === 'results');
+  const feeCols = headers.filter(h => _dme.columnTypes[h] === 'fees');
+  document.getElementById('udme-studio-class-name').textContent = cls?.name || _dme.targetClassId;
+  const entries = Object.entries(_dme.studentMatches);
+  container.innerHTML = entries.length === 0
+    ? `<div class="udme-empty">⚠️ No names matched. Use the Bulk Admit button to add students first.</div>`
+    : entries.map(([importedName, match]) => {
+        const confClass    = match.confidence >= 25 ? 'high' : match.confidence >= 30 ? 'med' : 'low';
+        const studentOptions = [
+          `<option value="">— New Student —</option>`,
+          ..._dme.targetClassStudents.map(s =>
+            `<option value="${s.id}" ${s.id === match.studentId ? 'selected' : ''}>${_dmeEsc(s.name)}</option>`)
+        ].join('');
+        return `
+          <div class="studio-row" data-name="${_dmeEsc(importedName)}">
+            <div class="sr-match">
+              <div class="sr-imported">${_dmeEsc(importedName)}</div>
+              <div class="sr-arrow">→</div>
+              <select class="sr-student-sel udme-sel"
+                      onchange="dmeOverrideMatch('${_dmeEsc(importedName)}',this.value)">
+                ${studentOptions}
+              </select>
+              <span class="sr-conf ${confClass}">${match.confidence}%</span>
+            </div>
+            <div class="sr-zones">
+              ${attCols.length > 0 ? `<div class="sr-zone att-zone"><div class="sz-title">📅 Attendance</div><div class="sz-data">${_dmeFormatAttPreview(attCols, match.rowData)}</div></div>` : ''}
+              ${resCols.length > 0 ? `<div class="sr-zone res-zone"><div class="sz-title">📊 Results</div><div class="sz-data">${_dmeFormatResPreview(resCols, match.rowData)}</div></div>` : ''}
+              ${feeCols.length > 0 ? `<div class="sr-zone fee-zone"><div class="sz-title">💰 Fees</div><div class="sz-data">${_dmeFormatFeePreview(feeCols, match.rowData)}</div></div>` : ''}
+            </div>
+          </div>`;
+      }).join('');
+}
+
+function _dmeFormatAttPreview(cols, row) {
+  if (!row) return '<span class="sz-empty">No data</span>';
+  return cols.slice(0, 4).map(c => {
+    const v   = row[c] || '';
+    const cls = /^p$/i.test(v.trim()) ? 'att-p' : /^a$/i.test(v.trim()) ? 'att-a' : '';
+    return `<span class="att-dot ${cls}" title="${_dmeEsc(c)}">${v || '?'}</span>`;
+  }).join('') + (cols.length > 4 ? `<span class="sz-more">+${cols.length - 4}</span>` : '');
+}
+function _dmeFormatResPreview(cols, row) {
+  if (!row) return '<span class="sz-empty">No data</span>';
+  return cols.slice(0, 3).map(c =>
+    `<span class="res-dot">${_dmeEsc(c.slice(0, 3))}: <strong>${_dmeEsc(row[c] || '')}</strong></span>`).join('');
+}
+function _dmeFormatFeePreview(cols, row) {
+  if (!row) return '<span class="sz-empty">No data</span>';
+  return cols.slice(0, 2).map(c => `<span class="fee-dot">K${_dmeEsc(row[c] || '')}</span>`).join('');
+}
+
+window.dmeOverrideMatch = function (importedName, studentId) {
+  if (_dme.studentMatches[importedName]) {
+    const s = (allStudents || []).find(s => s.id === studentId);
+    Object.assign(_dme.studentMatches[importedName], {
+      studentId:   studentId || null,
+      studentName: s?.name || '',
+      overridden:  true,
+      confidence:  studentId ? 100 : 0,
+    });
+  }
+};
+window.dmeConfirmAssignment = function () {
+  const matched = Object.values(_dme.studentMatches).filter(m => m.studentId).length;
+  if (matched === 0) { toast('⚠️ No students matched. Check your data or admit students first.', 'error'); return; }
+  _dmeGoto(4); _dmeRenderPreviewCards();
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  EMPTY CLASS PANEL
+// ═══════════════════════════════════════════════════════════════════════════════
+function _dmeRenderEmptyClassPanel(reason = 'empty') {
+  const cls       = (allClasses || []).find(c => c.id === _dme.targetClassId);
+  const clsName   = cls?.name || _dme.targetClassId;
+  const isNoMatch = reason === 'no_match';
+  const studioBody = document.getElementById('udme-studio-body');
+  const clsNameEl  = document.getElementById('udme-studio-class-name');
+  if (clsNameEl) clsNameEl.textContent = clsName;
+  if (studioBody) {
+    studioBody.innerHTML = `
+      <div class="qa-empty-panel">
+        <div class="qa-ep-icon">${isNoMatch ? '🔍' : '🏫'}</div>
+        <div class="qa-ep-title">
+          ${isNoMatch
+            ? `No students in <em>${_dmeEsc(clsName)}</em> matched your data`
+            : `<em>${_dmeEsc(clsName)}</em> has no students yet`}
+        </div>
+        <div class="qa-ep-sub">
+          ${isNoMatch
+            ? `The imported file had student names but none matched existing students in this class. Use <strong>Bulk Admit</strong> to first add the students to this class, or manually match them below.`
+            : `Before importing data, this class needs students. Use <strong>Bulk Admit</strong> to select names directly from your imported file.`}
+        </div>
+        <div class="qa-ep-actions">
+          <button class="udme-btn primary" onclick="dmeGoBackToBulkAdmit()">⚡ Bulk Admit Students from File</button>
+          ${isNoMatch ? `<button class="udme-btn ghost" onclick="_dmeRunStudentMatcher();_dmeGoto(3);_dmeRenderAssignmentStudio()">🔗 Manual Match Anyway</button>` : ''}
+          <button class="udme-btn ghost" onclick="dmeBack()">← Go Back</button>
+        </div>
+        <div class="qa-ep-note">💡 <strong>Bulk Admit</strong> takes you back to the workspace to select name columns. Each row becomes one student.</div>
+      </div>`;
+  }
+  _dmeGoto(3);
+}
+
+window.dmeGoBackToBulkAdmit = function () {
+  _dmeGoto(1);
+  _dme.bulkAdmitMode         = true;
+  _dme.bulkAdmitSelectedCols = [];
+  const headers  = _dme.rawHeaders.filter(h => !['__sheet', '__rownum'].includes(h));
+  const detected = _dmeDetectNameColumns(headers);
+  if (detected.first)  _dme.bulkAdmitSelectedCols.push(detected.first);
+  if (detected.middle) _dme.bulkAdmitSelectedCols.push(detected.middle);
+  if (detected.last)   _dme.bulkAdmitSelectedCols.push(detected.last);
+  if (!_dme.bulkAdmitSelectedCols.length && detected.full) _dme.bulkAdmitSelectedCols.push(detected.full);
+  _dmeRenderWorkspace();
+  setTimeout(() => {
+    document.getElementById('udme-bulk-admit-panel')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 80);
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  STEP 4 ▸ PREVIEW
+// ═══════════════════════════════════════════════════════════════════════════════
+function _dmeBuildStudentCards() {
+  const selectedRows = [..._dme.selectedRowIdx].map(i => _dme.rawRows[i]);
+  _dme.parsedStudents = selectedRows.map((row, i) => {
+    const s = {
+      _rowIdx: i, _status: 'valid', _issues: [],
+      studentName: '', firstName: '', lastName: '', studentId: null,
+      gender: '', dob: '', guardianName: '', guardianPhone: '',
+      address: '', medical: '', classId: _dme.targetClassId, isDuplicate: false,
+    };
+    for (const [col, field] of Object.entries(_dme.columnMappings)) {
+      if (!field || ['__sheet', '__rownum'].includes(col)) continue;
+      const raw = String(row[col] ?? '').trim();
+      switch (field) {
+        case 'studentName': { s.studentName = raw; const p = raw.split(/\s+/); s.firstName = p[0] || ''; s.lastName = p.slice(1).join(' ') || ''; break; }
+        case 'firstName':    s.firstName = raw; break;
+        case 'lastName':     s.lastName  = raw; break;
+        case 'studentId':    s.studentId = raw || null; break;
+        case 'gender':       s.gender    = _dmeParseGender(raw); break;
+        case 'dob':          s.dob       = _dmeParseDate(raw); break;
+        case 'guardianName': s.guardianName  = raw; break;
+        case 'guardianPhone':s.guardianPhone = raw.replace(/[^\d+\s\-()]/g, ''); break;
+        case 'address':      s.address   = raw; break;
+        case 'medical':      s.medical   = raw; break;
+      }
+    }
+    if (!s.studentName && (s.firstName || s.lastName)) s.studentName = `${s.firstName} ${s.lastName}`.trim();
+    if (s.studentName && !s.firstName) { const p = s.studentName.split(/\s+/); s.firstName = p[0] || ''; s.lastName = p.slice(1).join(' ') || ''; }
+    if (!s.studentName) { s._issues.push('Name missing'); s._status = 'error'; }
+    if (!s.classId)     { s._issues.push('No class');    s._status = 'error'; }
+    if (s.guardianPhone && !/^\+?[\d\s\-()]{7,15}$/.test(s.guardianPhone)) {
+      s._issues.push('Phone format'); if (s._status !== 'error') s._status = 'warning';
+    }
+    if (s.studentId) {
+      const ex = (allStudents || []).find(e => e.studentId === s.studentId || e.id === s.studentId);
+      if (ex) { s.isDuplicate = true; s._existingId = ex.id; if (s._status === 'valid') s._status = 'warning'; }
+    } else if (s.studentName) {
+      const norm = s.studentName.toLowerCase().replace(/\s+/g, ' ');
+      const ex   = (allStudents || []).find(e => (e.name || '').toLowerCase().replace(/\s+/g, ' ') === norm && e.classId === s.classId);
+      if (ex) { s.isDuplicate = true; s._existingId = ex.id; if (s._status === 'valid') s._status = 'warning'; }
+    }
+    return s;
+  });
+}
+
+function _dmeRenderPreviewCards() {
+  if (_dme.dataMode !== 'students') { _dmeRenderDataImportSummary(); return; }
+  const container = document.getElementById('udme-preview-cards');
+  const summary   = document.getElementById('udme-preview-summary');
+  if (!container) return;
+  const total  = _dme.parsedStudents.length;
+  const valid  = _dme.parsedStudents.filter(s => s._status === 'valid').length;
+  const warns  = _dme.parsedStudents.filter(s => s._status === 'warning').length;
+  const errors = _dme.parsedStudents.filter(s => s._status === 'error').length;
+  const dups   = _dme.parsedStudents.filter(s => s.isDuplicate).length;
+  const cls    = (allClasses || []).find(c => c.id === _dme.targetClassId);
+  if (summary) summary.innerHTML = `
+    <div class="udme-chips-row">
+      <span class="udme-chip">📊 ${total} Total</span>
+      <span class="udme-chip green">✅ ${valid} Ready</span>
+      ${warns  > 0 ? `<span class="udme-chip amber">⚠️ ${warns} Warnings</span>` : ''}
+      ${errors > 0 ? `<span class="udme-chip red">❌ ${errors} Errors</span>` : ''}
+      ${dups   > 0 ? `<span class="udme-chip amber">🔄 ${dups} Duplicates</span>` : ''}
+      <span class="udme-chip blue">🏫 ${_dmeEsc(cls?.name || '')}</span>
+    </div>
+    ${dups > 0 ? `<div class="udme-dup-bar">🔄 Duplicate action:
+      <select id="udme-dup-action" class="udme-sel" style="width:auto">
+        <option value="skip">⏭️ Skip</option>
+        <option value="update">🔄 Update</option>
+        <option value="create">➕ New Record</option>
+      </select></div>` : ''}`;
+  container.innerHTML = _dme.parsedStudents.map((s, i) => {
+    const sc = s._status === 'error' ? 'card-err' : s._status === 'warning' ? 'card-warn' : 'card-ok';
+    return `
+      <div class="s-card ${sc}">
+        <div class="sc-head">
+          <span class="sc-av">${s.gender === 'Female' ? '👧' : '👦'}</span>
+          <input class="sc-name" type="text" value="${_dmeEsc(s.studentName)}"
+            onchange="dmeEditCard(${i},'studentName',this.value)" placeholder="Student Name">
+          <span class="sc-st">${s._status === 'error' ? '❌' : s._status === 'warning' ? '⚠️' : '✅'}</span>
+          ${s.isDuplicate ? '<span class="dup-tag">DUP</span>' : ''}
+        </div>
+        <div class="sc-fields">
+          <div class="sc-f"><label>⚤ Gender</label>
+            <select onchange="dmeEditCard(${i},'gender',this.value)">
+              ${['', 'Male', 'Female', 'Other'].map(g => `<option ${s.gender === g ? 'selected' : ''}>${g}</option>`).join('')}
+            </select></div>
+          <div class="sc-f"><label>🎂 DOB</label>
+            <input type="date" value="${_dmeEsc(s.dob || '')}" onchange="dmeEditCard(${i},'dob',this.value)"></div>
+          <div class="sc-f"><label>📞 Phone</label>
+            <input type="tel" value="${_dmeEsc(s.guardianPhone || '')}" onchange="dmeEditCard(${i},'guardianPhone',this.value)" placeholder="+260…"></div>
+          <div class="sc-f"><label>👪 Guardian</label>
+            <input type="text" value="${_dmeEsc(s.guardianName || '')}" onchange="dmeEditCard(${i},'guardianName',this.value)"></div>
+        </div>
+        ${s._issues.length > 0 ? `<div class="sc-issues">${s._issues.map(m => `<span>⚠️ ${_dmeEsc(m)}</span>`).join('')}</div>` : ''}
+      </div>`;
+  }).join('');
+}
+
+function _dmeRenderDataImportSummary() {
+  const container = document.getElementById('udme-preview-cards');
+  const summary   = document.getElementById('udme-preview-summary');
+  const matched   = Object.values(_dme.studentMatches).filter(m => m.studentId).length;
+  const total     = Object.keys(_dme.studentMatches).length;
+  const headers   = _dme.rawHeaders.filter(h => !['__sheet', '__rownum'].includes(h));
+  const attCols   = headers.filter(h => _dme.columnTypes[h] === 'attendance');
+  const resCols   = headers.filter(h => _dme.columnTypes[h] === 'results');
+  const feeCols   = headers.filter(h => _dme.columnTypes[h] === 'fees');
+  if (summary) summary.innerHTML = `
+    <div class="udme-chips-row">
+      <span class="udme-chip green">👤 ${matched}/${total} students matched</span>
+      ${attCols.length > 0 ? `<span class="udme-chip blue">📅 ${attCols.length} attendance cols</span>` : ''}
+      ${resCols.length > 0 ? `<span class="udme-chip blue">📊 ${resCols.length} result cols</span>` : ''}
+      ${feeCols.length > 0 ? `<span class="udme-chip blue">💰 ${feeCols.length} fee cols</span>` : ''}
+    </div>`;
+  if (container) container.innerHTML = `
+    <div class="data-summary-card">
+      <div class="ds-icon">📦</div>
+      <div class="ds-title">Data ready to import</div>
+      <div class="ds-rows">
+        ${attCols.length > 0 ? `<div class="ds-row">📅 Attendance: <strong>${_dme.selectedRowIdx.size * attCols.length}</strong> records → <code>schools/${schoolId}/attendance</code></div>` : ''}
+        ${resCols.length > 0 ? `<div class="ds-row">📊 Results: <strong>${resCols.length}</strong> subjects → <code>schools/${schoolId}/results</code></div>` : ''}
+        ${feeCols.length > 0 ? `<div class="ds-row">💰 Fees: <strong>${_dme.selectedRowIdx.size}</strong> students → <code>schools/${schoolId}/fees</code></div>` : ''}
+      </div>
+    </div>`;
+}
+
+window.dmeEditCard = function (idx, field, val) {
+  if (!_dme.parsedStudents[idx]) return;
+  _dme.parsedStudents[idx][field] = val;
+  if (field === 'studentName') {
+    const p = val.split(/\s+/);
+    _dme.parsedStudents[idx].firstName = p[0] || '';
+    _dme.parsedStudents[idx].lastName  = p.slice(1).join(' ') || '';
+  }
+};
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  STEP 5 ▸ BATCH IMPORT
+// ═══════════════════════════════════════════════════════════════════════════════
+window.dmeConfirmImport = async function () {
+  const dupAction = document.getElementById('udme-dup-action')?.value || 'skip';
+  if (_dme.dataMode === 'students') await _dmeImportStudents(dupAction);
+  else await _dmeImportDataRecords();
+};
+
+async function _dmeImportStudents(dupAction) {
+  const importable = _dme.parsedStudents.filter(s => s._status !== 'error' && s.studentName.trim() && s.classId);
+  if (!importable.length) { toast('⚠️ No valid students.', 'error'); return; }
+  const btn = document.getElementById('udme-import-btn');
+  if (btn) btn.disabled = true;
+  showLoad(`🚀 Importing ${importable.length} students…`);
+  const jobRef = doc(collection(db, 'schools', schoolId, 'importJobs'));
+  _dme.importJobId = jobRef.id;
+  try {
+    await setDoc(jobRef, { status: 'running', total: importable.length, inserted: 0, updated: 0, skipped: 0, failed: 0, fileName: _dme.fileName, classId: _dme.targetClassId, startedAt: new Date().toISOString(), schoolId });
+  } catch {}
+  let inserted = 0, updated = 0, skipped = 0, failed = 0;
+  try {
+    const BATCH = 400;
+    for (let bi = 0; bi < importable.length; bi += BATCH) {
+      const chunk = importable.slice(bi, bi + BATCH);
+      const batch = writeBatch(db);
+      for (const s of chunk) {
+        if (s.isDuplicate && dupAction === 'skip') { skipped++; continue; }
+        let sid = s.studentId;
+        if (!sid || dupAction === 'create') {
+          const num = await _dmeGetNextId();
+          const yr  = new Date().getFullYear();
+          const fn  = (s.firstName || s.studentName.split(' ')[0] || 'XX').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 2).padEnd(2, 'X');
+          sid = `TM-${yr}-${fn}${String(num).padStart(4, '0')}`;
+        }
+        const data = {
+          id: sid, studentId: sid,
+          name: s.studentName.trim(),
+          firstName: s.firstName || '', lastName: s.lastName || '',
+          gender: s.gender || '', classId: s.classId, dob: s.dob || '',
+          guardianName: s.guardianName || '', guardianPhone: s.guardianPhone || '',
+          address: s.address || '', medical: s.medical || '',
+          status: 'active', admittedAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString(), schoolId,
+        };
+        if (s.isDuplicate && dupAction === 'update' && s._existingId) {
+          await updateDoc(doc(db, 'schools', schoolId, 'students', s._existingId),
+            { ...data, id: s._existingId, studentId: s._existingId, admittedAt: undefined, updatedAt: new Date().toISOString() });
+          const ei = (allStudents || []).findIndex(e => e.id === s._existingId);
+          if (ei >= 0) allStudents[ei] = { ...allStudents[ei], ...data };
+          updated++; continue;
+        }
+        batch.set(doc(db, 'schools', schoolId, 'students', sid), data);
+        (allStudents || []).push({ ...data });
+        inserted++;
+      }
+      await batch.commit();
+      try { await updateDoc(jobRef, { inserted, updated, skipped, progress: bi + chunk.length }); } catch {}
+    }
+    await idbSet('students', 'all', allStudents).catch(() => {});
+    await updateDoc(jobRef, { status: 'complete', inserted, updated, skipped, failed, completedAt: new Date().toISOString() }).catch(() => {});
+    _dme.importReport = {
+      timestamp: new Date().toISOString(), fileName: _dme.fileName,
+      className: (allClasses || []).find(c => c.id === _dme.targetClassId)?.name || _dme.targetClassId,
+      mode: 'students', inserted, updated, skipped, failed, total: importable.length,
+    };
+    _dmeGoto(5); _dmeRenderReport();
+    if (typeof renderStudentsTable    === 'function') renderStudentsTable();
+    if (typeof loadDashboard          === 'function') loadDashboard();
+    if (typeof populateClassDropdowns === 'function') populateClassDropdowns();
+  } catch (e) {
+    console.error('[DME v6.0]', e); toast('❌ Import failed: ' + e.message, 'error');
+    await updateDoc(jobRef, { status: 'failed', error: e.message }).catch(() => {});
+  } finally { hideLoad(); if (btn) btn.disabled = false; }
+}
+
+async function _dmeImportDataRecords() {
+  const btn = document.getElementById('udme-import-btn');
+  if (btn) btn.disabled = true;
+  showLoad('📤 Writing records to Firestore…');
+  const headers = _dme.rawHeaders.filter(h => !['__sheet', '__rownum'].includes(h));
+  const attCols = headers.filter(h => _dme.columnTypes[h] === 'attendance');
+  const resCols = headers.filter(h => _dme.columnTypes[h] === 'results');
+  const feeCols = headers.filter(h => _dme.columnTypes[h] === 'fees');
+  let attWritten = 0, resWritten = 0, feeWritten = 0, failed = 0;
+  try {
+    const batch = writeBatch(db); let batchCount = 0;
+    const BLIMIT = 450;
+    const tryCommit = async () => { if (batchCount >= BLIMIT) { await batch.commit(); batchCount = 0; } };
+    for (const [importedName, match] of Object.entries(_dme.studentMatches)) {
+      if (!match.studentId) continue;
+      const row = match.rowData;
+      for (const col of attCols) {
+        const rawVal = String(row[col] || '').trim();
+        if (!rawVal) continue;
+        const isPresent = /^p$/i.test(rawVal);
+        const isAbsent  = /^a$/i.test(rawVal);
+        if (!isPresent && !isAbsent) continue;
+        const parsedDate = _dmeParseColDate(col) || new Date().toISOString().split('T')[0];
+        const dateObj    = new Date(parsedDate);
+        const recId      = `${parsedDate}-${_dme.targetClassId}-${match.studentId}`;
+        batch.set(doc(db, 'schools', schoolId, 'attendance', recId), {
+          date: parsedDate, present: isPresent, studentId: match.studentId,
+          classId: _dme.targetClassId, schoolId,
+          term: String(_dmeGuessTerm(dateObj)), week: String(_dmeGetWeekOfTerm(dateObj)),
+          recordId: recId, syncedAt: Date.now(), updatedAt: new Date().toISOString(),
+          owner: currentUser?.uid || '', teacherId: currentUser?.uid || '',
+          type: 'individual', presentCount: isPresent ? 1 : 0, absentCount: isAbsent ? 1 : 0,
+          presentStudentIds: isPresent ? [match.studentId] : [],
+          absentStudentIds:  isAbsent  ? [match.studentId] : [],
+          totalStudents: _dme.targetClassStudents.length || 1, schoolName: schoolName || '',
+        }, { merge: true });
+        attWritten++; batchCount++; await tryCommit();
+      }
+      if (resCols.length > 0) {
+        const subjectGroups = {};
+        resCols.forEach(col => {
+          const subject = _dmeGuessSubject(col);
+          if (!subjectGroups[subject]) subjectGroups[subject] = {};
+          const score = Number(String(row[col] || '').trim());
+          if (!isNaN(score)) subjectGroups[subject][match.studentId] = score;
+        });
+        for (const [subject, scores] of Object.entries(subjectGroups)) {
+          if (!Object.keys(scores).length) continue;
+          const testName = `Imported_${new Date().toLocaleDateString('en-GB').replace(/\//g, '')}`;
+          const recId    = `${_dme.targetClassId}-${subject}-${testName}-${Date.now()}`;
+          batch.set(doc(db, 'schools', schoolId, 'results', recId), {
+            id: recId, classId: _dme.targetClassId, subject, testName, category: 'Assignment',
+            level: 'Senior Secondary', date: new Date().toISOString().split('T')[0],
+            scores, schoolId, owner: currentUser?.uid || '', teacherId: currentUser?.uid || '',
+            syncedAt: Date.now(), createdAt: new Date().toISOString(), updatedAt: new Date().toISOString(),
+          }, { merge: true });
+          resWritten++; batchCount++; await tryCommit();
+        }
+      }
+      if (feeCols.length > 0) {
+        const feeCol = feeCols[0];
+        const rawAmt = String(row[feeCol] || '').replace(/[^0-9.]/g, '');
+        const amount = Number(rawAmt);
+        if (isNaN(amount) || amount === 0) continue;
+        const feeConfig = (await getDoc(doc(db, 'schools', schoolId, 'feesConfig', _dme.targetClassId))).data();
+        const totalAmt  = feeConfig?.totalAmount || 400;
+        const status    = amount >= totalAmt ? 'fullypaid' : amount > totalAmt ? 'overpaid' : 'outstanding';
+        batch.set(doc(db, 'schools', schoolId, 'fees', match.studentId), {
+          id: match.studentId, classId: _dme.targetClassId, originalClassId: _dme.targetClassId,
+          schoolId, owner: currentUser?.uid || '', teacherId: currentUser?.uid || '',
+          syncedAt: Date.now(), updatedAt: new Date().toISOString(),
+          payments: [{ amount, status, date: new Date().toISOString() }],
+        }, { merge: true });
+        feeWritten++; batchCount++; await tryCommit();
+      }
+    }
+    if (batchCount > 0) await batch.commit();
+    _dme.importReport = {
+      timestamp: new Date().toISOString(), fileName: _dme.fileName,
+      className: (allClasses || []).find(c => c.id === _dme.targetClassId)?.name || _dme.targetClassId,
+      mode: _dme.dataMode, attWritten, resWritten, feeWritten, failed,
+    };
+    _dmeGoto(5); _dmeRenderReport();
+  } catch (e) {
+    console.error('[DME v6.0 data]', e); toast('❌ Failed: ' + e.message, 'error');
+  } finally { hideLoad(); if (btn) btn.disabled = false; }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  REPORT
+// ═══════════════════════════════════════════════════════════════════════════════
+function _dmeRenderReport() {
+  const el = document.getElementById('udme-report-body');
+  if (!el || !_dme.importReport) return;
+  const r = _dme.importReport;
+  if (r.mode === 'students') {
+    el.innerHTML = `
+      <div class="rpt-hero">🎉</div>
+      <div class="rpt-title">Migration Complete!</div>
+      <div class="rpt-sub">${_dmeEsc(r.fileName)} → <strong>${_dmeEsc(r.className)}</strong></div>
+      <div class="rpt-grid">
+        <div class="rg-stat green"><div class="rg-n">${r.inserted}</div><div class="rg-l">🆕 Imported</div></div>
+        <div class="rg-stat blue"><div class="rg-n">${r.updated}</div><div class="rg-l">🔄 Updated</div></div>
+        <div class="rg-stat amber"><div class="rg-n">${r.skipped}</div><div class="rg-l">⏭️ Skipped</div></div>
+        <div class="rg-stat ${r.failed > 0 ? 'red' : 'green'}"><div class="rg-n">${r.failed}</div><div class="rg-l">❌ Errors</div></div>
+      </div>
+      <div class="rpt-ts">⏱️ ${new Date(r.timestamp).toLocaleString()}</div>`;
+  } else {
+    el.innerHTML = `
+      <div class="rpt-hero">📦</div>
+      <div class="rpt-title">Data Records Saved!</div>
+      <div class="rpt-sub">${_dmeEsc(r.fileName)} → <strong>${_dmeEsc(r.className)}</strong></div>
+      <div class="rpt-grid">
+        ${r.attWritten > 0 ? `<div class="rg-stat blue"><div class="rg-n">${r.attWritten}</div><div class="rg-l">📅 Attendance</div></div>` : ''}
+        ${r.resWritten > 0 ? `<div class="rg-stat green"><div class="rg-n">${r.resWritten}</div><div class="rg-l">📊 Results</div></div>` : ''}
+        ${r.feeWritten > 0 ? `<div class="rg-stat amber"><div class="rg-n">${r.feeWritten}</div><div class="rg-l">💰 Fees</div></div>` : ''}
+        <div class="rg-stat ${r.failed > 0 ? 'red' : 'green'}"><div class="rg-n">${r.failed}</div><div class="rg-l">❌ Errors</div></div>
+      </div>
+      <div class="rpt-ts">⏱️ ${new Date(r.timestamp).toLocaleString()}</div>`;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════════════════════════════════════════════════
+function _dmeGoto(n) {
+  _dme.currentStep = n;
+  const steps = ['udme-step-upload', 'udme-step-workspace', 'udme-step-map',
+                  'udme-step-studio', 'udme-step-preview', 'udme-step-report'];
+  steps.forEach((id, i) => {
+    const el = document.getElementById(id);
+    if (el) el.style.display = i === n ? 'block' : 'none';
+  });
+  document.querySelectorAll('.udme-pill').forEach((p, i) => {
+    p.classList.toggle('active', i === n);
+    p.classList.toggle('done',   i < n);
+  });
+  document.querySelectorAll('.udme-sep').forEach((s, i) => s.classList.toggle('filled', i < n));
+  if (typeof window._dmeFooterHook === 'function') window._dmeFooterHook(n);
+  if (n === 1) setTimeout(_dmeRenderWorkspace, 0);
+}
+
+window.dmeBack = function () {
+  if (_dme.bulkAdmitMode) {
+    _dme.bulkAdmitMode = false; _dme.bulkAdmitSelectedCols = [];
+    _dmeRenderWorkspace(); return;
+  }
+  if (_dme.currentStep > 0) _dmeGoto(_dme.currentStep - 1);
+};
+window.closeDMEModal = function () { closeModal('modal-udme'); _dmeReset(); };
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  CSS — Sheet tabs + natural scroll table wrapper
+//  Inject once into document head
+// ═══════════════════════════════════════════════════════════════════════════════
+(function _dmeInjectStyles() {
+  if (document.getElementById('dme-v6-styles')) return;
+  const style = document.createElement('style');
+  style.id = 'dme-v6-styles';
+  style.textContent = `
+    /* ── Sheet / Page Tabs ─────────────────────────────────────── */
+    .udme-sheet-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      padding: 8px 12px 0;
+      background: rgba(255,255,255,0.03);
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .udme-sheet-tab {
+      padding: 5px 12px;
+      border-radius: 8px 8px 0 0;
+      border: 1px solid rgba(255,255,255,0.12);
+      border-bottom: none;
+      background: rgba(255,255,255,0.05);
+      color: rgba(255,255,255,0.6);
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+    }
+    .udme-sheet-tab:hover {
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.9);
+    }
+    .udme-sheet-tab.active {
+      background: rgba(99,102,241,0.2);
+      border-color: rgba(99,102,241,0.5);
+      color: #a5b4fc;
+      font-weight: 600;
+    }
+    .udme-tab-count {
+      background: rgba(255,255,255,0.12);
+      border-radius: 10px;
+      padding: 1px 6px;
+      font-size: 10px;
+      font-weight: 600;
+    }
+
+    /* ── Natural Scroll Table Wrapper ──────────────────────────── */
+    .udme-table-scroll {
+      width: 100%;
+      overflow-x: auto;
+      overflow-y: auto;
+      max-height: 55vh;
+      /* Use the browser's native momentum scrolling on iOS */
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+      border-radius: 0 0 10px 10px;
+    }
+    .udme-table {
+      width: max-content;
+      min-width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .udme-table thead {
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    .udme-table thead tr th {
+      background: #1e1f2e;
+      border-bottom: 2px solid rgba(99,102,241,0.3);
+      padding: 10px 12px;
+      text-align: left;
+      white-space: nowrap;
+      font-size: 12px;
+      font-weight: 600;
+      color: rgba(255,255,255,0.7);
+    }
+    .udme-table tbody tr {
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+      transition: background 0.1s;
+    }
+    .udme-table tbody tr:hover {
+      background: rgba(255,255,255,0.04);
+    }
+    .udme-table tbody tr.sel-row {
+      background: rgba(99,102,241,0.12);
+    }
+    .udme-table tbody tr.bulk-sel-row {
+      background: rgba(245,158,11,0.1);
+    }
+    .udme-td {
+      padding: 8px 12px;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      color: rgba(255,255,255,0.85);
+      vertical-align: middle;
+    }
+    .udme-td[contenteditable="true"]:focus {
+      outline: 1px solid rgba(99,102,241,0.6);
+      background: rgba(99,102,241,0.08);
+      border-radius: 3px;
+    }
+
+    /* purple chip for sheet count */
+    .udme-chip.purple {
+      background: rgba(139,92,246,0.2);
+      border-color: rgba(139,92,246,0.4);
+      color: #c4b5fd;
+    }
+  `;
+  document.head.appendChild(style);
+})();
+
+// ═══════════════════════════════════════════════════════════════════════════════
+//  HELPERS
+// ═══════════════════════════════════════════════════════════════════════════════
+function _dmeDetectNameColumns(headers) {
+  const lc = headers.map(h => ({ original: h, clean: String(h).toLowerCase().replace(/[_\-\s]+/g, ' ').trim() }));
+  return {
+    first:  lc.find(h => /^(first\s?name|firstname|given\s?name|fname|forename|name\s?1)$/.test(h.clean))?.original,
+    last:   lc.find(h => /^(last\s?name|lastname|surname|family\s?name|lname|name\s?2)$/.test(h.clean))?.original,
+    middle: lc.find(h => /^(middle\s?name|other\s?name|mname)$/.test(h.clean))?.original,
+    full:   lc.find(h => /^(name|student\s?name|full\s?name|learner\s?name|pupil\s?name|candidate\s?name)$/.test(h.clean))?.original,
+  };
+}
+
+function _dmeParseColDate(col) {
+  const s = col.trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  const months = { jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12 };
+  const m = s.match(/(\d{1,2})[\-\/\s]([a-z]{3})/i);
+  if (m) { const mon = months[m[2].toLowerCase()]; if (mon) return `${new Date().getFullYear()}-${String(mon).padStart(2,'0')}-${m[1].padStart(2,'0')}`; }
+  const d = new Date(s); if (!isNaN(d)) return d.toISOString().split('T')[0];
+  return null;
+}
+function _dmeGetWeekOfTerm(date) {
+  const start = new Date(date.getFullYear(), 0, 1);
+  return Math.ceil(((date - start) / 86400000 + start.getDay() + 1) / 7);
+}
+function _dmeGuessTerm(date) {
+  const m = date.getMonth() + 1;
+  return m <= 4 ? 1 : m <= 8 ? 2 : 3;
+}
+function _dmeGuessSubject(col) {
+  const subjects = ['Biology','Chemistry','Physics','Mathematics','English','Geography',
+    'History','Civic','Computer','French','Art','Music','Physical','Science'];
+  const low = col.toLowerCase();
+  return subjects.find(s => low.includes(s.toLowerCase())) || col;
+}
+function _dmeParseGender(raw) {
+  if (!raw) return '';
+  const s = raw.trim().toLowerCase();
+  if (['m','male','boy','b'].includes(s))    return 'Male';
+  if (['f','female','girl','g'].includes(s)) return 'Female';
+  return raw.trim();
+}
+function _dmeParseDate(raw) {
+  if (!raw) return '';
+  if (typeof raw === 'number') return new Date((raw - 25569) * 86400 * 1000).toISOString().split('T')[0];
+  const s = String(raw).trim();
+  if (/^\d{4}-\d{2}-\d{2}$/.test(s)) return s;
+  const m = s.match(/^(\d{1,2})[\/\-\.](\d{1,2})[\/\-\.](\d{2,4})$/);
+  if (m) { const y = m[3].length === 2 ? '20' + m[3] : m[3]; return `${y}-${m[2].padStart(2,'0')}-${m[1].padStart(2,'0')}`; }
+  const d = new Date(s); if (!isNaN(d)) return d.toISOString().split('T')[0];
+  return s;
+}
+function _dmeJW(s1, s2) {
+  if (s1 === s2) return 1;
+  const l1 = s1.length, l2 = s2.length;
+  const md = Math.max(Math.floor(Math.max(l1, l2) / 2) - 1, 0);
+  const m1 = new Array(l1).fill(false), m2 = new Array(l2).fill(false);
+  let mt = 0, tr = 0;
+  for (let i = 0; i < l1; i++) {
+    const st = Math.max(0, i - md), en = Math.min(i + md + 1, l2);
+    for (let j = st; j < en; j++) {
+      if (m2[j] || s1[i] !== s2[j]) continue;
+      m1[i] = m2[j] = true; mt++; break;
+    }
+  }
+  if (!mt) return 0;
+  let k = 0;
+  for (let i = 0; i < l1; i++) {
+    if (!m1[i]) continue;
+    while (!m2[k]) k++;
+    if (s1[i] !== s2[k]) tr++;
+    k++;
+  }
+  const jaro = (mt / l1 + mt / l2 + (mt - tr / 2) / mt) / 3;
+  let p = 0;
+  for (let i = 0; i < Math.min(4, Math.min(l1, l2)); i++) { if (s1[i] === s2[i]) p++; else break; }
+  return jaro + p * .1 * (1 - jaro);
+}
+function _dmeEsc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+async function _dmeGetNextId() {
+  try {
+    const ref = doc(db, 'schools', schoolId, 'meta', 'admissionCounter');
+    let num = 1;
+    await runTransaction(db, async tx => {
+      const snap = await tx.get(ref);
+      num = (snap.exists() ? snap.data().admissionCounter || 0 : 0) + 1;
+      tx.set(ref, { admissionCounter: num }, { merge: true });
+    });
+    return num;
+  } catch { return Date.now() % 100000; }
+}
+function _dmeLoadLearned() {
+  try { const r = localStorage.getItem(`dme_v6_${schoolId || 'x'}`); _dme.learnedMappings = r ? JSON.parse(r) : {}; }
+  catch { _dme.learnedMappings = {}; }
+}
+function _dmeSaveLearned() {
+  try { localStorage.setItem(`dme_v6_${schoolId || 'x'}`, JSON.stringify(_dme.learnedMappings)); }
+  catch {}
+}
+window.dmeClearLearned = function () {
+  localStorage.removeItem(`dme_v6_${schoolId || 'x'}`); _dme.learnedMappings = {};
+  toast('🧹 Learned mappings cleared.', 'info');
+};
+window.initDMEDropZone = function () {
+  const zone = document.getElementById('udme-drop-zone');
+  if (!zone) return;
+  ['dragenter','dragover'].forEach(e => zone.addEventListener(e, ev => { ev.preventDefault(); zone.classList.add('dz-over'); }));
+  ['dragleave','drop'].forEach(e   => zone.addEventListener(e, ev => { ev.preventDefault(); zone.classList.remove('dz-over'); }));
+  zone.addEventListener('drop', ev => { const f = ev.dataTransfer?.files?.[0]; if (f) dmeHandleFile(f); });
+};
+window.addEventListener('load', () => { if (typeof initDMEDropZone === 'function') initDMEDropZone(); });
+
+console.log('[TeachMate DME v6.0] ✅ Fixed matching · Natural scroll · Multi-sheet/page support loaded');
+
+
 
 </script>
+
+<style>
+/* ════════════════════════════════════════════════════════════════
+   TEACHMATE DME v5.2 — PREMIUM CSS
+   Professional dark theme · Bulk Admit Mode · Enhanced colours
+════════════════════════════════════════════════════════════════ */
+
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900;1,9..40,400&family=DM+Mono:wght@400;500&display=swap');
+
+/* ════════════════════════════════════════════════════════════════
+   DESIGN TOKENS — upgraded palette
+════════════════════════════════════════════════════════════════ */
+:root {
+  /* Backgrounds */
+  --c-bg:        #060b18;
+  --c-surface:   #0d1526;
+  --c-surface2:  #152035;
+  --c-surface3:  #1c2a44;
+  --c-surface4:  #243350;
+
+  /* Borders */
+  --c-border:    rgba(255,255,255,0.09);
+  --c-border2:   rgba(255,255,255,0.05);
+  --c-border3:   rgba(255,255,255,0.14);
+
+  /* Text */
+  --c-text:      #eef2ff;
+  --c-text2:     #94a8cc;
+  --c-text3:     #546887;
+  --c-text4:     #3a4f6e;
+
+  /* Brand — slightly richer blue */
+  --c-blue:      #4f8ef7;
+  --c-blue-d:    #3b6fd8;
+  --c-blue-glow: rgba(79,142,247,0.20);
+  --c-blue-glow2:rgba(79,142,247,0.10);
+
+  /* Semantic */
+  --c-green:     #23d160;
+  --c-green-d:   #16a34a;
+  --c-green-dim: rgba(35,209,96,0.12);
+  --c-green-dim2:rgba(35,209,96,0.06);
+
+  --c-amber:     #f5a623;
+  --c-amber-dim: rgba(245,166,35,0.13);
+  --c-amber-dim2:rgba(245,166,35,0.07);
+
+  --c-red:       #f04747;
+  --c-red-dim:   rgba(240,71,71,0.13);
+
+  --c-violet:    #9f7aea;
+  --c-violet-dim:rgba(159,122,234,0.13);
+
+  --c-teal:      #2dd4bf;
+  --c-teal-dim:  rgba(45,212,191,0.12);
+
+  /* Bulk Admit accent — vivid amber/gold */
+  --c-ba:        #f5a623;
+  --c-ba-dim:    rgba(245,166,35,0.15);
+  --c-ba-glow:   rgba(245,166,35,0.25);
+  --c-ba-border: rgba(245,166,35,0.35);
+
+  /* Fonts */
+  --font:      'DM Sans', system-ui, sans-serif;
+  --font-mono: 'DM Mono', 'Courier New', monospace;
+
+  /* Geometry */
+  --radius-xs: 4px;
+  --radius-sm: 7px;
+  --radius:    11px;
+  --radius-lg: 16px;
+  --radius-xl: 22px;
+
+  /* Touch */
+  --min-touch: 48px;
+
+  /* Shadows */
+  --shadow-sm:  0 2px 8px rgba(0,0,0,0.35);
+  --shadow:     0 4px 20px rgba(0,0,0,0.45);
+  --shadow-lg:  0 8px 40px rgba(0,0,0,0.55);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MODAL SHELL
+════════════════════════════════════════════════════════════════ */
+#modal-udme {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 9200;
+  background: var(--c-bg);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+}
+#modal-udme.open {
+  display: flex;
+  animation: dmeIn .2s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes dmeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.udme-shell {
+  width: 100vw; height: 100dvh;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  background:
+    radial-gradient(ellipse 60% 40% at 15% 0%, rgba(79,142,247,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 30% at 85% 100%, rgba(159,122,234,0.06) 0%, transparent 55%),
+    var(--c-bg);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   HEADER
+════════════════════════════════════════════════════════════════ */
+.udme-hdr {
+  background: linear-gradient(135deg, #07102a 0%, #0e1f42 55%, #091426 100%);
+  border-bottom: 1px solid rgba(79,142,247,0.18);
+  padding: 0 20px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0; height: 64px; min-height: 64px;
+  position: relative;
+  box-shadow:
+    0 1px 0 0 rgba(79,142,247,0.25),
+    0 6px 30px rgba(0,0,0,0.5);
+}
+.udme-hdr::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, var(--c-blue) 0%, var(--c-violet) 45%, var(--c-teal) 100%);
+  opacity: .9;
+}
+.udme-hdr-left { display: flex; align-items: center; gap: 13px; }
+.udme-hdr-icon {
+  width: 42px; height: 42px; border-radius: var(--radius);
+  background: linear-gradient(135deg, var(--c-blue), var(--c-violet));
+  display: flex; align-items: center; justify-content: center;
+  font-size: 20px; flex-shrink: 0;
+  box-shadow: 0 0 20px var(--c-blue-glow), 0 0 40px rgba(79,142,247,0.1);
+}
+.udme-hdr-title {
+  color: var(--c-text); font-size: 18px; font-weight: 800;
+  letter-spacing: -.4px; line-height: 1.1;
+}
+.udme-hdr-sub { color: var(--c-text3); font-size: 12px; margin-top: 2px; font-weight: 500; }
+.udme-hdr-close {
+  background: rgba(255,255,255,0.05);
+  border: 1.5px solid rgba(255,255,255,0.10);
+  color: var(--c-text2);
+  width: var(--min-touch); height: var(--min-touch);
+  border-radius: 50%; font-size: 17px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s; flex-shrink: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+.udme-hdr-close:hover { background: var(--c-red); border-color: var(--c-red); color: #fff; }
+
+/* ════════════════════════════════════════════════════════════════
+   STEPPER
+════════════════════════════════════════════════════════════════ */
+.udme-stepper {
+  display: flex; align-items: center; padding: 0 16px;
+  background: var(--c-surface); border-bottom: 1px solid var(--c-border);
+  overflow-x: auto; flex-shrink: 0; height: 52px; min-height: 52px;
+  -webkit-overflow-scrolling: touch; scrollbar-width: none; gap: 3px;
+}
+.udme-stepper::-webkit-scrollbar { display: none; }
+.udme-pill {
+  display: flex; align-items: center; gap: 5px;
+  padding: 6px 13px; border-radius: 20px;
+  font-size: 12px; font-weight: 700; color: var(--c-text4);
+  white-space: nowrap; flex-shrink: 0; transition: all .2s;
+  min-height: 34px; font-family: var(--font); cursor: default;
+  border: 1px solid transparent;
+}
+.udme-pill.active {
+  background: linear-gradient(135deg, var(--c-blue), var(--c-blue-d));
+  color: #fff; border-color: rgba(255,255,255,0.12);
+  box-shadow: 0 0 18px var(--c-blue-glow), 0 2px 8px rgba(0,0,0,0.3);
+}
+.udme-pill.done {
+  background: var(--c-green-dim); color: var(--c-green);
+  border-color: rgba(35,209,96,0.2);
+}
+.udme-sep {
+  width: 22px; min-width: 22px; height: 2px;
+  background: var(--c-border); flex-shrink: 0; border-radius: 2px; transition: background .3s;
+}
+.udme-sep.filled { background: linear-gradient(90deg, var(--c-green), rgba(35,209,96,0.4)); }
+
+/* ════════════════════════════════════════════════════════════════
+   BODY
+════════════════════════════════════════════════════════════════ */
+.udme-body {
+  flex: 1; overflow-y: auto; overflow-x: hidden; min-height: 0;
+  padding: 20px; background: transparent;
+  -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+  scrollbar-width: thin; scrollbar-color: var(--c-surface3) transparent;
+}
+.udme-body::-webkit-scrollbar { width: 5px; }
+.udme-body::-webkit-scrollbar-track { background: transparent; }
+.udme-body::-webkit-scrollbar-thumb { background: var(--c-surface3); border-radius: 3px; }
+
+.udme-step-title {
+  font-size: 22px; font-weight: 900; color: var(--c-text);
+  margin-bottom: 5px; letter-spacing: -.5px; line-height: 1.2;
+}
+.udme-step-sub {
+  font-size: 14px; color: var(--c-text2); margin-bottom: 22px;
+  line-height: 1.65; max-width: 640px;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   STEP 0 — UPLOAD
+════════════════════════════════════════════════════════════════ */
+#udme-drop-zone {
+  border: 2px dashed rgba(79,142,247,0.30);
+  border-radius: var(--radius-xl); padding: 60px 28px;
+  text-align: center; cursor: pointer;
+  background: var(--c-surface);
+  transition: all .22s cubic-bezier(.16,1,.3,1);
+  margin-bottom: 18px;
+  -webkit-tap-highlight-color: transparent;
+  position: relative; overflow: hidden;
+}
+#udme-drop-zone::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(circle at 50% 40%, rgba(79,142,247,0.12), transparent 65%);
+  opacity: 0; transition: opacity .3s; pointer-events: none;
+}
+#udme-drop-zone:hover::after, #udme-drop-zone.dz-over::after { opacity: 1; }
+#udme-drop-zone:hover, #udme-drop-zone.dz-over {
+  border-color: var(--c-blue);
+  background: var(--c-surface2);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow), 0 0 40px var(--c-blue-glow);
+}
+.dz-icon   { font-size: 54px; margin-bottom: 16px; position: relative; display: block; }
+.dz-title  { font-size: 19px; font-weight: 800; color: var(--c-text); margin-bottom: 8px; position: relative; }
+.dz-sub    { font-size: 13px; color: var(--c-text2); line-height: 1.75; position: relative; }
+.dz-types  {
+  display: flex; gap: 6px; justify-content: center;
+  flex-wrap: wrap; margin-top: 18px; position: relative;
+}
+.dz-badge {
+  background: var(--c-surface3); border: 1px solid var(--c-border3);
+  border-radius: var(--radius-sm); padding: 4px 10px;
+  font-size: 10px; font-weight: 700; color: var(--c-text2);
+  font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .06em;
+}
+.dz-security { font-size: 12px; color: var(--c-text3); text-align: center; padding: 8px 0; margin-top: 4px; }
+
+/* ════════════════════════════════════════════════════════════════
+   CHIPS
+════════════════════════════════════════════════════════════════ */
+.udme-chips-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.udme-chip {
+  background: var(--c-surface2); border: 1px solid var(--c-border);
+  border-radius: 20px; padding: 4px 12px;
+  font-size: 12px; font-weight: 700; color: var(--c-text2); white-space: nowrap;
+}
+.udme-chip.green  { background: var(--c-green-dim);  border-color: rgba(35,209,96,0.25);  color: #4ade80; }
+.udme-chip.amber  { background: var(--c-amber-dim);  border-color: rgba(245,166,35,0.28); color: #fbbf24; }
+.udme-chip.red    { background: var(--c-red-dim);    border-color: rgba(240,71,71,0.28);  color: #f87171; }
+.udme-chip.blue   { background: var(--c-blue-glow2); border-color: rgba(79,142,247,0.28); color: #7db4fb; }
+
+/* ════════════════════════════════════════════════════════════════
+   STEP 1 — WORKSPACE
+════════════════════════════════════════════════════════════════ */
+.ws-toolbar {
+  display: flex; gap: 8px; align-items: center;
+  flex-wrap: wrap; margin-bottom: 10px;
+}
+.ws-search {
+  flex: 1; min-width: 160px; padding: 10px 14px;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--radius); font-size: 14px; font-family: var(--font);
+  background: var(--c-surface); color: var(--c-text);
+  transition: border-color .15s, box-shadow .15s; min-height: var(--min-touch);
+  outline: none;
+}
+.ws-search::placeholder { color: var(--c-text3); }
+.ws-search:focus { border-color: var(--c-blue); box-shadow: 0 0 0 3px var(--c-blue-glow2); }
+#udme-ws-info { margin-bottom: 10px; }
+
+/* Column hints */
+#udme-col-hints {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;
+  padding: 10px 14px; background: var(--c-surface);
+  border: 1px solid var(--c-border); border-radius: var(--radius); font-size: 12px;
+}
+.udme-hint-group { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+.udme-hint-label {
+  font-weight: 800; padding: 2px 8px;
+  border-radius: var(--radius-sm); font-size: 11px;
+}
+.udme-hint-label.student    { background: var(--c-blue-glow);  color: #7db4fb; }
+.udme-hint-label.attendance { background: var(--c-green-dim);  color: #4ade80; }
+.udme-hint-label.results    { background: var(--c-amber-dim);  color: #fbbf24; }
+.udme-hint-label.fees       { background: var(--c-violet-dim); color: #c084fc; }
+.udme-hint-label.unknown    { background: var(--c-surface3);   color: var(--c-text3); }
+.udme-hint-col {
+  background: var(--c-surface2); border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm); padding: 2px 7px; font-size: 11px; color: var(--c-text2);
+}
+.udme-hint-more { font-size: 11px; color: var(--c-text3); }
+
+/* Table wrap */
+#udme-table-wrap {
+  border: 1px solid var(--c-border); border-radius: var(--radius-lg);
+  overflow: hidden; margin-bottom: 12px; width: 100%;
+  box-shadow: var(--shadow);
+}
+.udme-vscroll-outer {
+  overflow: auto; -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin; scrollbar-color: var(--c-surface3) transparent;
+  /* Smooth momentum scrolling on iOS */
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+}
+.udme-vscroll-outer::-webkit-scrollbar { height: 5px; width: 5px; }
+.udme-vscroll-outer::-webkit-scrollbar-track { background: transparent; }
+.udme-vscroll-outer::-webkit-scrollbar-thumb { background: var(--c-surface3); border-radius: 3px; }
+
+.udme-table {
+  width: 100%; border-collapse: collapse;
+  font-size: 13px; min-width: 480px; font-family: var(--font);
+}
+.udme-table thead { position: sticky; top: 0; z-index: 4; }
+
+/* — Normal table headers */
+.udme-th-fix {
+  background: #080f22;
+  color: var(--c-text3); padding: 11px 12px;
+  font-size: 11px; font-weight: 800; text-align: center;
+  white-space: nowrap; width: 42px;
+  border-bottom: 2px solid rgba(79,142,247,0.15);
+}
+.udme-th-sort {
+  background: #080f22; color: var(--c-text);
+  padding: 11px 14px; font-size: 12px; font-weight: 700;
+  white-space: nowrap; cursor: pointer; user-select: none;
+  letter-spacing: .03em;
+  border-bottom: 2px solid rgba(79,142,247,0.15);
+  transition: background .12s, color .12s;
+}
+.udme-th-sort:hover { background: var(--c-surface2); color: #fff; }
+.sort-i { opacity: .4; font-size: 10px; margin-left: 4px; }
+
+/* — Bulk Admit mode: column headers become clickable selectors */
+.udme-table-bulk .udme-th-sort {
+  cursor: pointer;
+  transition: all .15s;
+}
+.udme-table-bulk .udme-th-sort:hover {
+  background: var(--c-ba-dim);
+  color: var(--c-ba);
+}
+.ba-th-selected {
+  background: rgba(245,166,35,0.14) !important;
+  color: var(--c-ba) !important;
+  border-bottom-color: var(--c-ba) !important;
+  box-shadow: inset 0 -2px 0 var(--c-ba);
+}
+.ba-th-order {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: var(--c-ba); color: #000;
+  font-size: 9px; font-weight: 900; margin-right: 4px; flex-shrink: 0;
+}
+.ba-th-check { color: var(--c-green); font-size: 12px; margin-left: 4px; }
+.ba-th-add   { color: var(--c-ba);    font-size: 14px; margin-left: 4px; opacity: .5; }
+
+/* Body cells */
+.udme-td-fix {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--c-border2);
+  text-align: center; color: var(--c-text3);
+  font-size: 11px; font-family: var(--font-mono);
+  background: var(--c-surface);
+}
+.udme-td-fix.num { color: var(--c-text4); }
+.udme-td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--c-border2);
+  color: var(--c-text); font-size: 13px;
+  vertical-align: middle; max-width: 200px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  background: var(--c-surface); transition: background .1s;
+}
+.udme-td:focus {
+  outline: 2px solid var(--c-blue); background: var(--c-surface2);
+  white-space: normal; max-width: none; color: #fff;
+}
+tr:hover .udme-td, tr:hover .udme-td-fix { background: var(--c-surface2); }
+.sel-row .udme-td, .sel-row .udme-td-fix { background: rgba(79,142,247,0.10) !important; }
+.sel-row .udme-td { color: #93c5fd; }
+
+/* Bulk selected rows */
+.bulk-sel-row .udme-td, .bulk-sel-row .udme-td-fix {
+  background: rgba(245,166,35,0.07) !important;
+}
+.ba-td-name {
+  background: rgba(245,166,35,0.11) !important;
+  color: #fcd34d !important;
+  font-weight: 700;
+  border-left: 2px solid rgba(245,166,35,0.4) !important;
+}
+.ba-row-badge { font-size: 11px; display: block; margin-top: 2px; }
+
+/* Bulk preview row (composed name shown beneath selected row) */
+.bulk-preview-row td { padding: 0; }
+.bulk-preview-cell {
+  padding: 5px 14px 9px !important;
+  background: rgba(245,166,35,0.07) !important;
+  border-bottom: 2px solid rgba(245,166,35,0.2) !important;
+  font-size: 12px;
+}
+.bulk-preview-label { color: var(--c-text3); margin-right: 8px; font-size: 11px; }
+.bulk-preview-name {
+  color: var(--c-ba); font-weight: 800; font-size: 13px;
+  background: rgba(245,166,35,0.13); border-radius: var(--radius-sm);
+  padding: 2px 9px; border: 1px solid rgba(245,166,35,0.3);
+}
+
+/* Column type badge */
+.udme-col-type {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 17px; height: 17px; border-radius: 4px;
+  font-size: 9px; font-weight: 900; margin-right: 4px; flex-shrink: 0;
+}
+.udme-col-type.student    { background: var(--c-blue-glow);  color: #7db4fb; }
+.udme-col-type.attendance { background: var(--c-green-dim);  color: #4ade80; }
+.udme-col-type.results    { background: var(--c-amber-dim);  color: #fbbf24; }
+.udme-col-type.fees       { background: var(--c-violet-dim); color: #c084fc; }
+.udme-col-type.unknown    { background: var(--c-surface3);   color: var(--c-text3); }
+
+/* Action bar */
+#udme-action-bar { padding: 4px 0 4px; }
+.udme-action-row {
+  background: rgba(79,142,247,0.07);
+  border: 1.5px solid rgba(79,142,247,0.22);
+  border-radius: var(--radius);
+  padding: 12px 16px;
+  display: flex; flex-direction: column; gap: 10px;
+}
+@media (min-width: 600px) {
+  .udme-action-row { flex-direction: row; align-items: center; flex-wrap: wrap; }
+}
+.udme-action-info { font-size: 14px; color: #7db4fb; font-weight: 700; }
+.udme-action-controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.udme-hint-text { font-size: 13px; color: var(--c-text3); padding: 8px 0; font-style: italic; }
+.ba-mode-hint { font-size: 13px; color: var(--c-text2); padding: 8px 0; }
+
+/* ════════════════════════════════════════════════════════════════
+   BULK ADMIT PANEL
+════════════════════════════════════════════════════════════════ */
+#udme-bulk-admit-panel { margin-bottom: 14px; }
+
+.ba-panel {
+  background:
+    linear-gradient(135deg, rgba(245,166,35,0.06) 0%, transparent 60%),
+    var(--c-surface);
+  border: 2px solid var(--c-ba-border);
+  border-radius: var(--radius-xl);
+  padding: 20px;
+  box-shadow: 0 0 30px var(--c-ba-glow), var(--shadow);
+  animation: baPanelIn .22s cubic-bezier(.16,1,.3,1) both;
+}
+@keyframes baPanelIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+.ba-panel-header {
+  display: flex; align-items: flex-start; gap: 14px;
+  margin-bottom: 16px; padding-bottom: 16px;
+  border-bottom: 1px solid var(--c-ba-border);
+  flex-wrap: wrap;
+}
+.ba-panel-icon {
+  font-size: 28px; flex-shrink: 0;
+  width: 48px; height: 48px;
+  background: var(--c-ba-dim); border-radius: var(--radius);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 0 16px var(--c-ba-glow);
+}
+.ba-panel-info { flex: 1; min-width: 200px; }
+.ba-panel-title {
+  font-size: 15px; font-weight: 800; color: var(--c-ba);
+  margin-bottom: 4px; letter-spacing: -.2px;
+}
+.ba-panel-sub {
+  font-size: 12px; color: var(--c-text2); line-height: 1.7;
+}
+.ba-exit-btn { flex-shrink: 0; align-self: center; }
+
+.ba-cols-label {
+  font-size: 12px; font-weight: 700; color: var(--c-text3);
+  margin-bottom: 10px; text-transform: uppercase; letter-spacing: .05em;
+}
+
+/* Column chip buttons */
+.ba-col-chips {
+  display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px;
+}
+.ba-col-chip {
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 7px 13px; border-radius: 20px;
+  font-size: 12px; font-weight: 700; cursor: pointer;
+  border: 1.5px solid var(--c-border3);
+  background: var(--c-surface2); color: var(--c-text2);
+  transition: all .15s; min-height: 36px;
+  font-family: var(--font);
+  -webkit-tap-highlight-color: transparent;
+}
+.ba-col-chip:hover {
+  border-color: var(--c-ba);
+  background: var(--c-ba-dim); color: var(--c-ba);
+}
+.ba-col-chip.ba-col-selected {
+  border-color: var(--c-ba);
+  background: rgba(245,166,35,0.18);
+  color: #fcd34d;
+  box-shadow: 0 0 10px var(--c-ba-glow);
+}
+.ba-col-order {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 17px; height: 17px; border-radius: 50%;
+  background: var(--c-ba); color: #000;
+  font-size: 9px; font-weight: 900; flex-shrink: 0;
+}
+.ba-col-check { color: var(--c-green); font-size: 13px; }
+.ba-col-plus  { color: var(--c-text3); font-size: 15px; opacity: .6; }
+
+/* Name order row */
+.ba-name-order {
+  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  margin-bottom: 16px; padding: 12px 14px;
+  background: rgba(245,166,35,0.06);
+  border: 1px solid rgba(245,166,35,0.2); border-radius: var(--radius);
+}
+.ba-name-order-label { font-size: 12px; color: var(--c-text3); font-weight: 700; white-space: nowrap; }
+.ba-name-order-col {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--c-surface3); border: 1px solid var(--c-ba-border);
+  border-radius: var(--radius-sm); padding: 4px 8px;
+  font-size: 12px; font-weight: 700; color: #fcd34d;
+}
+.ba-name-order-col button {
+  background: none; border: none; cursor: pointer;
+  color: var(--c-text3); font-size: 11px; padding: 0 2px;
+  transition: color .12s; font-family: var(--font);
+}
+.ba-name-order-col button:hover { color: var(--c-ba); }
+.ba-name-order-col button:disabled { opacity: .25; cursor: not-allowed; }
+.ba-remove-col { color: var(--c-red) !important; }
+.ba-remove-col:hover { color: #ff6b6b !important; }
+.ba-plus-sign { color: var(--c-text3); font-size: 14px; align-self: center; }
+
+/* Name preview */
+.ba-preview-section {
+  margin-bottom: 16px; padding: 12px 14px;
+  background: var(--c-green-dim2);
+  border: 1px solid rgba(35,209,96,0.2); border-radius: var(--radius);
+}
+.ba-preview-label {
+  font-size: 11px; font-weight: 700; color: var(--c-green);
+  margin-bottom: 8px; text-transform: uppercase; letter-spacing: .05em;
+}
+.ba-preview-names { display: flex; flex-wrap: wrap; gap: 6px; }
+.ba-preview-name {
+  background: var(--c-green-dim); color: #4ade80;
+  border: 1px solid rgba(35,209,96,0.25); border-radius: 20px;
+  padding: 4px 11px; font-size: 12px; font-weight: 700;
+}
+.ba-preview-more { font-size: 12px; color: var(--c-text3); align-self: center; }
+
+/* Hint */
+.ba-hint {
+  font-size: 13px; color: var(--c-text3); padding: 10px 0;
+  font-style: italic; border-top: 1px solid var(--c-ba-border); margin-top: 4px;
+}
+
+/* Admit footer */
+.ba-admit-footer {
+  padding-top: 14px; border-top: 1px solid var(--c-ba-border);
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+}
+.ba-admit-btn { font-size: 14px; font-weight: 800; }
+.ba-admit-note { font-size: 11px; color: var(--c-text3); flex: 1; min-width: 160px; }
+
+/* ════════════════════════════════════════════════════════════════
+   STEP 2 — COLUMN MAPPING
+════════════════════════════════════════════════════════════════ */
+#udme-map-warn {
+  background: var(--c-amber-dim); border: 1px solid rgba(245,166,35,0.28);
+  border-radius: var(--radius); padding: 11px 14px;
+  font-size: 13px; color: #fbbf24; font-weight: 600; margin-bottom: 14px;
+}
+#udme-map-grid {
+  display: flex; flex-direction: column; gap: 8px;
+  max-height: calc(100vh - 260px); overflow-y: auto;
+  -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+  scrollbar-width: thin; scrollbar-color: var(--c-surface3) transparent;
+}
+.map-card {
+  display: grid; grid-template-columns: 1fr 28px 1fr;
+  align-items: start; gap: 8px; padding: 14px 16px;
+  border-radius: var(--radius-lg); background: var(--c-surface);
+  border: 1px solid var(--c-border); transition: border-color .15s, box-shadow .15s;
+}
+.map-card:hover { border-color: rgba(79,142,247,0.28); box-shadow: var(--shadow-sm); }
+.map-card.mapped { border-left: 3px solid var(--c-blue); }
+@media (max-width: 520px) { .map-card { grid-template-columns: 1fr; gap: 6px; } .mc-arrow { display: none; } }
+.mc-left { display: flex; flex-direction: column; gap: 4px; }
+.mc-name { font-weight: 700; font-size: 14px; color: var(--c-text); }
+.mc-type {
+  display: inline-block; font-size: 10px; font-weight: 800;
+  padding: 2px 7px; border-radius: var(--radius-sm);
+}
+.mc-type.student    { background: var(--c-blue-glow);  color: #7db4fb; }
+.mc-type.attendance { background: var(--c-green-dim);  color: #4ade80; }
+.mc-type.results    { background: var(--c-amber-dim);  color: #fbbf24; }
+.mc-type.fees       { background: var(--c-violet-dim); color: #c084fc; }
+.mc-type.unknown    { background: var(--c-surface3);   color: var(--c-text3); }
+.mc-samples { display: flex; gap: 4px; flex-wrap: wrap; }
+.sv {
+  background: var(--c-surface3); border-radius: var(--radius-sm);
+  padding: 2px 6px; font-size: 10px; color: var(--c-text2);
+  max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  font-family: var(--font-mono);
+}
+.no-s { font-size: 10px; color: var(--c-text3); font-style: italic; }
+.mc-arrow { text-align: center; color: var(--c-text3); font-size: 16px; padding-top: 12px; }
+.mc-right { display: flex; flex-direction: column; gap: 4px; }
+.mc-sel {
+  width: 100%; padding: 8px 10px; border: 1.5px solid var(--c-border);
+  border-radius: var(--radius); font-size: 13px; font-family: var(--font);
+  background: var(--c-surface2); color: var(--c-text);
+  min-height: var(--min-touch); transition: border-color .15s;
+}
+.mc-sel:focus { border-color: var(--c-blue); outline: none; }
+.mc-ai { font-size: 10px; color: #7db4fb; font-weight: 700; }
+.udme-learn-note {
+  font-size: 11px; color: var(--c-text3);
+  padding: 10px 0 0; border-top: 1px solid var(--c-border); margin-top: 12px;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   STEP 3 — DATA ASSIGNMENT STUDIO
+════════════════════════════════════════════════════════════════ */
+.studio-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 14px; padding-bottom: 12px;
+  border-bottom: 1px solid var(--c-border);
+}
+.studio-header span:first-child { font-size: 14px; color: var(--c-text2); font-weight: 600; }
+.studio-cls-badge {
+  background: var(--c-blue-glow2); color: #93c5fd;
+  border: 1px solid rgba(79,142,247,0.28); border-radius: var(--radius);
+  padding: 5px 14px; font-size: 13px; font-weight: 800;
+}
+.studio-row {
+  background: var(--c-surface); border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 10px;
+  transition: border-color .15s;
+}
+.studio-row:hover { border-color: rgba(79,142,247,0.28); }
+.sr-match { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+.sr-imported { font-weight: 700; font-size: 14px; color: var(--c-text); min-width: 100px; }
+.sr-arrow { color: var(--c-text3); font-size: 16px; }
+.sr-student-sel {
+  flex: 1; min-width: 140px; padding: 8px 10px;
+  border: 1.5px solid var(--c-border); border-radius: var(--radius);
+  font-size: 13px; font-family: var(--font); background: var(--c-surface2);
+  color: var(--c-text); min-height: var(--min-touch);
+}
+.sr-student-sel:focus { border-color: var(--c-blue); outline: none; }
+.sr-conf {
+  font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 20px;
+}
+.sr-conf.high { background: var(--c-green-dim); color: #4ade80; }
+.sr-conf.med  { background: var(--c-amber-dim); color: #fbbf24; }
+.sr-conf.low  { background: var(--c-red-dim);   color: #f87171; }
+.sr-zones { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px,1fr)); gap: 8px; }
+.sr-zone {
+  background: var(--c-surface2); border: 1px solid var(--c-border);
+  border-radius: var(--radius); padding: 10px 12px;
+  cursor: pointer; transition: all .15s; min-height: 64px;
+}
+.sr-zone:hover { border-color: var(--c-blue); background: rgba(79,142,247,0.07); }
+.att-zone { border-left: 3px solid var(--c-green); }
+.res-zone { border-left: 3px solid var(--c-amber); }
+.fee-zone { border-left: 3px solid var(--c-violet); }
+.sz-title { font-size: 11px; font-weight: 800; color: var(--c-text2); margin-bottom: 5px; }
+.sz-data  { display: flex; gap: 4px; flex-wrap: wrap; }
+.sz-empty { font-size: 10px; color: var(--c-text3); font-style: italic; }
+.sz-more  { font-size: 10px; color: var(--c-text3); }
+.att-dot {
+  display: inline-block; width: 22px; height: 22px;
+  border-radius: 50%; background: var(--c-surface3);
+  font-size: 9px; font-weight: 800; text-align: center; line-height: 22px;
+}
+.att-dot.att-p { background: var(--c-green-dim); color: #4ade80; }
+.att-dot.att-a { background: var(--c-red-dim);   color: #f87171; }
+.res-dot {
+  font-size: 10px; background: var(--c-amber-dim); color: #fbbf24;
+  border-radius: var(--radius-sm); padding: 1px 6px; font-family: var(--font-mono);
+}
+.fee-dot {
+  font-size: 10px; background: var(--c-violet-dim); color: #c084fc;
+  border-radius: var(--radius-sm); padding: 1px 6px; font-weight: 700;
+  font-family: var(--font-mono);
+}
+
+/* Empty class panel */
+.qa-empty-panel {
+  text-align: center; padding: 32px 20px; max-width: 500px; margin: 0 auto;
+}
+.qa-ep-icon  { font-size: 52px; margin-bottom: 12px; }
+.qa-ep-title {
+  font-size: 18px; font-weight: 800; color: var(--c-text);
+  margin-bottom: 10px; line-height: 1.3;
+}
+.qa-ep-title em { color: var(--c-ba); font-style: normal; }
+.qa-ep-sub {
+  font-size: 13px; color: var(--c-text2); line-height: 1.7;
+  margin-bottom: 20px;
+}
+.qa-ep-actions {
+  display: flex; gap: 10px; justify-content: center;
+  flex-wrap: wrap; margin-bottom: 18px;
+}
+.qa-ep-note {
+  font-size: 12px; color: var(--c-text3);
+  background: var(--c-surface); border-radius: var(--radius);
+  padding: 12px 16px; text-align: left;
+  border: 1px solid var(--c-border);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   STEP 4 — STUDENT CARDS PREVIEW
+════════════════════════════════════════════════════════════════ */
+.udme-dup-bar {
+  background: rgba(79,142,247,0.07); border: 1px solid rgba(79,142,247,0.22);
+  border-radius: var(--radius); padding: 10px 14px;
+  font-size: 13px; color: #7db4fb; font-weight: 600;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px;
+}
+.udme-cards-grid {
+  display: grid; grid-template-columns: 1fr; gap: 12px;
+  max-height: calc(100vh - 260px); overflow-y: auto;
+  -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
+  scrollbar-width: thin; scrollbar-color: var(--c-surface3) transparent;
+}
+@media (min-width: 540px)  { .udme-cards-grid { grid-template-columns: repeat(2,1fr); } }
+@media (min-width: 900px)  { .udme-cards-grid { grid-template-columns: repeat(3,1fr); } }
+@media (min-width: 1200px) { .udme-cards-grid { grid-template-columns: repeat(4,1fr); } }
+.s-card {
+  border: 1px solid var(--c-border); border-radius: var(--radius-lg);
+  overflow: hidden; background: var(--c-surface);
+  transition: border-color .15s, box-shadow .15s;
+}
+.s-card:hover { border-color: rgba(79,142,247,0.28); box-shadow: var(--shadow); }
+.s-card.card-ok   { border-left: 3px solid var(--c-green); }
+.s-card.card-warn { border-left: 3px solid var(--c-amber); }
+.s-card.card-err  { border-left: 3px solid var(--c-red); background: rgba(240,71,71,0.05); }
+.sc-head {
+  display: flex; align-items: center; gap: 10px; padding: 11px 13px;
+  background: var(--c-surface2); border-bottom: 1px solid var(--c-border);
+}
+.sc-av   { font-size: 24px; flex-shrink: 0; }
+.sc-name {
+  flex: 1; font-size: 14px; font-weight: 700; color: var(--c-text);
+  border: none; background: transparent; outline: none;
+  font-family: var(--font); padding: 0; min-width: 0;
+}
+.sc-name:focus { border-bottom: 2px solid var(--c-blue); }
+.sc-st   { font-size: 16px; flex-shrink: 0; }
+.dup-tag {
+  font-size: 9px; font-weight: 800;
+  background: var(--c-amber-dim); color: #fbbf24;
+  padding: 2px 6px; border-radius: var(--radius-sm);
+}
+.sc-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 11px 13px; }
+.sc-f label {
+  display: block; font-size: 9px; font-weight: 800; color: var(--c-text3);
+  text-transform: uppercase; letter-spacing: .06em; margin-bottom: 3px;
+}
+.sc-f input, .sc-f select {
+  width: 100%; padding: 5px 8px;
+  border: 1px solid var(--c-border); border-radius: var(--radius-sm);
+  font-size: 12px; font-family: var(--font);
+  background: var(--c-surface2); color: var(--c-text);
+}
+.sc-f input:focus, .sc-f select:focus { border-color: var(--c-blue); outline: none; }
+.sc-issues {
+  padding: 6px 13px; background: var(--c-amber-dim);
+  border-top: 1px solid rgba(245,166,35,0.22);
+  display: flex; flex-wrap: wrap; gap: 4px;
+}
+.sc-issues span { font-size: 10px; color: #fbbf24; font-weight: 600; }
+.data-summary-card {
+  background: var(--c-green-dim); border: 1px solid rgba(35,209,96,0.2);
+  border-radius: var(--radius-xl); padding: 28px; text-align: center;
+  margin: 0 auto; max-width: 480px;
+}
+.ds-icon  { font-size: 46px; margin-bottom: 12px; }
+.ds-title { font-size: 18px; font-weight: 800; color: var(--c-text); margin-bottom: 16px; }
+.ds-rows  { display: flex; flex-direction: column; gap: 8px; text-align: left; }
+.ds-row   {
+  font-size: 13px; color: var(--c-text2); padding: 9px 13px;
+  background: var(--c-surface); border-radius: var(--radius);
+}
+.ds-row code {
+  font-size: 11px; color: #7db4fb; background: var(--c-blue-glow2);
+  padding: 1px 6px; border-radius: 4px; font-family: var(--font-mono);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   STEP 5 — REPORT
+════════════════════════════════════════════════════════════════ */
+.rpt-hero  { font-size: 60px; text-align: center; padding-top: 28px; }
+.rpt-title {
+  font-size: 26px; font-weight: 900; color: var(--c-text);
+  text-align: center; margin-top: 12px; letter-spacing: -.5px;
+}
+.rpt-sub   { font-size: 13px; color: var(--c-text2); text-align: center; margin: 6px 0 22px; }
+.rpt-grid  { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; margin: 22px 0; }
+@media (min-width: 480px) { .rpt-grid { grid-template-columns: repeat(4,1fr); } }
+.rg-stat { border-radius: var(--radius-lg); padding: 20px; text-align: center; }
+.rg-stat.green { background: var(--c-green-dim); border: 1px solid rgba(35,209,96,0.18); }
+.rg-stat.blue  { background: var(--c-blue-glow2);border: 1px solid rgba(79,142,247,0.18); }
+.rg-stat.amber { background: var(--c-amber-dim); border: 1px solid rgba(245,166,35,0.18); }
+.rg-stat.red   { background: var(--c-red-dim);   border: 1px solid rgba(240,71,71,0.18); }
+.rg-n { font-size: 36px; font-weight: 900; color: var(--c-text); line-height: 1; }
+.rg-l { font-size: 12px; font-weight: 600; color: var(--c-text2); margin-top: 6px; }
+.rpt-ts { text-align: center; font-size: 11px; color: var(--c-text3); margin-top: 6px; }
+
+/* ════════════════════════════════════════════════════════════════
+   SHARED BUTTONS
+════════════════════════════════════════════════════════════════ */
+.udme-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 11px 20px; border-radius: var(--radius);
+  font-size: 14px; font-weight: 700; cursor: pointer; border: none;
+  font-family: var(--font); transition: all .15s; white-space: nowrap;
+  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+  min-height: var(--min-touch); letter-spacing: -.1px; position: relative; overflow: hidden;
+}
+.udme-btn::after {
+  content: ''; position: absolute; inset: 0;
+  background: rgba(255,255,255,0); transition: background .15s;
+}
+.udme-btn:active::after { background: rgba(255,255,255,0.07); }
+
+.udme-btn.primary {
+  background: linear-gradient(135deg, var(--c-blue), var(--c-blue-d));
+  color: #fff; box-shadow: 0 2px 12px rgba(79,142,247,0.3);
+}
+.udme-btn.primary:hover { box-shadow: 0 4px 20px rgba(79,142,247,0.45); filter: brightness(1.08); }
+
+.udme-btn.green {
+  background: linear-gradient(135deg, #22c55e, var(--c-green-d));
+  color: #fff; box-shadow: 0 2px 12px rgba(34,197,94,0.25);
+}
+.udme-btn.green:hover { box-shadow: 0 4px 20px rgba(34,197,94,0.4); filter: brightness(1.08); }
+
+.udme-btn.ghost {
+  background: var(--c-surface2); color: var(--c-text2);
+  border: 1px solid var(--c-border3);
+}
+.udme-btn.ghost:hover { background: var(--c-surface3); color: var(--c-text); border-color: var(--c-border3); }
+
+.udme-btn.danger {
+  background: var(--c-red-dim); color: #f87171;
+  border: 1px solid rgba(240,71,71,0.28);
+}
+.udme-btn.danger:hover { background: rgba(240,71,71,0.22); }
+.udme-btn:disabled { opacity: .3; cursor: not-allowed; }
+.udme-btn:focus-visible { outline: 2px solid var(--c-blue); outline-offset: 3px; }
+
+.udme-sel {
+  padding: 9px 12px; border: 1.5px solid var(--c-border);
+  border-radius: var(--radius); font-size: 13px; font-family: var(--font);
+  background: var(--c-surface2); color: var(--c-text);
+  cursor: pointer; min-height: var(--min-touch);
+  transition: border-color .15s;
+}
+.udme-sel:focus { border-color: var(--c-blue); outline: none; }
+
+.udme-empty {
+  text-align: center; padding: 44px; color: var(--c-text3);
+  font-size: 14px; font-style: italic;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   FOOTER
+════════════════════════════════════════════════════════════════ */
+.udme-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 20px; border-top: 1px solid var(--c-border);
+  background: var(--c-surface);
+  flex-shrink: 0; gap: 10px; flex-wrap: wrap;
+  padding-bottom: max(14px, env(safe-area-inset-bottom));
+  box-shadow: 0 -6px 30px rgba(0,0,0,0.35);
+}
+.udme-footer-l { display: flex; gap: 8px; }
+.udme-footer-r { display: flex; gap: 8px; align-items: center; }
+
+/* ════════════════════════════════════════════════════════════════
+   GLOBAL FORM ELEMENTS
+════════════════════════════════════════════════════════════════ */
+input, select, textarea { color: var(--c-text) !important; }
+input::placeholder { color: var(--c-text3) !important; }
+select option { background: var(--c-surface2); color: var(--c-text); }
+
+/* ════════════════════════════════════════════════════════════════
+   ACCESSIBILITY
+════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════════════════════════ */
+@media (max-width: 360px) {
+  .udme-hdr-title { font-size: 15px; }
+  .udme-hdr-sub   { display: none; }
+  .udme-pill      { font-size: 10px; padding: 5px 9px; }
+  .udme-step-title { font-size: 18px; }
+  .udme-body { padding: 13px; }
+  .ba-panel { padding: 14px; }
+}
+@media (min-width: 1024px) {
+  .udme-table { font-size: 14px; }
+  .udme-td    { font-size: 14px; }
+}
+</style>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     TEACHMATE DME v5.2 — COMPLETE HTML MODAL
+     Drop this in place of your old modal-udme block.
+     Requires: dme_v52_styles.css  +  dme_v52_engine.js
+     ═══════════════════════════════════════════════════════════════ -->
+
+<div id="modal-udme" onclick="if(event.target===this)closeDMEModal()">
+  <div class="udme-shell">
+
+    <!-- ── Header ─────────────────────────────────────────── -->
+    <div class="udme-hdr">
+      <div class="udme-hdr-left">
+        <div class="udme-hdr-icon">⚡</div>
+        <div>
+          <div class="udme-hdr-title">Data Migration Engine</div>
+          <div class="udme-hdr-sub">Any file · Any format · Any school</div>
+        </div>
+      </div>
+      <button class="udme-hdr-close" onclick="closeDMEModal()"
+              aria-label="Close migration engine">✕</button>
+    </div>
+
+    <!-- ── Stepper ────────────────────────────────────────── -->
+    <div class="udme-stepper" role="tablist" aria-label="Import steps">
+      <div class="udme-pill active" role="tab" aria-selected="true">📂 Upload</div>
+      <div class="udme-sep"></div>
+      <div class="udme-pill" role="tab">🔬 Workspace</div>
+      <div class="udme-sep"></div>
+      <div class="udme-pill" role="tab">🗂️ Map</div>
+      <div class="udme-sep"></div>
+      <div class="udme-pill" role="tab">🎯 Assign</div>
+      <div class="udme-sep"></div>
+      <div class="udme-pill" role="tab">👁️ Preview</div>
+      <div class="udme-sep"></div>
+      <div class="udme-pill" role="tab">✅ Done</div>
+    </div>
+
+    <!-- ── Body ───────────────────────────────────────────── -->
+    <div class="udme-body">
+
+      <!-- ══════════════════════════════════════════════════
+           STEP 0 — UPLOAD
+      ══════════════════════════════════════════════════ -->
+      <div id="udme-step-upload">
+        <div class="udme-step-title">📂 Upload Your Data File</div>
+        <div class="udme-step-sub">
+          Works with any spreadsheet, exported list, or register —
+          regardless of how columns are named. "Project Owner", "Candidate",
+          "Learner" all work perfectly.
+        </div>
+
+        <div id="udme-drop-zone"
+             role="button" tabindex="0"
+             aria-label="Click to select a file for import"
+             onclick="document.getElementById('udme-file-input').click()"
+             onkeydown="if(event.key==='Enter'||event.key===' ')document.getElementById('udme-file-input').click()">
+          <span class="dz-icon">🗂️</span>
+          <div class="dz-title">Tap to select a file</div>
+          <div class="dz-sub">
+            Or drag and drop it here on desktop.<br>
+            All data is processed locally in your browser —
+            nothing uploads until you confirm.
+          </div>
+          <div class="dz-types">
+            <span class="dz-badge">xlsx</span>
+            <span class="dz-badge">xls</span>
+            <span class="dz-badge">csv</span>
+            <span class="dz-badge">tsv</span>
+            <span class="dz-badge">txt</span>
+            <span class="dz-badge">ods</span>
+            <span class="dz-badge">pdf</span>
+            <span class="dz-badge">docx</span>
+          </div>
+        </div>
+
+        <input type="file" id="udme-file-input"
+               accept=".xlsx,.xls,.csv,.tsv,.txt,.ods,.pdf,.docx"
+               style="display:none"
+               onchange="dmeHandleFile(this.files[0])">
+
+        <div class="dz-security">🔒 File processed locally · Nothing leaves your device until import</div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════
+           STEP 1 — WORKSPACE
+           Normal mode: row select + class assign
+           Bulk Admit mode: column selector panel appears above table,
+                           clicking column headers toggles them,
+                           selected rows × selected cols compose names
+      ══════════════════════════════════════════════════ -->
+      <div id="udme-step-workspace" style="display:none">
+        <div class="udme-step-title">🔬 Extraction Workspace</div>
+        <div class="udme-step-sub">
+          Data extracted exactly as-is from your file.
+          Select rows → assign a class → continue.
+          Tap any cell to edit inline.
+          Use <strong>⚡ Bulk Admit</strong> to add students directly from the file.
+        </div>
+
+        <!-- Search + toolbar -->
+        <div class="ws-toolbar">
+          <input class="ws-search" type="text" id="udme-search-input"
+                 placeholder="🔍 Search rows…"
+                 aria-label="Search rows"
+                 oninput="dmeWorkspaceSearch(this.value)">
+          <button class="udme-btn ghost" onclick="dmeSelectAll(true)"
+                  aria-label="Select all rows">☑️ All</button>
+          <button class="udme-btn ghost" onclick="dmeSelectAll(false)"
+                  aria-label="Deselect all rows">✕ None</button>
+          <button class="udme-btn danger" onclick="dmeClearWorkspace()"
+                  aria-label="Clear workspace">🗑️ Clear</button>
+        </div>
+
+        <!-- Status chips -->
+        <div id="udme-ws-info" role="status" aria-live="polite"></div>
+
+        <!-- Column type hints (hidden in bulk admit mode) -->
+        <div id="udme-col-hints"></div>
+
+        <!-- ⚡ Bulk Admit Panel — injected by JS when mode is active -->
+        <!-- #udme-bulk-admit-panel is created and inserted here by _dmeRenderBulkAdmitPanel() -->
+
+        <!-- Virtual scroll table -->
+        <div id="udme-table-wrap"></div>
+
+        <!-- Action bar: row-select actions / bulk admit hint -->
+        <div id="udme-action-bar">
+          <div class="udme-hint-text">
+            👆 Tap rows to select · Assign a class to continue
+          </div>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════
+           STEP 2 — COLUMN MAPPING (student import only)
+      ══════════════════════════════════════════════════ -->
+      <div id="udme-step-map" style="display:none">
+        <div class="udme-step-title">🗂️ Column Mapping</div>
+        <div class="udme-step-sub">
+          Tell TeachMate what each column means. AI suggestions are shown —
+          correct anything that looks wrong. Corrections are remembered
+          for next time. 🤖
+        </div>
+
+        <div id="udme-map-warn" style="display:none" role="alert">
+          ⚠️ Map at least a <strong>Student Name</strong>
+          (or First + Last Name) to continue.
+        </div>
+
+        <div id="udme-map-grid"></div>
+
+        <div class="udme-learn-note">
+          💡 Corrections saved per school.
+          <button onclick="dmeClearLearned()"
+            style="background:none;border:none;color:#7db4fb;cursor:pointer;
+                   font-size:11px;text-decoration:underline;padding:0;
+                   margin-left:4px;font-family:inherit;">
+            Clear learned mappings
+          </button>
+        </div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════
+           STEP 3 — DATA ASSIGNMENT STUDIO
+           Also hosts:
+           • Empty-class panel (no students in target class)
+           • No-match panel (all matches < 85%)
+           Both panels have a "Bulk Admit from File" button that
+           switches the workspace back to Bulk Admit mode.
+      ══════════════════════════════════════════════════ -->
+      <div id="udme-step-studio" style="display:none">
+        <div class="udme-step-title">🎯 Data Assignment Studio</div>
+        <div class="udme-step-sub">
+          Each imported row is matched to a student in your class.
+          Only matches with ≥ 85% confidence are auto-filled —
+          use the dropdowns to correct any mismatches manually.
+        </div>
+
+        <div class="studio-header">
+          <span>🏫 Target class:</span>
+          <span class="studio-cls-badge" id="udme-studio-class-name">—</span>
+        </div>
+
+        <!-- Content injected by JS:
+             • _dmeRenderAssignmentStudio() — normal match rows
+             • _dmeRenderEmptyClassPanel()  — no-student / no-match panel
+        -->
+        <div id="udme-studio-body"></div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════
+           STEP 4 — PREVIEW & EDIT
+      ══════════════════════════════════════════════════ -->
+      <div id="udme-step-preview" style="display:none">
+        <div class="udme-step-title">👁️ Preview &amp; Edit</div>
+        <div class="udme-step-sub">
+          Review every student card before importing.
+          Edit any field — changes apply instantly.
+        </div>
+
+        <div id="udme-preview-summary"></div>
+        <div class="udme-cards-grid" id="udme-preview-cards"></div>
+      </div>
+
+      <!-- ══════════════════════════════════════════════════
+           STEP 5 — REPORT
+      ══════════════════════════════════════════════════ -->
+      <div id="udme-step-report" style="display:none">
+        <div id="udme-report-body"></div>
+        <div style="display:flex;gap:10px;justify-content:center;
+                    margin-top:20px;flex-wrap:wrap;">
+          <button class="udme-btn primary" onclick="closeDMEModal()">
+            🏁 Close
+          </button>
+          <button class="udme-btn ghost"
+                  onclick="_dmeReset();_dmeGoto(0);">
+            ➕ Import More
+          </button>
+        </div>
+      </div>
+
+    </div><!-- /udme-body -->
+
+    <!-- ── Footer ─────────────────────────────────────────── -->
+    <div class="udme-footer">
+      <div class="udme-footer-l">
+        <button class="udme-btn ghost" id="udme-back-btn"
+                style="visibility:hidden" onclick="dmeBack()">
+          ← Back
+        </button>
+        <button class="udme-btn ghost" onclick="closeDMEModal()">Cancel</button>
+      </div>
+      <div class="udme-footer-r">
+        <!-- Step 1: normal "Continue" (hidden when bulk admit is active) -->
+        <button class="udme-btn primary" id="udme-btn-ws" style="display:none"
+                onclick="dmeProceedFromWorkspace()">
+          Continue →
+        </button>
+        <!-- Step 2: column mapping confirmed -->
+        <button class="udme-btn primary" id="udme-btn-map" style="display:none"
+                onclick="dmeConfirmMapping()">
+          Continue → Preview
+        </button>
+        <!-- Step 3: assignment studio confirmed -->
+        <button class="udme-btn primary" id="udme-btn-studio" style="display:none"
+                onclick="dmeConfirmAssignment()">
+          Continue → Preview
+        </button>
+        <!-- Step 4: final import -->
+        <button class="udme-btn green" id="udme-import-btn" style="display:none"
+                onclick="dmeConfirmImport()">
+          🚀 Import Now
+        </button>
+      </div>
+    </div>
+
+  </div><!-- /udme-shell -->
+</div><!-- /modal-udme -->
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     BOOTSTRAP SCRIPT
+     • Wires footer buttons per step
+     • Keyboard Escape → close
+     • Syncs openExcelImportModal alias
+     ═══════════════════════════════════════════════════════════════ -->
+<script>
+(function () {
+
+  // ── Footer visibility map per step ────────────────────────
+  // step 1 "Continue" button is hidden when bulkAdmitMode is active;
+  // the panel's own "Admit" button drives the flow instead.
+  function _dmeFooterHook(n) {
+    const cfg = {
+      'udme-back-btn':   { type: 'visibility', show: n > 0 && n < 5 },
+      'udme-btn-ws':     { type: 'display',    show: n === 1 },
+      'udme-btn-map':    { type: 'display',    show: n === 2 },
+      'udme-btn-studio': { type: 'display',    show: n === 3 },
+      'udme-import-btn': { type: 'display',    show: n === 4 },
+    };
+
+    Object.entries(cfg).forEach(([id, rule]) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (rule.type === 'visibility') {
+        el.style.visibility = rule.show ? 'visible' : 'hidden';
+      } else {
+        // Hide "Continue" on workspace if bulk admit mode is active
+        if (id === 'udme-btn-ws' && rule.show && typeof _dme !== 'undefined' && _dme.bulkAdmitMode) {
+          el.style.display = 'none';
+        } else {
+          el.style.display = rule.show ? 'inline-flex' : 'none';
+        }
+      }
+    });
+  }
+
+  window._dmeFooterHook = _dmeFooterHook;
+  _dmeFooterHook(0);
+
+  // ── Drop zone init ─────────────────────────────────────────
+  window.addEventListener('load', function () {
+    if (typeof initDMEDropZone === 'function') initDMEDropZone();
+  });
+
+  // ── Keyboard: Escape closes the modal ─────────────────────
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      const m = document.getElementById('modal-udme');
+      if (m && m.classList.contains('open')) {
+        if (typeof closeDMEModal === 'function') closeDMEModal();
+      }
+    }
+  });
+
+  // ── Alias sync ─────────────────────────────────────────────
+  window.addEventListener('load', function () {
+    if (typeof window.openDataMigrationEngine === 'function') {
+      window.openExcelImportModal = window.openDataMigrationEngine;
+    }
+  });
+
+})();
+</script>
+
+
+
 </body>
 </html>
