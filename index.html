@@ -633,6 +633,53 @@ header {
 
 
 
+
+/* Premium dense table look */
+.table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'Google Sans', Inter, Roboto, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 13px;
+  color: #0b1220;
+}
+
+.table-wrap thead th {
+  text-align: left;
+  padding: 10px 14px;
+  font-weight: 700;
+  font-size: 12.5px;
+  color: #0f172a;
+  letter-spacing: 0.2px;
+  border-bottom: 1px solid #e6eef6;
+  background: linear-gradient(180deg,#ffffff,#fbfdff);
+}
+
+.table-wrap tbody tr:hover {
+  background: #f8fafc;
+}
+
+.table-wrap td {
+  padding: 10px 14px;
+  vertical-align: middle;
+}
+
+/* Slightly larger, premium emoji rendering */
+.table-wrap td span, .table-wrap td div {
+  line-height: 1.1;
+}
+
+/* Action button polish */
+.action-trash-btn {
+  transition: transform .12s ease, opacity .12s ease;
+}
+.action-trash-btn:hover {
+  transform: translateY(-2px);
+  opacity: 1 !important;
+}
+ 
+
+
+
   </style>
 </head>
 <body>
@@ -806,9 +853,16 @@ header {
           </div>
           <div class="table-wrap">
             <table>
-              <thead><tr>
-                <th>Student ID</th><th>Full Name</th><th>Class</th><th>Gender</th><th>Guardian Phone</th><th>Status</th><th>Actions</th>
-              </tr></thead>
+              <thead<tr>
+  <th onclick="sortTable('id')">ID</th>
+  <th onclick="sortTable('name')">Student Name</th>
+  <th onclick="sortTable('classId')">Class</th>
+  <th>Gender</th>
+  <th>Guardian</th>
+  <th>Status</th>
+  <th style="width:80px"></th>
+</tr>
+           </thead>
               <tbody id="students-tbody"></tbody>
             </table>
           </div>
@@ -948,7 +1002,7 @@ header {
               <button id="admit-student-btn" class="btn btn-primary" onclick="window.admitStudent()" style="padding:12px 24px; font-size:1rem;">
                 <i class="fas fa-check-double"></i> Officially Admit Student
               </button>
-              
+
            <style>
   .btn-bulk-recording {
     display: inline-flex;
@@ -980,7 +1034,7 @@ header {
   📋 Bulk Students Info Recording
 </button>
 
-              
+
               <button class="btn btn-ghost" onclick="window.clearAdmissionForm()" style="padding:12px 24px;">
                 <i class="fas fa-eraser"></i> Clear Form
               </button>
@@ -1062,9 +1116,9 @@ header {
 
 
 <div id="bulk-update-page" style="display:none; position:fixed; top:0; left:0; width:100vw; height:100vh; z-index:1000; font-family:'Inter', system-ui, -apple-system, sans-serif; box-sizing:border-box; background:#fafafa;">
-  
+
   <div style="width:100%; height:100%; display:flex; flex-direction:column; box-sizing:border-box; overflow:hidden;">
-    
+
     <div style="background:linear-gradient(135deg, #0f172a, #1e293b); padding:24px 32px; display:flex; justify-content:space-between; align-items:center; flex-shrink:0; box-shadow:0 4px 6px -1px rgba(0,0,0,0.1);">
       <div style="display:flex; align-items:center; gap:12px;">
         <span style="font-size:24px;">✨</span>
@@ -1094,7 +1148,7 @@ header {
           <span style="background:linear-gradient(135deg, #8b5cf6, #7c3aed); color:#ffffff; width:32px; height:32px; border-radius:10px; display:flex; align-items:center; justify-content:center; font-weight:700; font-size:14px; box-shadow:0 4px 10px rgba(124,58,237,0.25);">2</span>
           <label style="font-weight:700; color:#0f172a; font-size:16px; letter-spacing:-0.2px;">👥 Pick Target Students</label>
         </div>
-        
+
         <div style="background:#f8fafc; border-radius:14px; padding:20px; border:1px solid #e2e8f0; width:100%; box-sizing:border-box;">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:10px;">
             <div style="display:flex; gap:16px; align-items:center;">
@@ -1106,9 +1160,9 @@ header {
             </div>
             <div id="bulk-selected-count" style="font-size:13px; color:#4f46e5; font-weight:800; background:#eef2ff; padding:4px 10px; border-radius:20px;"></div>
           </div>
-          
+
           <input type="text" id="bulk-student-search" placeholder="🔍 Search by name or ID..." oninput="renderBulkStudentList()" style="width:100%; padding:14px 16px; border:1px solid #cbd5e1; border-radius:10px; background:#ffffff; font-size:14px; margin-bottom:14px; outline:none; transition:all 0.2s ease; box-shadow:inset 0 1px 2px rgba(0,0,0,0.02); box-sizing:border-box; font-weight:600; color:#1e293b;">
-          
+
           <div id="bulk-student-list" style="width:100%; min-height:200px; max-height:55vh; overflow-y:auto; border-radius:10px; background:#ffffff; padding:12px; border:1px solid #e2e8f0; box-shadow:inset 0 1px 3px rgba(0,0,0,0.03); box-sizing:border-box; font-size:13px; font-weight:700; color:#334155;">
             <p style="color:#64748b; margin:0; font-size:14px; padding:24px; text-align:center; font-weight:600;">📋 Select a class above first</p>
           </div>
@@ -1127,7 +1181,7 @@ header {
           <option value="dob">🎂 Date of Birth</option>
           <option value="medical">🩺 Health / Medical Status</option>
         </select>
-        
+
         <div id="bulk-value-container" style="display:none; background:#f0fdf4; border-radius:14px; padding:20px; border:1px solid #bbf7d0; box-shadow:0 2px 8px rgba(22,163,74,0.04);">
           <label style="display:block; font-weight:700; margin-bottom:12px; color:#166534; font-size:14px; letter-spacing:-0.1px;">📝 Set New Value</label>
           <div id="bulk-value-dynamic-area">
@@ -1150,7 +1204,7 @@ header {
     #bulk-student-list::-webkit-scrollbar { width:8px; }
     #bulk-student-list::-webkit-scrollbar-track { background:#f1f5f9; border-radius:10px; }
     #bulk-student-list::-webkit-scrollbar-thumb { background:#cbd5e1; border-radius:10px; }
-    
+
     #bulk-class-select:focus, #bulk-field-select:focus, #bulk-student-search:focus {
       border-color: #6366f1 !important;
       box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12) !important;
@@ -2430,7 +2484,7 @@ window.updateIDPreview = function() {
 
 
 // ═══════════════════════════════════════════════════════════════════
-//  STUDENTS TABLE
+//  STUDENTS TABLE (Premium Google SaaS Edition)
 // ═══════════════════════════════════════════════════════════════════
 window.filterStudents = function() {
   const q  = (document.getElementById('student-search')?.value  || '').toLowerCase();
@@ -2450,37 +2504,96 @@ function renderStudentsTable(students = allStudents) {
   const label = document.getElementById('student-count-label');
   if (!tbody) return;
 
+  // 1. Premium Empty State
   if (!students.length) {
-    tbody.innerHTML = `<tr><td colspan="7">
-      <div class="empty"><div class="empty-icon">👥</div>No students found</div>
-    </td></tr>`;
-    if (label) label.textContent = '';
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="7" style="padding: 40px 0; text-align: center; background: #fafafa; border-radius: 12px;">
+          <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+            <div style="font-size: 40px; filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));">👥</div>
+            <div style="font-size: 15px; font-weight: 600; color: #1e293b;">No students found</div>
+            <div style="font-size: 13px; color: #64748b; margin-bottom: 8px;">Try adjusting your search or filters to find what you're looking for.</div>
+          </div>
+        </td>
+      </tr>`;
+    if (label) label.innerHTML = '';
     return;
   }
-  if (label) label.textContent = `Showing ${students.length} of ${allStudents.length} students`;
+  
+  // 2. Styled Student Count Pill
+  if (label) {
+    label.innerHTML = `<span style="font-size: 13px; font-weight: 500; color: #64748b; background: #f1f5f9; padding: 5px 12px; border-radius: 20px; border: 1px solid #e2e8f0; display: inline-block;">Showing <strong style="color: #0f172a;">${students.length}</strong> of ${allStudents.length} students</span>`;
+  }
 
   tbody.innerHTML = students.map(s => {
     const cls = allClasses.find(c => c.id === s.classId);
-    const statusBadge = s.status === 'active'
-      ? '<span class="badge badge-active">✅ Active</span>'
-      : s.status === 'transferred'
-        ? '<span class="badge badge-transfer">↔️ Transferred</span>'
-        : '<span class="badge badge-inactive">❌ Inactive</span>';
+    
+    // 3. Dynamic Premium Status Badges
+    let statusBadge = '';
+    if (s.status === 'active') {
+      statusBadge = `<span style="background: linear-gradient(135deg, #f0fdf4, #dcfce7); color: #166534; border: 1px solid #bbf7d0; padding: 5px 10px; border-radius: 20px; font-size: 11.5px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">✅ Active</span>`;
+    } else if (s.status === 'transferred') {
+      statusBadge = `<span style="background: linear-gradient(135deg, #eff6ff, #dbeafe); color: #1e40af; border: 1px solid #bfdbfe; padding: 5px 10px; border-radius: 20px; font-size: 11.5px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">↔️ Transferred</span>`;
+    } else {
+      statusBadge = `<span style="background: linear-gradient(135deg, #f1f5f9, #e2e8f0); color: #475569; border: 1px solid #cbd5e1; padding: 5px 10px; border-radius: 20px; font-size: 11.5px; font-weight: 600; display: inline-flex; align-items: center; gap: 4px; box-shadow: 0 1px 2px rgba(0,0,0,0.02);">❌ Inactive</span>`;
+    }
+
+    // Smart avatar generation based on gender string
+    const genderStr = (s.gender || '').toLowerCase();
+    const avatarIcon = genderStr === 'female' ? '👧🏽' : (genderStr === 'male' ? '👦🏽' : '🎓');
+
     return `
-      <tr>
-        <td><span style="font-family:'DM Mono',monospace;font-size:11px;
-          font-weight:700;color:var(--green-dark);">${esc(s.id)}</span></td>
-        <td><strong>${esc(s.name)}</strong></td>
-        <td>${esc(cls?.name || s.classId || '—')}</td>
-        <td>${esc(s.gender || '—')}</td>
-        <td>${s.guardianPhone
-          ? `<a href="tel:${esc(s.guardianPhone)}"
-              style="color:var(--green-dark);font-weight:600;">${esc(s.guardianPhone)}</a>`
-          : '—'}</td>
-        <td>${statusBadge}</td>
-        <td>
-          <button class="btn btn-ghost btn-sm" onclick="viewStudent('${esc(s.id)}')">
-            <i class="fas fa-eye"></i>
+      <tr style="border-bottom: 1px solid #f1f5f9; transition: all 0.2s ease;" 
+          onmouseover="this.style.background='#f8fafc'; this.querySelector('.action-view-btn').style.opacity='1'; this.querySelector('.action-view-btn').style.background='#e0e7ff';" 
+          onmouseout="this.style.background='transparent'; this.querySelector('.action-view-btn').style.opacity='0.5'; this.querySelector('.action-view-btn').style.background='transparent';">
+        
+        <td style="padding: 14px 16px; vertical-align: middle;">
+          <span style="font-family: 'DM Mono', monospace; font-size: 11.5px; font-weight: 700; color: #0f172a; background: #e2e8f0; padding: 4px 8px; border-radius: 6px; border: 1px solid #cbd5e1; display: inline-block; letter-spacing: -0.3px;">
+            🆔 ${esc(s.id)}
+          </span>
+        </td>
+        
+        <td style="padding: 14px 16px; vertical-align: middle;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 32px; height: 32px; border-radius: 50%; background: #f1f5f9; display: flex; align-items: center; justify-content: center; font-size: 16px; border: 1px solid #e2e8f0; box-shadow: 0 1px 2px rgba(0,0,0,0.05);">
+              ${avatarIcon}
+            </div>
+            <strong style="font-size: 14px; color: #0f172a; font-weight: 600; letter-spacing: -0.2px;">
+              ${esc(s.name)}
+            </strong>
+          </div>
+        </td>
+        
+        <td style="padding: 14px 16px; vertical-align: middle;">
+          <span style="font-size: 13.5px; color: #334155; font-weight: 500; background: #f8fafc; padding: 4px 10px; border-radius: 6px; border: 1px solid #e2e8f0; display: inline-flex; align-items: center; gap: 4px;">
+            📖 ${esc(cls?.name || s.classId || '—')}
+          </span>
+        </td>
+        
+        <td style="padding: 14px 16px; vertical-align: middle; font-size: 13.5px; color: #475569; font-weight: 500;">
+          ${esc(s.gender || '—')}
+        </td>
+        
+        <td style="padding: 14px 16px; vertical-align: middle;">
+          ${s.guardianPhone
+            ? `<a href="tel:${esc(s.guardianPhone)}" 
+                style="color: #2563eb; font-weight: 600; font-size: 13.5px; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 6px; transition: background 0.2s;"
+                onmouseover="this.style.background='#eff6ff'"
+                onmouseout="this.style.background='transparent'">
+                📞 ${esc(s.guardianPhone)}
+               </a>`
+            : '<span style="color: #94a3b8; font-style: italic; font-size: 13px;">—</span>'}
+        </td>
+        
+        <td style="padding: 14px 16px; vertical-align: middle;">
+          ${statusBadge}
+        </td>
+        
+        <td style="padding: 14px 16px; vertical-align: middle; text-align: right;">
+          <button class="action-view-btn" 
+            style="color: #4f46e5; border: none; width: 32px; height: 32px; border-radius: 8px; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; opacity: 0.5; background: transparent; transition: all 0.2s ease;"
+            onclick="viewStudent('${esc(s.id)}')">
+            <i class="fas fa-eye" style="font-size: 14px;"></i>
           </button>
         </td>
       </tr>`;
@@ -2685,21 +2798,21 @@ function resetBulkUI() {
 function populateBulkClassDropdown() {
   const bulkSelect = document.getElementById('bulk-class-select');
   const sourceSelect = document.getElementById('adm-class');
-  
+
   bulkSelect.innerHTML = '<option value="">-- Choose a class --</option>';
-  
+
   if (!sourceSelect || sourceSelect.options.length <= 1) {
     console.warn('adm-class not ready yet');
     return;
   }
-  
+
   Array.from(sourceSelect.options).forEach(opt => {
     if (!opt.value) return;
-    
+
     const option = document.createElement('option');
     option.value = opt.value;
     option.textContent = opt.textContent;
-    
+
     bulkSelect.appendChild(option);
   });
 }
@@ -2787,7 +2900,7 @@ window.renderBulkStudentList = function () {
     label.htmlFor = cb.id;
     label.style.flex = '1';
     label.style.marginLeft = '10px';
-    
+
 label.innerHTML = `
   <strong>${student.name}</strong>
   <div style="font-size:12px; color:#64748b; margin-top:2px;">
@@ -2796,8 +2909,8 @@ label.innerHTML = `
     ❤️ ${student.medical || '—'}
   </div>
 `;
-    
-    
+
+
     label.style.cursor = 'pointer';
 
     row.appendChild(cb);
@@ -2961,139 +3074,255 @@ window.applyBulkUpdate = async function () {
   }
 };
 
-// ═══════════════════════════════════════════════════════════════════
-//  CLASSES
-// ═══════════════════════════════════════════════════════════════════
+// -----------------------------
+// Grade normalization helper
+// -----------------------------
+function normalizeGradeInput(raw) {
+  // Accepts many user inputs and returns a safe id fragment and a display label
+  if (!raw && raw !== 0) return { gradeId: 'unknown', gradeDisplay: '—' };
+  
+  const s = String(raw).trim();
+  
+  // Normalize spacing and case for matching
+  const norm = s.replace(/\s+/g, ' ').toUpperCase();
+  
+  // ECE patterns
+  if (/^ECE\s*(LEVEL\s*)?1$/.test(norm) || /^ECE1$/.test(norm)) {
+    return { gradeId: 'ece-level-1', gradeDisplay: 'ECE Level 1' };
+  }
+  if (/^ECE\s*2$/.test(norm) || /^ECE2$/.test(norm)) {
+    return { gradeId: 'ece-2', gradeDisplay: 'ECE 2' };
+  }
+  
+  // Grade 1 - 7 (accept "GRADE 1", "1", "G1")
+  const gradeMatch = norm.match(/^(?:GRADE\s*)?([1-7])$/);
+  if (gradeMatch) {
+    const n = gradeMatch[1];
+    return { gradeId: `grade${n}`, gradeDisplay: `Grade ${n}` };
+  }
+  
+  // Form 1 - 6 (accept "FORM 1", "F1", "1F" etc.)
+  const formMatch = norm.match(/^(?:FORM\s*|F\s*)?([1-6])$/);
+  if (formMatch) {
+    const n = formMatch[1];
+    return { gradeId: `form${n}`, gradeDisplay: `Form ${n}` };
+  }
+  
+  // Fallback: sanitize to safe id and use title-cased display
+  const safeId = norm
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
+    .replace(/-+/g, '-') || 'custom-grade';
+  
+  const display = s
+    .toLowerCase()
+    .replace(/\b\w/g, ch => ch.toUpperCase());
+  
+  return { gradeId: safeId, gradeDisplay: display };
+}
+
+// -----------------------------
+// Render classes table (updated to use gradeDisplay)
+// -----------------------------
 function renderClassesTable() {
   const tbody = document.getElementById('classes-tbody');
   if (!tbody) return;
+  
   if (!allClasses.length) {
-    tbody.innerHTML = `<tr><td colspan="8">
-      <div class="empty"><div class="empty-icon">🏫</div>
-        No classes yet. Create your first class.
-      </div></td></tr>`;
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="8" style="padding: 40px 0; text-align: center; background: #fbfdff; border-radius: 12px;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+            <div style="font-size:44px; filter: drop-shadow(0 6px 10px rgba(0,0,0,0.06));">🏫✨</div>
+            <div style="font-size:15px;font-weight:700;color:#0f172a;">No classes discovered yet</div>
+            <div style="font-size:13px;color:#64748b;">Create your first classroom to get started.</div>
+          </div>
+        </td>
+      </tr>`;
     return;
   }
+  
   tbody.innerHTML = allClasses.map(c => {
     const enrolled = allStudents.filter(s => s.classId === c.id && s.status === 'active').length;
-    const teacher  = allTeachers.find(t => t.id === c.classTeacher);
+    const teacher = allTeachers.find(t => t.id === c.classTeacher);
+    
+    // Capacity analytics
+    const capMax = parseInt(c.capacity) || 0;
+    const isOverCap = capMax > 0 && enrolled >= capMax;
+    const isNearCap = capMax > 0 && (enrolled / capMax) >= 0.85;
+    
+    let capBadgeBg = 'linear-gradient(135deg,#f0fdf4,#dcfce7)';
+    let capBadgeTextColor = '#166534';
+    let capBadgeBorder = '#bbf7d0';
+    
+    if (isOverCap) {
+      capBadgeBg = 'linear-gradient(135deg,#fff1f2,#fee2e2)';
+      capBadgeTextColor = '#991b1b';
+      capBadgeBorder = '#fca5a5';
+    } else if (isNearCap) {
+      capBadgeBg = 'linear-gradient(135deg,#fffbeb,#fef3c7)';
+      capBadgeTextColor = '#92400e';
+      capBadgeBorder = '#fde68a';
+    }
+    
+    // Use gradeDisplay if present, otherwise fallback to old numeric grade
+    const gradeLabel = c.gradeDisplay || (c.grade ? `Grade ${c.grade}` : '—');
+    
     return `
-      <tr>
-        <td><span style="font-family:'DM Mono',monospace;font-size:11px;
-          font-weight:700;color:var(--green-dark);">${esc(c.id)}</span></td>
-        <td><strong>${esc(c.name||'—')}</strong></td>
-        <td>${esc(c.grade||'—')}</td>
-        <td>${esc(c.stream||'—')}</td>
-        <td>${esc(c.capacity||'—')}</td>
-        <td><strong style="color:var(--green-dark);">${enrolled}</strong>
-          ${c.capacity ? ` / ${c.capacity}` : ''}</td>
-        <td>${teacher
-          ? esc(teacher.name || teacher.id)
-          : '<span style="color:var(--text-3);">Unassigned</span>'}</td>
-        <td>
-          <button id="delete-class-btn" class="btn btn-danger btn-sm"
+      <tr style="border-bottom:1px solid #e6eef6; transition:background .18s ease; font-family: 'Google Sans', Inter, Roboto, system-ui, -apple-system, 'Segoe UI', sans-serif;"
+          onmouseover="this.style.background='#f8fafc'; this.querySelector('.action-trash-btn').style.opacity='1';"
+          onmouseout="this.style.background='transparent'; this.querySelector('.action-trash-btn').style.opacity='0.4';">
+
+        <td style="padding:12px 14px; vertical-align:middle;">
+          <span style="font-family:'DM Mono',monospace;font-size:11.5px;font-weight:700;color:#0f172a;background:#e6eef8;padding:5px 9px;border-radius:8px;border:1px solid #dbeafe;display:inline-block;">
+            🔑 ${esc(c.id)}
+          </span>
+        </td>
+
+        <td style="padding:12px 14px; vertical-align:middle;">
+          <div style="font-size:15px;font-weight:700;color:#0b1220;display:flex;align-items:center;gap:8px;">
+            📘 ${esc(c.name || c.displayName || '—')}
+          </div>
+        </td>
+
+        <td style="padding:12px 14px; vertical-align:middle;">
+          <span style="font-size:13.5px;color:#0f172a;font-weight:700;background:#f1f5f9;padding:4px 10px;border-radius:8px;border:1px solid #e2e8f0;">
+            ${esc(gradeLabel)}
+          </span>
+        </td>
+
+        <td style="padding:12px 14px; vertical-align:middle;font-size:13.5px;color:#475569;font-weight:600;">
+          ✨ ${esc(c.stream || '—')}
+        </td>
+
+        <td style="padding:12px 14px; vertical-align:middle;font-family:'DM Mono',monospace;font-size:13px;color:#64748b;font-weight:700;">
+          ${c.capacity ? `👥 ${esc(c.capacity)}` : '∞ Unrestricted'}
+        </td>
+
+        <td style="padding:12px 14px; vertical-align:middle;">
+          <span style="
+            background:${capBadgeBg};
+            color:${capBadgeTextColor};
+            border:1px solid ${capBadgeBorder};
+            padding:6px 14px;
+            border-radius:20px;
+            font-size:13px;
+            font-weight:800;
+            display:inline-flex;
+            align-items:center;
+            gap:8px;
+            box-shadow:0 2px 6px rgba(12,20,40,0.04);">
+            📈 ${enrolled}${c.capacity ? ` / ${c.capacity}` : ''}
+          </span>
+        </td>
+
+        <td style="padding:12px 14px; vertical-align:middle;">
+          ${teacher
+            ? `<div style="display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:700;color:#0b1220;">
+                 <span style="font-size:15px;">🧑‍🏫</span> ${esc(teacher.name || teacher.id)}
+               </div>`
+            : `<span style="color:#94a3b8;font-size:13px;font-weight:600;font-style:italic;display:inline-flex;align-items:center;gap:6px;">
+                 ⚪ Vacant Seat
+               </span>`
+          }
+        </td>
+
+        <td style="padding:12px 14px; vertical-align:middle; text-align:right;">
+          <button class="action-trash-btn"
+            style="background:transparent;color:#ef4444;border:none;width:36px;height:36px;border-radius:10px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;opacity:0.4;transition:all .18s ease;"
+            onmouseover="this.style.background='#fff1f2'; this.style.color='#dc2626';"
+            onmouseout="this.style.background='transparent'; this.style.color='#ef4444';"
             onclick="deleteClass('${esc(c.id)}')">
-            <i class="fas fa-trash"></i>
+            <i class="fas fa-trash-alt" style="font-size:14px;"></i>
           </button>
         </td>
+
       </tr>`;
   }).join('');
 }
 
-
-
-
+// -----------------------------
+// Create class (updated normalization + saved fields)
+// -----------------------------
 window.createClass = async function() {
-
   const name = document.getElementById('cls-name')?.value.trim();
   const grade = document.getElementById('cls-grade')?.value.trim();
   const stream = document.getElementById('cls-stream')?.value.trim();
   const cap = document.getElementById('cls-capacity')?.value.trim();
   const tch = document.getElementById('cls-teacher')?.value.trim();
-
+  
   if (!name || !grade) {
     setMsg('cls-msg', 'Name and grade are required', 'error');
     return;
   }
-
-  // ─────────────────────────────────────────────
-  // CLEAN NORMALIZATION
-  // ─────────────────────────────────────────────
-  const cleanGrade = `grade${String(grade).trim()}`;
-  const cleanStream = stream ?
-    String(stream).trim().toLowerCase() :
-    '';
-
+  
+  // Normalize grade using the helper
+  const { gradeId: cleanGradeId, gradeDisplay } = normalizeGradeInput(grade);
+  
+  const cleanStream = stream ? String(stream).trim().toLowerCase() : '';
+  
   const cleanName = String(name)
     .trim()
     .toLowerCase()
-    .replace(/\s+/g, '');
-
-  // FINAL CLASS ID
-  // Example:
-  // grade12_b_grade12b
-  const classId =
-    `${cleanGrade}_${cleanStream}_${cleanName}`
+    .replace(/\s+/g, '-')
+    .replace(/[^a-z0-9\-]/g, '');
+  
+  // FINAL CLASS ID uses normalized gradeId so it follows Zambia formats
+  // Example: grade1_b_grade-1b  OR ece-level-1_main_prep
+  const classId = `${cleanGradeId}_${cleanStream}_${cleanName}`
     .replace(/__+/g, '_')
     .replace(/^_|_$/g, '');
-
-  // DISPLAY NAME
-  // Example:
-  // Grade 12 B
-  const displayName =
-    `Grade ${grade}${stream ? ' ' + stream.toUpperCase() : ''}`;
-
+  
+  // DISPLAY NAME remains the same style you used
+  const displayName = `Grade ${grade}${stream ? ' ' + stream.toUpperCase() : ''}`;
+  
   showLoad('Creating class…');
-
+  
   try {
-
     const data = {
-
       // CORE IDS
       id: classId,
       classId,
-
+      
       // DISPLAY
       name: displayName,
       displayName,
       className: displayName,
-
+      
       // RAW DATA
-      grade: parseInt(grade),
-      stream: stream || '',
-
+      // Keep both a machine-friendly gradeId and a human-friendly gradeDisplay
+      gradeId: cleanGradeId,
+      gradeDisplay: gradeDisplay,
+      
       // SETTINGS
       capacity: parseInt(cap) || 45,
-
+      
       // STAFF
       classTeacher: tch || null,
       assignedTeachers: [],
-
+      
       // META
       schoolId,
       createdAt: new Date().toISOString()
     };
-
+    
     // SAVE TO FIRESTORE
-    await setDoc(
-      doc(db, 'schools', schoolId, 'classes', classId),
-      data
-    );
-
+    await setDoc(doc(db, 'schools', schoolId, 'classes', classId), data);
+    
     // LOCAL CACHE
     allClasses.push(data);
-
     await idbSet('classes', 'all', allClasses).catch(() => {});
-
+    
     // UI REFRESH
     populateClassDropdowns();
     renderClassesTable();
     loadDashboard();
-
+    
     closeModal('modal-add-class');
-
+    
     toast(`Class "${displayName}" created 🏫`, 'success');
-
+    
     // RESET FORM
     [
       'cls-name',
@@ -3105,25 +3334,20 @@ window.createClass = async function() {
       const el = document.getElementById(id);
       if (el) el.value = '';
     });
-
+    
   } catch (e) {
-
     console.error('Create class failed:', e);
-
     setMsg('cls-msg', e.message, 'error');
-
   } finally {
-
     hideLoad();
   }
 };
 
-
-
-
+// -----------------------------
+// Delete class (unchanged except small UX polish)
+// -----------------------------
 window.deleteClass = async function(classId) {
-  const cls      = allClasses.find(c => c.id === classId);
-  // Always check against full allStudents, not filtered view
+  const cls = allClasses.find(c => c.id === classId);
   const enrolled = allStudents.filter(s => s.classId === classId && s.status === 'active').length;
   if (enrolled > 0) {
     toast(`Cannot delete — ${enrolled} active student(s) in this class. Transfer them first.`, 'error');
@@ -3132,19 +3356,22 @@ window.deleteClass = async function(classId) {
   if (!confirm(`Delete class "${cls?.name || classId}"? This cannot be undone.`)) return;
   showLoad('Deleting class…');
   try {
-    await deleteDoc(doc(db,'schools',schoolId,'classes',classId));
+    await deleteDoc(doc(db, 'schools', schoolId, 'classes', classId));
     allClasses = allClasses.filter(c => c.id !== classId);
-    await idbSet('classes','all',allClasses).catch(() => {});
+    await idbSet('classes', 'all', allClasses).catch(() => {});
     populateClassDropdowns();
     renderClassesTable();
     loadDashboard();
     toast('Class deleted', 'info');
-  } catch(e) { toast(e.message,'error'); } finally { hideLoad(); }
+  } catch (e) {
+    toast(e.message, 'error');
+  } finally {
+    hideLoad();
+  }
 };
 
-
 // ═══════════════════════════════════════════════════════════════════
-//  TEACHERS TABLE
+//  TEACHERS TABLE (Premium UI Edition)
 // ═══════════════════════════════════════════════════════════════════
 window.filterTeachers = function() {
   const q = (document.getElementById('teacher-search')?.value || '').toLowerCase();
@@ -3168,24 +3395,64 @@ function renderTeachersTable(teachers = allTeachers) {
   if (emptyEl) emptyEl.style.display = 'none';
 
   tbody.innerHTML = teachers.map(t => {
-    const assigned = (t.assignedClasses||[]).map(cid => {
+    // 1. Premium Class Badges
+    const assigned = (t.assignedClasses || []).map(cid => {
       const cls = allClasses.find(c => c.id === cid);
-      return `<span style="background:var(--green-light);color:var(--green-dark);
-        padding:2px 7px;border-radius:10px;font-size:10px;font-weight:700;
-        margin:2px;display:inline-block;">${esc(cls?.name||cid)}</span>`;
-    }).join('') || '<span style="color:var(--text-3);font-size:11px;">None assigned</span>';
+      return `<span style="
+        background: linear-gradient(135deg, #f0fdf4, #dcfce7); 
+        color: #166534; 
+        border: 1px solid #bbf7d0;
+        padding: 4px 10px; 
+        border-radius: 20px; 
+        font-size: 11.5px; 
+        font-weight: 600;
+        margin: 3px; 
+        display: inline-flex; 
+        align-items: center; 
+        gap: 4px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.02);">
+        📚 ${esc(cls?.name || cid)}
+      </span>`;
+    }).join('') || `<span style="color: #94a3b8; font-size: 12px; font-weight: 500; font-style: italic; display:flex; align-items:center; gap:4px;">⚠️ Unassigned</span>`;
 
+    // 2. Premium Row with Hover Effects
     return `
-      <tr>
-        <td><strong>${esc(t.name||'—')}</strong></td>
-        <td><span style="font-family:'DM Mono',monospace;font-size:11px;">
-          ${esc(t.tsNumber||'—')}</span></td>
-        <td>${esc(t.email||'—')}</td>
-        <td>${assigned}</td>
-        <td>
+      <tr style="border-bottom: 1px solid #f1f5f9; transition: background 0.2s ease;" 
+          onmouseover="this.style.background='#f8fafc'" 
+          onmouseout="this.style.background='transparent'">
+        
+        <td style="padding: 16px 12px; vertical-align: middle;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #e0e7ff, #c7d2fe); display: flex; align-items: center; justify-content: center; font-size: 18px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); flex-shrink: 0;">
+              🧑‍🏫
+            </div>
+            <strong style="font-size: 14px; color: #0f172a; font-weight: 600; letter-spacing: -0.2px;">
+              ${esc(t.name || 'Unknown')}
+            </strong>
+          </div>
+        </td>
+
+        <td style="padding: 16px 12px; vertical-align: middle;">
+          <span style="font-family: 'DM Mono', monospace; font-size: 12.5px; background: #f1f5f9; padding: 4px 8px; border-radius: 6px; color: #475569; border: 1px solid #e2e8f0; font-weight: 500; display: inline-block;">
+            🆔 ${esc(t.tsNumber || '—')}
+          </span>
+        </td>
+
+        <td style="padding: 16px 12px; vertical-align: middle; color: #64748b; font-size: 13.5px;">
+          ✉️ ${esc(t.email || '—')}
+        </td>
+
+        <td style="padding: 16px 12px; vertical-align: middle; max-width: 280px; line-height: 1.6;">
+          ${assigned}
+        </td>
+
+        <td style="padding: 16px 12px; vertical-align: middle; text-align: right;">
           <button class="btn btn-blue btn-sm"
+            style="background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; padding: 8px 16px; border-radius: 8px; font-weight: 600; font-size: 13px; cursor: pointer; box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25); transition: all 0.2s ease; display: inline-flex; align-items: center; gap: 6px;"
+            onmouseover="this.style.transform='translateY(-1.5px)'; this.style.boxShadow='0 4px 12px rgba(59, 130, 246, 0.4)'"
+            onmouseout="this.style.transform='none'; this.style.boxShadow='0 2px 8px rgba(59, 130, 246, 0.25)'"
             onclick="openAssignTeacher('${esc(t.id)}')">
-            <i class="fas fa-tasks"></i> Assign
+            <i class="fas fa-edit" style="font-size: 12px;"></i> Edit
           </button>
         </td>
       </tr>`;
@@ -3517,47 +3784,89 @@ window.openAssignTeacher = function(teacherId) {
 
   body.innerHTML = `
     <div style="font-size:13px;margin-bottom:12px;">
-      Assign classes to <strong>${esc(t?.name||teacherId)}</strong>:
+      Assign or unassign classes for <strong>${esc(t?.name||teacherId)}</strong>:
+      <br><span style="font-size:11px;color:var(--text-3);">Uncheck a box to remove the teacher from that class.</span>
     </div>
-    <div id="class-checkboxes" style="display:flex;flex-direction:column;gap:8px;">
-      ${allClasses.map(c => `
+    <div id="class-checkboxes" style="display:flex;flex-direction:column;gap:8px;max-height:60vh;overflow-y:auto;">
+      ${allClasses.map(c => {
+        const isAssigned = assigned.includes(c.id);
+        return `
         <label style="display:flex;align-items:center;gap:10px;cursor:pointer;
-          padding:8px 10px;border:1.5px solid var(--border);
-          border-radius:var(--radius-sm);transition:background .12s;"
-          onmouseover="this.style.background='var(--green-light)'"
-          onmouseout="this.style.background=''">
+          padding:10px; border:1.5px solid ${isAssigned ? 'var(--green)' : 'var(--border)'};
+          border-radius:var(--radius-sm); transition:all .2s ease;
+          background:${isAssigned ? 'rgba(16, 185, 129, 0.05)' : 'transparent'};
+          opacity:${isAssigned ? '1' : '0.7'};"
+          onmouseover="this.style.opacity='1'"
+          onmouseout="if(!this.querySelector('input').checked) this.style.opacity='0.7'"
+          onclick="
+            const cb = this.querySelector('input');
+            if(cb.checked) {
+              this.style.borderColor = 'var(--green)';
+              this.style.background = 'rgba(16, 185, 129, 0.05)';
+              this.style.opacity = '1';
+            } else {
+              this.style.borderColor = 'var(--border)';
+              this.style.background = 'transparent';
+              this.style.opacity = '0.7';
+            }
+          ">
           <input type="checkbox" value="${esc(c.id)}"
-            ${assigned.includes(c.id)?'checked':''}
-            style="width:16px;height:16px;accent-color:var(--green);">
-          <span style="font-size:13px;font-weight:600;">${esc(c.name||c.id)}</span>
+            ${isAssigned ? 'checked' : ''}
+            style="width:18px;height:18px;accent-color:var(--green);pointer-events:none;">
+          <span style="font-size:14px;font-weight:${isAssigned ? '700' : '500'};">${esc(c.name||c.id)}</span>
           <span style="font-size:11px;color:var(--text-3);margin-left:auto;">
             Grade ${esc(String(c.grade||''))}
           </span>
-        </label>`).join('')}
+        </label>`;
+      }).join('')}
     </div>
-    <div class="status-msg" id="assign-msg"></div>`;
+    <div class="status-msg" id="assign-msg" style="margin-top:12px;"></div>`;
+    
   openModal('modal-assign-teacher');
 };
 
 window.saveTeacherAssignment = async function() {
   if (!currentAssignTeacherId) return;
   const checkboxes = document.querySelectorAll('#class-checkboxes input[type="checkbox"]');
+  
+  // This automatically handles UNASSIGNING. 
+  // Any unchecked box is ignored, meaning it is removed from the teacher's profile.
   const selected   = Array.from(checkboxes).filter(c => c.checked).map(c => c.value);
+  
   showLoad('Saving assignment…');
   try {
+    // Overwrites the array in Firestore. If 'selected' is empty, it saves an empty array [],
+    // which triggers our Restore Engine rule to clear their local database!
     await updateDoc(doc(db,'schools',schoolId,'teachers',currentAssignTeacherId), {
-      assignedClasses: selected, updatedAt: new Date().toISOString()
+      assignedClasses: selected, 
+      updatedAt: new Date().toISOString()
     });
+    
+    // Update local admin state
     const idx = allTeachers.findIndex(t => t.id === currentAssignTeacherId);
     if (idx >= 0) allTeachers[idx].assignedClasses = selected;
     await idbSet('teachers','all',allTeachers).catch(() => {});
     renderTeachersTable();
     closeModal('modal-assign-teacher');
-    toast('Classes assigned successfully ✅', 'success');
-  } catch(e) { setMsg('assign-msg',e.message,'error'); } finally { hideLoad(); }
+    
+    // Dynamic toast message depending on if classes were added or completely removed
+    const msg = selected.length > 0 
+      ? `Assigned ${selected.length} class(es) successfully ✅` 
+      : `All classes unassigned successfully 🗑️`;
+      
+    toast(msg, 'success');
+  } catch(e) { 
+    setMsg('assign-msg',e.message,'error'); 
+  } finally { 
+    hideLoad(); 
+  }
 };
 
+
+
 console.log('[TeachMate Admin] ✅ Production engine loaded');
+
+
 
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -4103,30 +4412,28 @@ function _dmeNameSimilarity(a, b) {
 //  ONLY blocks if class is empty OR genuinely zero matches after real attempt.
 //  No longer false-blocks based on low confidence on multi-column name files.
 // ═══════════════════════════════════════════════════════════════════════════════
+
+
 function _dmeCheckStudentMatches() {
   if (_dme.targetClassStudents.length === 0) {
-    return { needsAdmission: true, reason: 'empty' };
+    return { needsAdmission: false };
   }
-
+  
   const selectedRows = [..._dme.selectedRowIdx].map(i => _dme.rawRows[i]);
   if (!selectedRows.length) return { needsAdmission: false };
-
+  
   const headers = _dme.rawHeaders.filter(h => !['__sheet', '__rownum'].includes(h));
-
-  // Run actual matching with the unified name extractor
+  
   let goodMatches = 0;
   selectedRows.forEach(row => {
     const importedName = _dmeGetName(row, headers);
     if (!importedName) return;
     const best = Math.max(0, ..._dme.targetClassStudents.map(s =>
       _dmeNameSimilarity(importedName, s.name || '') * 100));
-    // Use 70 here (not 85) — we want to proceed to studio where user can fix edge cases
     if (best >= 70) goodMatches++;
   });
-
-  // Only block if truly ZERO matches at all
+  
   if (goodMatches === 0) {
-    // Do one more desperate check: try individual token matching
     let anyPartialMatch = false;
     selectedRows.slice(0, 10).forEach(row => {
       const importedName = _dmeGetName(row, headers);
@@ -4139,14 +4446,15 @@ function _dmeCheckStudentMatches() {
         }
       });
     });
-
+    
     if (!anyPartialMatch) {
       return { needsAdmission: true, reason: 'no_match' };
     }
   }
-
+  
   return { needsAdmission: false };
 }
+
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //  ★★★  FIXED _dmeRunStudentMatcher  ★★★
@@ -4642,9 +4950,10 @@ window.dmeClearWorkspace = function () {
 // ═══════════════════════════════════════════════════════════════════════════════
 //  STEP 1 → 2  ▸ PROCEED
 // ═══════════════════════════════════════════════════════════════════════════════
+
 window.dmeProceedFromWorkspace = async function () {
   const classId = document.getElementById('udme-class-select')?.value || _dme.targetClassId;
-  if (!classId)                    { toast('⚠️ Select a target class first.', 'warning'); return; }
+  if (!classId)                       { toast('⚠️ Select a target class first.', 'warning'); return; }
   if (_dme.selectedRowIdx.size === 0) { toast('⚠️ Select at least one row.', 'warning'); return; }
   _dme.targetClassId = classId;
   showLoad('🔍 Loading class roster…');
@@ -4652,8 +4961,17 @@ window.dmeProceedFromWorkspace = async function () {
   finally { hideLoad(); }
 
   if (_dme.dataMode === 'students') {
+    // Warn if class already has students (duplicate risk), but never block
+    if (_dme.targetClassStudents.length > 0) {
+      toast(`ℹ️ This class already has ${_dme.targetClassStudents.length} student(s). Make sure you don't duplicate them.`, 'info', 5000);
+    }
     _dmeSuggestMappings(); _dmeGoto(2); _dmeRenderMappingUI();
   } else {
+    // For attendance/results/fees: empty class = go straight to bulk admit
+    if (_dme.targetClassStudents.length === 0) {
+      _dmeRenderEmptyClassPanel('empty');
+      return;
+    }
     const matchResult = _dmeCheckStudentMatches();
     if (matchResult.needsAdmission) {
       _dmeRenderEmptyClassPanel(matchResult.reason);
@@ -4662,6 +4980,7 @@ window.dmeProceedFromWorkspace = async function () {
     _dmeRunStudentMatcher(); _dmeGoto(3); _dmeRenderAssignmentStudio();
   }
 };
+
 
 // ═══════════════════════════════════════════════════════════════════════════════
 //  STEP 2 ▸ COLUMN MAPPING
@@ -5480,68 +5799,78 @@ console.log('[TeachMate DME v6.0] ✅ Fixed matching · Natural scroll · Multi-
 
 
 
+
+
+
+
 </script>
 
 <style>
+
 /* ════════════════════════════════════════════════════════════════
-   TEACHMATE DME v5.2 — PREMIUM CSS
-   Professional dark theme · Bulk Admit Mode · Enhanced colours
+   TEACHMATE DME v7.0 — PREMIUM RESPONSIVE CSS
+   Full mobile + desktop · Enhanced premium palette
+   Drop-in replacement for dme_v52_styles.css
 ════════════════════════════════════════════════════════════════ */
 
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;0,9..40,800;0,9..40,900;1,9..40,400&family=DM+Mono:wght@400;500&display=swap');
 
 /* ════════════════════════════════════════════════════════════════
-   DESIGN TOKENS — upgraded palette
+   DESIGN TOKENS — upgraded premium palette
 ════════════════════════════════════════════════════════════════ */
 :root {
-  /* Backgrounds */
-  --c-bg:        #060b18;
-  --c-surface:   #0d1526;
-  --c-surface2:  #152035;
-  --c-surface3:  #1c2a44;
-  --c-surface4:  #243350;
+  /* Backgrounds — deeper, richer midnight */
+  --c-bg:        #03070f;
+  --c-surface:   #080f1e;
+  --c-surface2:  #0e1828;
+  --c-surface3:  #162133;
+  --c-surface4:  #1d2c42;
 
   /* Borders */
-  --c-border:    rgba(255,255,255,0.09);
-  --c-border2:   rgba(255,255,255,0.05);
-  --c-border3:   rgba(255,255,255,0.14);
+  --c-border:    rgba(255,255,255,0.08);
+  --c-border2:   rgba(255,255,255,0.04);
+  --c-border3:   rgba(255,255,255,0.13);
 
   /* Text */
-  --c-text:      #eef2ff;
-  --c-text2:     #94a8cc;
-  --c-text3:     #546887;
-  --c-text4:     #3a4f6e;
+  --c-text:      #f0f4ff;
+  --c-text2:     #8aa4cc;
+  --c-text3:     #4e6585;
+  --c-text4:     #324158;
 
-  /* Brand — slightly richer blue */
-  --c-blue:      #4f8ef7;
-  --c-blue-d:    #3b6fd8;
-  --c-blue-glow: rgba(79,142,247,0.20);
-  --c-blue-glow2:rgba(79,142,247,0.10);
+  /* Brand — electric blue with violet undertone */
+  --c-blue:      #4d8ef8;
+  --c-blue2:     #6ba3ff;
+  --c-blue-d:    #2f66d0;
+  --c-blue-glow: rgba(77,142,248,0.22);
+  --c-blue-glow2:rgba(77,142,248,0.10);
+  --c-blue-glow3:rgba(77,142,248,0.06);
 
-  /* Semantic */
-  --c-green:     #23d160;
-  --c-green-d:   #16a34a;
-  --c-green-dim: rgba(35,209,96,0.12);
-  --c-green-dim2:rgba(35,209,96,0.06);
+  /* Semantic — enhanced vibrancy */
+  --c-green:     #1edb6b;
+  --c-green-d:   #15a852;
+  --c-green-dim: rgba(30,219,107,0.13);
+  --c-green-dim2:rgba(30,219,107,0.06);
 
-  --c-amber:     #f5a623;
-  --c-amber-dim: rgba(245,166,35,0.13);
-  --c-amber-dim2:rgba(245,166,35,0.07);
+  --c-amber:     #f8b42a;
+  --c-amber-dim: rgba(248,180,42,0.14);
+  --c-amber-dim2:rgba(248,180,42,0.07);
 
-  --c-red:       #f04747;
-  --c-red-dim:   rgba(240,71,71,0.13);
+  --c-red:       #f24444;
+  --c-red-dim:   rgba(242,68,68,0.14);
 
-  --c-violet:    #9f7aea;
-  --c-violet-dim:rgba(159,122,234,0.13);
+  --c-violet:    #a855f7;
+  --c-violet-dim:rgba(168,85,247,0.14);
 
-  --c-teal:      #2dd4bf;
-  --c-teal-dim:  rgba(45,212,191,0.12);
+  --c-teal:      #22d3c8;
+  --c-teal-dim:  rgba(34,211,200,0.13);
+
+  --c-indigo:    #818cf8;
 
   /* Bulk Admit accent — vivid amber/gold */
-  --c-ba:        #f5a623;
-  --c-ba-dim:    rgba(245,166,35,0.15);
-  --c-ba-glow:   rgba(245,166,35,0.25);
-  --c-ba-border: rgba(245,166,35,0.35);
+  --c-ba:        #f8b42a;
+  --c-ba-dim:    rgba(248,180,42,0.16);
+  --c-ba-glow:   rgba(248,180,42,0.28);
+  --c-ba-border: rgba(248,180,42,0.38);
 
   /* Fonts */
   --font:      'DM Sans', system-ui, sans-serif;
@@ -5558,9 +5887,17 @@ console.log('[TeachMate DME v6.0] ✅ Fixed matching · Natural scroll · Multi-
   --min-touch: 48px;
 
   /* Shadows */
-  --shadow-sm:  0 2px 8px rgba(0,0,0,0.35);
-  --shadow:     0 4px 20px rgba(0,0,0,0.45);
-  --shadow-lg:  0 8px 40px rgba(0,0,0,0.55);
+  --shadow-sm:  0 2px 10px rgba(0,0,0,0.45);
+  --shadow:     0 4px 24px rgba(0,0,0,0.55);
+  --shadow-lg:  0 10px 48px rgba(0,0,0,0.65);
+  --shadow-glow:0 0 40px rgba(77,142,248,0.12);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   BASE RESET FOR MODAL CONTEXT
+════════════════════════════════════════════════════════════════ */
+#modal-udme *, #modal-udme *::before, #modal-udme *::after {
+  box-sizing: border-box;
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -5574,23 +5911,30 @@ console.log('[TeachMate DME v6.0] ✅ Fixed matching · Natural scroll · Multi-
   background: var(--c-bg);
   font-family: var(--font);
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Prevent body scroll bleed on iOS */
+  overscroll-behavior: contain;
 }
 #modal-udme.open {
   display: flex;
-  animation: dmeIn .2s cubic-bezier(.16,1,.3,1) both;
+  animation: dmeIn .22s cubic-bezier(.16,1,.3,1) both;
 }
 @keyframes dmeIn {
-  from { opacity: 0; transform: translateY(4px); }
+  from { opacity: 0; transform: translateY(6px) scale(.99); }
   to   { opacity: 1; transform: none; }
 }
 
 .udme-shell {
-  width: 100vw; height: 100dvh;
-  display: flex; flex-direction: column;
+  width: 100%;
+  height: 100dvh;          /* dynamic viewport height — handles mobile chrome bar */
+  max-height: 100dvh;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
   background:
-    radial-gradient(ellipse 60% 40% at 15% 0%, rgba(79,142,247,0.07) 0%, transparent 60%),
-    radial-gradient(ellipse 40% 30% at 85% 100%, rgba(159,122,234,0.06) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 45% at 10% 0%, rgba(77,142,248,0.09) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 35% at 90% 100%, rgba(168,85,247,0.07) 0%, transparent 55%),
+    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(34,211,200,0.03) 0%, transparent 50%),
     var(--c-bg);
 }
 
@@ -5598,400 +5942,629 @@ console.log('[TeachMate DME v6.0] ✅ Fixed matching · Natural scroll · Multi-
    HEADER
 ════════════════════════════════════════════════════════════════ */
 .udme-hdr {
-  background: linear-gradient(135deg, #07102a 0%, #0e1f42 55%, #091426 100%);
-  border-bottom: 1px solid rgba(79,142,247,0.18);
-  padding: 0 20px;
-  display: flex; align-items: center; justify-content: space-between;
-  flex-shrink: 0; height: 64px; min-height: 64px;
+  background: linear-gradient(135deg, #040c1e 0%, #0a1730 55%, #060e1c 100%);
+  border-bottom: 1px solid rgba(77,142,248,0.20);
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  height: 60px;
+  min-height: 60px;
   position: relative;
   box-shadow:
-    0 1px 0 0 rgba(79,142,247,0.25),
-    0 6px 30px rgba(0,0,0,0.5);
+    0 1px 0 0 rgba(77,142,248,0.28),
+    0 8px 32px rgba(0,0,0,0.55);
 }
+/* Rainbow accent line */
 .udme-hdr::before {
   content: '';
-  position: absolute; top: 0; left: 0; right: 0; height: 2px;
-  background: linear-gradient(90deg, var(--c-blue) 0%, var(--c-violet) 45%, var(--c-teal) 100%);
-  opacity: .9;
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2.5px;
+  background: linear-gradient(90deg,
+    var(--c-blue) 0%,
+    var(--c-violet) 40%,
+    var(--c-teal) 75%,
+    var(--c-green) 100%);
+  opacity: .95;
 }
-.udme-hdr-left { display: flex; align-items: center; gap: 13px; }
+.udme-hdr-left { display: flex; align-items: center; gap: 12px; min-width: 0; }
 .udme-hdr-icon {
-  width: 42px; height: 42px; border-radius: var(--radius);
+  width: 40px; height: 40px;
+  border-radius: var(--radius);
   background: linear-gradient(135deg, var(--c-blue), var(--c-violet));
   display: flex; align-items: center; justify-content: center;
-  font-size: 20px; flex-shrink: 0;
-  box-shadow: 0 0 20px var(--c-blue-glow), 0 0 40px rgba(79,142,247,0.1);
+  font-size: 19px; flex-shrink: 0;
+  box-shadow: 0 0 22px var(--c-blue-glow), 0 0 8px rgba(168,85,247,0.25);
 }
 .udme-hdr-title {
-  color: var(--c-text); font-size: 18px; font-weight: 800;
-  letter-spacing: -.4px; line-height: 1.1;
+  color: var(--c-text);
+  font-size: 17px;
+  font-weight: 800;
+  letter-spacing: -.35px;
+  line-height: 1.15;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.udme-hdr-sub { color: var(--c-text3); font-size: 12px; margin-top: 2px; font-weight: 500; }
+.udme-hdr-sub {
+  color: var(--c-text3);
+  font-size: 11.5px;
+  margin-top: 1px;
+  font-weight: 500;
+  white-space: nowrap;
+}
 .udme-hdr-close {
   background: rgba(255,255,255,0.05);
-  border: 1.5px solid rgba(255,255,255,0.10);
+  border: 1.5px solid rgba(255,255,255,0.09);
   color: var(--c-text2);
-  width: var(--min-touch); height: var(--min-touch);
-  border-radius: 50%; font-size: 17px; cursor: pointer;
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  font-size: 16px;
+  cursor: pointer;
   display: flex; align-items: center; justify-content: center;
-  transition: all .15s; flex-shrink: 0;
+  transition: all .15s;
+  flex-shrink: 0;
   -webkit-tap-highlight-color: transparent;
 }
 .udme-hdr-close:hover { background: var(--c-red); border-color: var(--c-red); color: #fff; }
+.udme-hdr-close:active { transform: scale(.93); }
 
 /* ════════════════════════════════════════════════════════════════
    STEPPER
 ════════════════════════════════════════════════════════════════ */
 .udme-stepper {
-  display: flex; align-items: center; padding: 0 16px;
-  background: var(--c-surface); border-bottom: 1px solid var(--c-border);
-  overflow-x: auto; flex-shrink: 0; height: 52px; min-height: 52px;
-  -webkit-overflow-scrolling: touch; scrollbar-width: none; gap: 3px;
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+  background: var(--c-surface);
+  border-bottom: 1px solid var(--c-border);
+  overflow-x: auto;
+  flex-shrink: 0;
+  height: 50px;
+  min-height: 50px;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  gap: 2px;
+  /* Smooth scroll so users can see they can swipe */
+  scroll-behavior: smooth;
+  /* Gradient fade on edges to hint scrollability */
+  -webkit-mask: linear-gradient(to right, transparent 0%, #000 4%, #000 96%, transparent 100%);
+  mask: linear-gradient(to right, transparent 0%, #000 4%, #000 96%, transparent 100%);
 }
 .udme-stepper::-webkit-scrollbar { display: none; }
 .udme-pill {
-  display: flex; align-items: center; gap: 5px;
-  padding: 6px 13px; border-radius: 20px;
-  font-size: 12px; font-weight: 700; color: var(--c-text4);
-  white-space: nowrap; flex-shrink: 0; transition: all .2s;
-  min-height: 34px; font-family: var(--font); cursor: default;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  border-radius: 20px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--c-text4);
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: all .22s cubic-bezier(.16,1,.3,1);
+  min-height: 32px;
+  font-family: var(--font);
+  cursor: default;
   border: 1px solid transparent;
 }
 .udme-pill.active {
   background: linear-gradient(135deg, var(--c-blue), var(--c-blue-d));
-  color: #fff; border-color: rgba(255,255,255,0.12);
-  box-shadow: 0 0 18px var(--c-blue-glow), 0 2px 8px rgba(0,0,0,0.3);
+  color: #fff;
+  border-color: rgba(255,255,255,0.10);
+  box-shadow: 0 0 20px var(--c-blue-glow), 0 2px 10px rgba(0,0,0,0.35);
 }
 .udme-pill.done {
-  background: var(--c-green-dim); color: var(--c-green);
-  border-color: rgba(35,209,96,0.2);
+  background: var(--c-green-dim);
+  color: var(--c-green);
+  border-color: rgba(30,219,107,0.22);
 }
 .udme-sep {
-  width: 22px; min-width: 22px; height: 2px;
-  background: var(--c-border); flex-shrink: 0; border-radius: 2px; transition: background .3s;
+  width: 18px;
+  min-width: 18px;
+  height: 2px;
+  background: var(--c-border);
+  flex-shrink: 0;
+  border-radius: 2px;
+  transition: background .3s;
 }
-.udme-sep.filled { background: linear-gradient(90deg, var(--c-green), rgba(35,209,96,0.4)); }
+.udme-sep.filled {
+  background: linear-gradient(90deg, var(--c-green), rgba(30,219,107,0.35));
+}
 
 /* ════════════════════════════════════════════════════════════════
-   BODY
+   BODY — the scrollable content area
 ════════════════════════════════════════════════════════════════ */
 .udme-body {
-  flex: 1; overflow-y: auto; overflow-x: hidden; min-height: 0;
-  padding: 20px; background: transparent;
-  -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
-  scrollbar-width: thin; scrollbar-color: var(--c-surface3) transparent;
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  min-height: 0;           /* critical for flex children */
+  padding: 18px 16px;
+  background: transparent;
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-surface3) transparent;
 }
-.udme-body::-webkit-scrollbar { width: 5px; }
+.udme-body::-webkit-scrollbar { width: 4px; }
 .udme-body::-webkit-scrollbar-track { background: transparent; }
-.udme-body::-webkit-scrollbar-thumb { background: var(--c-surface3); border-radius: 3px; }
+.udme-body::-webkit-scrollbar-thumb {
+  background: var(--c-surface3);
+  border-radius: 3px;
+}
 
 .udme-step-title {
-  font-size: 22px; font-weight: 900; color: var(--c-text);
-  margin-bottom: 5px; letter-spacing: -.5px; line-height: 1.2;
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--c-text);
+  margin-bottom: 5px;
+  letter-spacing: -.45px;
+  line-height: 1.2;
 }
 .udme-step-sub {
-  font-size: 14px; color: var(--c-text2); margin-bottom: 22px;
-  line-height: 1.65; max-width: 640px;
+  font-size: 13px;
+  color: var(--c-text2);
+  margin-bottom: 18px;
+  line-height: 1.65;
+  max-width: 640px;
 }
 
 /* ════════════════════════════════════════════════════════════════
    STEP 0 — UPLOAD
 ════════════════════════════════════════════════════════════════ */
 #udme-drop-zone {
-  border: 2px dashed rgba(79,142,247,0.30);
-  border-radius: var(--radius-xl); padding: 60px 28px;
-  text-align: center; cursor: pointer;
-  background: var(--c-surface);
+  border: 2px dashed rgba(77,142,248,0.32);
+  border-radius: var(--radius-xl);
+  padding: 48px 24px;
+  text-align: center;
+  cursor: pointer;
+  background: linear-gradient(180deg, rgba(77,142,248,0.04) 0%, transparent 100%),
+              var(--c-surface);
   transition: all .22s cubic-bezier(.16,1,.3,1);
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   -webkit-tap-highlight-color: transparent;
-  position: relative; overflow: hidden;
+  position: relative;
+  overflow: hidden;
 }
 #udme-drop-zone::after {
   content: '';
   position: absolute; inset: 0;
-  background: radial-gradient(circle at 50% 40%, rgba(79,142,247,0.12), transparent 65%);
+  background: radial-gradient(circle at 50% 40%, rgba(77,142,248,0.14), transparent 65%);
   opacity: 0; transition: opacity .3s; pointer-events: none;
 }
-#udme-drop-zone:hover::after, #udme-drop-zone.dz-over::after { opacity: 1; }
-#udme-drop-zone:hover, #udme-drop-zone.dz-over {
+#udme-drop-zone:hover::after,
+#udme-drop-zone.dz-over::after { opacity: 1; }
+#udme-drop-zone:hover,
+#udme-drop-zone.dz-over {
   border-color: var(--c-blue);
-  background: var(--c-surface2);
+  border-style: solid;
+  background: linear-gradient(180deg, rgba(77,142,248,0.08) 0%, rgba(77,142,248,0.02) 100%),
+              var(--c-surface2);
   transform: translateY(-2px);
-  box-shadow: var(--shadow), 0 0 40px var(--c-blue-glow);
+  box-shadow: var(--shadow), 0 0 48px var(--c-blue-glow);
 }
-.dz-icon   { font-size: 54px; margin-bottom: 16px; position: relative; display: block; }
-.dz-title  { font-size: 19px; font-weight: 800; color: var(--c-text); margin-bottom: 8px; position: relative; }
+#udme-drop-zone:active { transform: scale(.99); }
+.dz-icon   { font-size: 50px; margin-bottom: 14px; display: block; position: relative; }
+.dz-title  { font-size: 18px; font-weight: 800; color: var(--c-text); margin-bottom: 8px; position: relative; }
 .dz-sub    { font-size: 13px; color: var(--c-text2); line-height: 1.75; position: relative; }
 .dz-types  {
-  display: flex; gap: 6px; justify-content: center;
-  flex-wrap: wrap; margin-top: 18px; position: relative;
+  display: flex; gap: 5px; justify-content: center;
+  flex-wrap: wrap; margin-top: 16px; position: relative;
 }
 .dz-badge {
-  background: var(--c-surface3); border: 1px solid var(--c-border3);
-  border-radius: var(--radius-sm); padding: 4px 10px;
-  font-size: 10px; font-weight: 700; color: var(--c-text2);
-  font-family: var(--font-mono); text-transform: uppercase; letter-spacing: .06em;
+  background: var(--c-surface3);
+  border: 1px solid var(--c-border3);
+  border-radius: var(--radius-sm);
+  padding: 3px 9px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--c-text2);
+  font-family: var(--font-mono);
+  text-transform: uppercase;
+  letter-spacing: .06em;
 }
-.dz-security { font-size: 12px; color: var(--c-text3); text-align: center; padding: 8px 0; margin-top: 4px; }
+.dz-security { font-size: 12px; color: var(--c-text3); text-align: center; padding: 8px 0; margin-top: 2px; }
 
 /* ════════════════════════════════════════════════════════════════
    CHIPS
 ════════════════════════════════════════════════════════════════ */
-.udme-chips-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+.udme-chips-row { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
 .udme-chip {
-  background: var(--c-surface2); border: 1px solid var(--c-border);
-  border-radius: 20px; padding: 4px 12px;
-  font-size: 12px; font-weight: 700; color: var(--c-text2); white-space: nowrap;
+  background: var(--c-surface2);
+  border: 1px solid var(--c-border);
+  border-radius: 20px;
+  padding: 3px 11px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--c-text2);
+  white-space: nowrap;
 }
-.udme-chip.green  { background: var(--c-green-dim);  border-color: rgba(35,209,96,0.25);  color: #4ade80; }
-.udme-chip.amber  { background: var(--c-amber-dim);  border-color: rgba(245,166,35,0.28); color: #fbbf24; }
-.udme-chip.red    { background: var(--c-red-dim);    border-color: rgba(240,71,71,0.28);  color: #f87171; }
-.udme-chip.blue   { background: var(--c-blue-glow2); border-color: rgba(79,142,247,0.28); color: #7db4fb; }
+.udme-chip.green  { background: var(--c-green-dim);  border-color: rgba(30,219,107,0.26);  color: #5af09a; }
+.udme-chip.amber  { background: var(--c-amber-dim);  border-color: rgba(248,180,42,0.30);  color: #ffc94d; }
+.udme-chip.red    { background: var(--c-red-dim);    border-color: rgba(242,68,68,0.30);   color: #f98080; }
+.udme-chip.blue   { background: var(--c-blue-glow2); border-color: rgba(77,142,248,0.30);  color: #88baff; }
+.udme-chip.purple {
+  background: rgba(168,85,247,0.14);
+  border-color: rgba(168,85,247,0.35);
+  color: #c084fc;
+}
 
 /* ════════════════════════════════════════════════════════════════
    STEP 1 — WORKSPACE
 ════════════════════════════════════════════════════════════════ */
 .ws-toolbar {
-  display: flex; gap: 8px; align-items: center;
-  flex-wrap: wrap; margin-bottom: 10px;
+  display: flex;
+  gap: 7px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
 }
 .ws-search {
-  flex: 1; min-width: 160px; padding: 10px 14px;
+  flex: 1;
+  min-width: 140px;
+  padding: 10px 14px;
   border: 1.5px solid var(--c-border);
-  border-radius: var(--radius); font-size: 14px; font-family: var(--font);
-  background: var(--c-surface); color: var(--c-text);
-  transition: border-color .15s, box-shadow .15s; min-height: var(--min-touch);
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-family: var(--font);
+  background: var(--c-surface);
+  color: var(--c-text);
+  transition: border-color .15s, box-shadow .15s;
+  min-height: var(--min-touch);
   outline: none;
+  -webkit-appearance: none;
 }
 .ws-search::placeholder { color: var(--c-text3); }
-.ws-search:focus { border-color: var(--c-blue); box-shadow: 0 0 0 3px var(--c-blue-glow2); }
+.ws-search:focus {
+  border-color: var(--c-blue);
+  box-shadow: 0 0 0 3px var(--c-blue-glow2);
+}
 #udme-ws-info { margin-bottom: 10px; }
 
 /* Column hints */
 #udme-col-hints {
-  display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px;
-  padding: 10px 14px; background: var(--c-surface);
-  border: 1px solid var(--c-border); border-radius: var(--radius); font-size: 12px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+  padding: 10px 13px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  font-size: 12px;
 }
 .udme-hint-group { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
 .udme-hint-label {
-  font-weight: 800; padding: 2px 8px;
-  border-radius: var(--radius-sm); font-size: 11px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: var(--radius-sm);
+  font-size: 10.5px;
 }
-.udme-hint-label.student    { background: var(--c-blue-glow);  color: #7db4fb; }
-.udme-hint-label.attendance { background: var(--c-green-dim);  color: #4ade80; }
-.udme-hint-label.results    { background: var(--c-amber-dim);  color: #fbbf24; }
+.udme-hint-label.student    { background: var(--c-blue-glow);  color: #88baff; }
+.udme-hint-label.attendance { background: var(--c-green-dim);  color: #5af09a; }
+.udme-hint-label.results    { background: var(--c-amber-dim);  color: #ffc94d; }
 .udme-hint-label.fees       { background: var(--c-violet-dim); color: #c084fc; }
 .udme-hint-label.unknown    { background: var(--c-surface3);   color: var(--c-text3); }
 .udme-hint-col {
-  background: var(--c-surface2); border: 1px solid var(--c-border);
-  border-radius: var(--radius-sm); padding: 2px 7px; font-size: 11px; color: var(--c-text2);
+  background: var(--c-surface2);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+  font-size: 10.5px;
+  color: var(--c-text2);
 }
-.udme-hint-more { font-size: 11px; color: var(--c-text3); }
+.udme-hint-more { font-size: 10.5px; color: var(--c-text3); }
 
-/* Table wrap */
-#udme-table-wrap {
-  border: 1px solid var(--c-border); border-radius: var(--radius-lg);
-  overflow: hidden; margin-bottom: 12px; width: 100%;
-  box-shadow: var(--shadow);
-}
-.udme-vscroll-outer {
-  overflow: auto; -webkit-overflow-scrolling: touch;
-  scrollbar-width: thin; scrollbar-color: var(--c-surface3) transparent;
-  /* Smooth momentum scrolling on iOS */
+/* ── Sheet / Page Tabs ──────────────────────────────────────── */
+.udme-sheet-tabs {
+  display: flex;
+  flex-wrap: nowrap;        /* don't wrap — scroll horizontally */
+  gap: 4px;
+  padding: 8px 12px 0;
+  background: rgba(255,255,255,0.025);
+  border-bottom: 1px solid var(--c-border);
+  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  scroll-behavior: smooth;
+  scrollbar-width: none;
 }
-.udme-vscroll-outer::-webkit-scrollbar { height: 5px; width: 5px; }
-.udme-vscroll-outer::-webkit-scrollbar-track { background: transparent; }
-.udme-vscroll-outer::-webkit-scrollbar-thumb { background: var(--c-surface3); border-radius: 3px; }
+.udme-sheet-tabs::-webkit-scrollbar { display: none; }
+
+.udme-sheet-tab {
+  padding: 5px 12px;
+  border-radius: 8px 8px 0 0;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-bottom: none;
+  background: rgba(255,255,255,0.04);
+  color: rgba(255,255,255,0.55);
+  font-size: 12px;
+  cursor: pointer;
+  transition: all .15s;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-family: var(--font);
+  font-weight: 600;
+  -webkit-tap-highlight-color: transparent;
+  min-height: 34px;
+}
+.udme-sheet-tab:hover {
+  background: rgba(255,255,255,0.09);
+  color: rgba(255,255,255,0.9);
+}
+.udme-sheet-tab.active {
+  background: linear-gradient(180deg, rgba(77,142,248,0.20) 0%, rgba(77,142,248,0.08) 100%);
+  border-color: rgba(77,142,248,0.50);
+  color: var(--c-blue2);
+  font-weight: 700;
+  box-shadow: inset 0 1px 0 rgba(77,142,248,0.3);
+}
+.udme-tab-count {
+  background: rgba(255,255,255,0.10);
+  border-radius: 10px;
+  padding: 1px 6px;
+  font-size: 9.5px;
+  font-weight: 700;
+}
+
+/* ── Table wrapper ─────────────────────────────────────────── */
+#udme-table-wrap {
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin-bottom: 12px;
+  width: 100%;
+  box-shadow: var(--shadow), inset 0 0 0 1px rgba(77,142,248,0.06);
+  /* No fixed height here — the inner scroll area is capped */
+}
+
+/* Natural-scroll table wrapper (written by JS into #udme-table-wrap) */
+.udme-table-scroll {
+  width: 100%;
+  overflow-x: auto;
+  overflow-y: auto;
+  /* Cap height so table doesn't blow out the page on desktop;
+     on very short phones the body itself scrolls */
+  max-height: min(52vh, 400px);
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--c-surface3) transparent;
+}
+.udme-table-scroll::-webkit-scrollbar { width: 4px; height: 4px; }
+.udme-table-scroll::-webkit-scrollbar-track { background: transparent; }
+.udme-table-scroll::-webkit-scrollbar-thumb {
+  background: var(--c-surface3);
+  border-radius: 3px;
+}
 
 .udme-table {
-  width: 100%; border-collapse: collapse;
-  font-size: 13px; min-width: 480px; font-family: var(--font);
+  width: max-content;
+  min-width: 100%;
+  border-collapse: collapse;
+  font-size: 12.5px;
+  font-family: var(--font);
 }
-.udme-table thead { position: sticky; top: 0; z-index: 4; }
+.udme-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
 
-/* — Normal table headers */
 .udme-th-fix {
-  background: #080f22;
-  color: var(--c-text3); padding: 11px 12px;
-  font-size: 11px; font-weight: 800; text-align: center;
-  white-space: nowrap; width: 42px;
-  border-bottom: 2px solid rgba(79,142,247,0.15);
+  background: #060d1a;
+  color: var(--c-text3);
+  padding: 10px 10px;
+  font-size: 10.5px;
+  font-weight: 800;
+  text-align: center;
+  white-space: nowrap;
+  width: 40px;
+  border-bottom: 2px solid rgba(77,142,248,0.18);
 }
 .udme-th-sort {
-  background: #080f22; color: var(--c-text);
-  padding: 11px 14px; font-size: 12px; font-weight: 700;
-  white-space: nowrap; cursor: pointer; user-select: none;
-  letter-spacing: .03em;
-  border-bottom: 2px solid rgba(79,142,247,0.15);
+  background: #060d1a;
+  color: var(--c-text);
+  padding: 10px 13px;
+  font-size: 11.5px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  letter-spacing: .02em;
+  border-bottom: 2px solid rgba(77,142,248,0.18);
   transition: background .12s, color .12s;
 }
 .udme-th-sort:hover { background: var(--c-surface2); color: #fff; }
-.sort-i { opacity: .4; font-size: 10px; margin-left: 4px; }
+.sort-i { opacity: .35; font-size: 9.5px; margin-left: 4px; }
 
-/* — Bulk Admit mode: column headers become clickable selectors */
-.udme-table-bulk .udme-th-sort {
-  cursor: pointer;
-  transition: all .15s;
-}
+/* Bulk Admit mode column headers */
+.udme-table-bulk .udme-th-sort { cursor: pointer; }
 .udme-table-bulk .udme-th-sort:hover {
   background: var(--c-ba-dim);
   color: var(--c-ba);
 }
 .ba-th-selected {
-  background: rgba(245,166,35,0.14) !important;
+  background: rgba(248,180,42,0.14) !important;
   color: var(--c-ba) !important;
   border-bottom-color: var(--c-ba) !important;
   box-shadow: inset 0 -2px 0 var(--c-ba);
 }
 .ba-th-order {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 16px; height: 16px; border-radius: 50%;
+  width: 15px; height: 15px; border-radius: 50%;
   background: var(--c-ba); color: #000;
-  font-size: 9px; font-weight: 900; margin-right: 4px; flex-shrink: 0;
+  font-size: 8.5px; font-weight: 900; margin-right: 4px; flex-shrink: 0;
 }
-.ba-th-check { color: var(--c-green); font-size: 12px; margin-left: 4px; }
-.ba-th-add   { color: var(--c-ba);    font-size: 14px; margin-left: 4px; opacity: .5; }
+.ba-th-check { color: var(--c-green); font-size: 11px; margin-left: 4px; }
+.ba-th-add   { color: var(--c-ba);    font-size: 13px; margin-left: 4px; opacity: .5; }
 
 /* Body cells */
 .udme-td-fix {
-  padding: 9px 10px;
+  padding: 8px 9px;
   border-bottom: 1px solid var(--c-border2);
-  text-align: center; color: var(--c-text3);
-  font-size: 11px; font-family: var(--font-mono);
+  text-align: center;
+  color: var(--c-text3);
+  font-size: 10.5px;
+  font-family: var(--font-mono);
   background: var(--c-surface);
 }
 .udme-td-fix.num { color: var(--c-text4); }
 .udme-td {
-  padding: 10px 14px;
+  padding: 9px 13px;
   border-bottom: 1px solid var(--c-border2);
-  color: var(--c-text); font-size: 13px;
-  vertical-align: middle; max-width: 200px;
-  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
-  background: var(--c-surface); transition: background .1s;
+  color: var(--c-text);
+  font-size: 12.5px;
+  vertical-align: middle;
+  max-width: 180px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background: var(--c-surface);
+  transition: background .1s;
 }
-.udme-td:focus {
-  outline: 2px solid var(--c-blue); background: var(--c-surface2);
-  white-space: normal; max-width: none; color: #fff;
+.udme-td[contenteditable="true"]:focus {
+  outline: 2px solid var(--c-blue);
+  background: var(--c-surface2);
+  white-space: normal;
+  max-width: none;
+  color: #fff;
 }
-tr:hover .udme-td, tr:hover .udme-td-fix { background: var(--c-surface2); }
-.sel-row .udme-td, .sel-row .udme-td-fix { background: rgba(79,142,247,0.10) !important; }
+tr:hover .udme-td,
+tr:hover .udme-td-fix { background: var(--c-surface2); }
+.sel-row .udme-td,
+.sel-row .udme-td-fix { background: rgba(77,142,248,0.10) !important; }
 .sel-row .udme-td { color: #93c5fd; }
 
 /* Bulk selected rows */
-.bulk-sel-row .udme-td, .bulk-sel-row .udme-td-fix {
-  background: rgba(245,166,35,0.07) !important;
-}
+.bulk-sel-row .udme-td,
+.bulk-sel-row .udme-td-fix { background: rgba(248,180,42,0.07) !important; }
 .ba-td-name {
-  background: rgba(245,166,35,0.11) !important;
+  background: rgba(248,180,42,0.12) !important;
   color: #fcd34d !important;
   font-weight: 700;
-  border-left: 2px solid rgba(245,166,35,0.4) !important;
+  border-left: 2px solid rgba(248,180,42,0.45) !important;
 }
-.ba-row-badge { font-size: 11px; display: block; margin-top: 2px; }
+.ba-row-badge { font-size: 10.5px; display: block; margin-top: 2px; }
 
-/* Bulk preview row (composed name shown beneath selected row) */
+/* Bulk preview row */
 .bulk-preview-row td { padding: 0; }
 .bulk-preview-cell {
-  padding: 5px 14px 9px !important;
-  background: rgba(245,166,35,0.07) !important;
-  border-bottom: 2px solid rgba(245,166,35,0.2) !important;
-  font-size: 12px;
+  padding: 4px 13px 8px !important;
+  background: rgba(248,180,42,0.07) !important;
+  border-bottom: 2px solid rgba(248,180,42,0.22) !important;
+  font-size: 11.5px;
 }
-.bulk-preview-label { color: var(--c-text3); margin-right: 8px; font-size: 11px; }
+.bulk-preview-label { color: var(--c-text3); margin-right: 7px; font-size: 10.5px; }
 .bulk-preview-name {
-  color: var(--c-ba); font-weight: 800; font-size: 13px;
-  background: rgba(245,166,35,0.13); border-radius: var(--radius-sm);
-  padding: 2px 9px; border: 1px solid rgba(245,166,35,0.3);
+  color: var(--c-ba);
+  font-weight: 800;
+  font-size: 12.5px;
+  background: rgba(248,180,42,0.14);
+  border-radius: var(--radius-sm);
+  padding: 2px 8px;
+  border: 1px solid rgba(248,180,42,0.3);
 }
 
 /* Column type badge */
 .udme-col-type {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 17px; height: 17px; border-radius: 4px;
-  font-size: 9px; font-weight: 900; margin-right: 4px; flex-shrink: 0;
+  width: 16px; height: 16px; border-radius: 4px;
+  font-size: 8.5px; font-weight: 900; margin-right: 4px; flex-shrink: 0;
 }
-.udme-col-type.student    { background: var(--c-blue-glow);  color: #7db4fb; }
-.udme-col-type.attendance { background: var(--c-green-dim);  color: #4ade80; }
-.udme-col-type.results    { background: var(--c-amber-dim);  color: #fbbf24; }
+.udme-col-type.student    { background: var(--c-blue-glow);  color: #88baff; }
+.udme-col-type.attendance { background: var(--c-green-dim);  color: #5af09a; }
+.udme-col-type.results    { background: var(--c-amber-dim);  color: #ffc94d; }
 .udme-col-type.fees       { background: var(--c-violet-dim); color: #c084fc; }
 .udme-col-type.unknown    { background: var(--c-surface3);   color: var(--c-text3); }
 
 /* Action bar */
-#udme-action-bar { padding: 4px 0 4px; }
+#udme-action-bar { padding: 4px 0; }
 .udme-action-row {
-  background: rgba(79,142,247,0.07);
-  border: 1.5px solid rgba(79,142,247,0.22);
+  background: linear-gradient(135deg, rgba(77,142,248,0.08), rgba(77,142,248,0.04));
+  border: 1.5px solid rgba(77,142,248,0.24);
   border-radius: var(--radius);
-  padding: 12px 16px;
-  display: flex; flex-direction: column; gap: 10px;
+  padding: 11px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  box-shadow: inset 0 1px 0 rgba(77,142,248,0.10);
 }
 @media (min-width: 600px) {
-  .udme-action-row { flex-direction: row; align-items: center; flex-wrap: wrap; }
+  .udme-action-row {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+  }
 }
-.udme-action-info { font-size: 14px; color: #7db4fb; font-weight: 700; }
-.udme-action-controls { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.udme-action-info { font-size: 14px; color: #88baff; font-weight: 700; }
+.udme-action-controls {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  align-items: center;
+}
 .udme-hint-text { font-size: 13px; color: var(--c-text3); padding: 8px 0; font-style: italic; }
-.ba-mode-hint { font-size: 13px; color: var(--c-text2); padding: 8px 0; }
+.ba-mode-hint   { font-size: 13px; color: var(--c-text2); padding: 8px 0; }
 
 /* ════════════════════════════════════════════════════════════════
    BULK ADMIT PANEL
 ════════════════════════════════════════════════════════════════ */
-#udme-bulk-admit-panel { margin-bottom: 14px; }
+#udme-bulk-admit-panel { margin-bottom: 12px; }
 
 .ba-panel {
   background:
-    linear-gradient(135deg, rgba(245,166,35,0.06) 0%, transparent 60%),
+    linear-gradient(135deg, rgba(248,180,42,0.07) 0%, transparent 55%),
     var(--c-surface);
   border: 2px solid var(--c-ba-border);
   border-radius: var(--radius-xl);
-  padding: 20px;
-  box-shadow: 0 0 30px var(--c-ba-glow), var(--shadow);
+  padding: 18px 16px;
+  box-shadow: 0 0 36px var(--c-ba-glow), var(--shadow);
   animation: baPanelIn .22s cubic-bezier(.16,1,.3,1) both;
 }
 @keyframes baPanelIn {
-  from { opacity: 0; transform: translateY(-6px); }
+  from { opacity: 0; transform: translateY(-5px); }
   to   { opacity: 1; transform: none; }
 }
-
 .ba-panel-header {
-  display: flex; align-items: flex-start; gap: 14px;
-  margin-bottom: 16px; padding-bottom: 16px;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 14px;
   border-bottom: 1px solid var(--c-ba-border);
   flex-wrap: wrap;
 }
 .ba-panel-icon {
-  font-size: 28px; flex-shrink: 0;
-  width: 48px; height: 48px;
-  background: var(--c-ba-dim); border-radius: var(--radius);
+  font-size: 26px; flex-shrink: 0;
+  width: 46px; height: 46px;
+  background: var(--c-ba-dim);
+  border-radius: var(--radius);
   display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 0 16px var(--c-ba-glow);
+  box-shadow: 0 0 18px var(--c-ba-glow);
 }
 .ba-panel-info { flex: 1; min-width: 200px; }
 .ba-panel-title {
-  font-size: 15px; font-weight: 800; color: var(--c-ba);
-  margin-bottom: 4px; letter-spacing: -.2px;
+  font-size: 14.5px; font-weight: 800; color: var(--c-ba);
+  margin-bottom: 4px; letter-spacing: -.15px;
 }
-.ba-panel-sub {
-  font-size: 12px; color: var(--c-text2); line-height: 1.7;
-}
-.ba-exit-btn { flex-shrink: 0; align-self: center; }
+.ba-panel-sub { font-size: 11.5px; color: var(--c-text2); line-height: 1.7; }
+.ba-exit-btn  { flex-shrink: 0; align-self: center; }
 
 .ba-cols-label {
-  font-size: 12px; font-weight: 700; color: var(--c-text3);
-  margin-bottom: 10px; text-transform: uppercase; letter-spacing: .05em;
+  font-size: 11px; font-weight: 700; color: var(--c-text3);
+  margin-bottom: 9px; text-transform: uppercase; letter-spacing: .05em;
 }
+.ba-col-chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 14px; }
 
-/* Column chip buttons */
-.ba-col-chips {
-  display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 16px;
-}
 .ba-col-chip {
   display: inline-flex; align-items: center; gap: 5px;
-  padding: 7px 13px; border-radius: 20px;
+  padding: 6px 12px; border-radius: 20px;
   font-size: 12px; font-weight: 700; cursor: pointer;
   border: 1.5px solid var(--c-border3);
   background: var(--c-surface2); color: var(--c-text2);
@@ -6001,132 +6574,157 @@ tr:hover .udme-td, tr:hover .udme-td-fix { background: var(--c-surface2); }
 }
 .ba-col-chip:hover {
   border-color: var(--c-ba);
-  background: var(--c-ba-dim); color: var(--c-ba);
+  background: var(--c-ba-dim);
+  color: var(--c-ba);
 }
 .ba-col-chip.ba-col-selected {
   border-color: var(--c-ba);
-  background: rgba(245,166,35,0.18);
+  background: rgba(248,180,42,0.20);
   color: #fcd34d;
-  box-shadow: 0 0 10px var(--c-ba-glow);
+  box-shadow: 0 0 12px var(--c-ba-glow);
 }
 .ba-col-order {
   display: inline-flex; align-items: center; justify-content: center;
-  width: 17px; height: 17px; border-radius: 50%;
+  width: 16px; height: 16px; border-radius: 50%;
   background: var(--c-ba); color: #000;
-  font-size: 9px; font-weight: 900; flex-shrink: 0;
+  font-size: 8.5px; font-weight: 900; flex-shrink: 0;
 }
-.ba-col-check { color: var(--c-green); font-size: 13px; }
-.ba-col-plus  { color: var(--c-text3); font-size: 15px; opacity: .6; }
+.ba-col-check { color: var(--c-green); font-size: 12px; }
+.ba-col-plus  { color: var(--c-text3); font-size: 14px; opacity: .6; }
 
-/* Name order row */
 .ba-name-order {
-  display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
-  margin-bottom: 16px; padding: 12px 14px;
-  background: rgba(245,166,35,0.06);
-  border: 1px solid rgba(245,166,35,0.2); border-radius: var(--radius);
+  display: flex; align-items: center; gap: 7px; flex-wrap: wrap;
+  margin-bottom: 14px; padding: 11px 13px;
+  background: rgba(248,180,42,0.06);
+  border: 1px solid rgba(248,180,42,0.22);
+  border-radius: var(--radius);
 }
-.ba-name-order-label { font-size: 12px; color: var(--c-text3); font-weight: 700; white-space: nowrap; }
+.ba-name-order-label {
+  font-size: 11.5px; color: var(--c-text3); font-weight: 700; white-space: nowrap;
+}
 .ba-name-order-col {
   display: inline-flex; align-items: center; gap: 4px;
-  background: var(--c-surface3); border: 1px solid var(--c-ba-border);
-  border-radius: var(--radius-sm); padding: 4px 8px;
-  font-size: 12px; font-weight: 700; color: #fcd34d;
+  background: var(--c-surface3);
+  border: 1px solid var(--c-ba-border);
+  border-radius: var(--radius-sm);
+  padding: 4px 8px;
+  font-size: 11.5px; font-weight: 700; color: #fcd34d;
 }
 .ba-name-order-col button {
   background: none; border: none; cursor: pointer;
-  color: var(--c-text3); font-size: 11px; padding: 0 2px;
+  color: var(--c-text3); font-size: 10.5px; padding: 0 2px;
   transition: color .12s; font-family: var(--font);
 }
 .ba-name-order-col button:hover { color: var(--c-ba); }
 .ba-name-order-col button:disabled { opacity: .25; cursor: not-allowed; }
 .ba-remove-col { color: var(--c-red) !important; }
 .ba-remove-col:hover { color: #ff6b6b !important; }
-.ba-plus-sign { color: var(--c-text3); font-size: 14px; align-self: center; }
+.ba-plus-sign { color: var(--c-text3); font-size: 13px; align-self: center; }
 
-/* Name preview */
 .ba-preview-section {
-  margin-bottom: 16px; padding: 12px 14px;
+  margin-bottom: 14px; padding: 11px 13px;
   background: var(--c-green-dim2);
-  border: 1px solid rgba(35,209,96,0.2); border-radius: var(--radius);
+  border: 1px solid rgba(30,219,107,0.22);
+  border-radius: var(--radius);
 }
 .ba-preview-label {
-  font-size: 11px; font-weight: 700; color: var(--c-green);
-  margin-bottom: 8px; text-transform: uppercase; letter-spacing: .05em;
+  font-size: 10.5px; font-weight: 700; color: var(--c-green);
+  margin-bottom: 7px; text-transform: uppercase; letter-spacing: .05em;
 }
-.ba-preview-names { display: flex; flex-wrap: wrap; gap: 6px; }
+.ba-preview-names { display: flex; flex-wrap: wrap; gap: 5px; }
 .ba-preview-name {
-  background: var(--c-green-dim); color: #4ade80;
-  border: 1px solid rgba(35,209,96,0.25); border-radius: 20px;
-  padding: 4px 11px; font-size: 12px; font-weight: 700;
+  background: var(--c-green-dim); color: #5af09a;
+  border: 1px solid rgba(30,219,107,0.26);
+  border-radius: 20px; padding: 3px 10px;
+  font-size: 11.5px; font-weight: 700;
 }
-.ba-preview-more { font-size: 12px; color: var(--c-text3); align-self: center; }
+.ba-preview-more { font-size: 11.5px; color: var(--c-text3); align-self: center; }
 
-/* Hint */
 .ba-hint {
-  font-size: 13px; color: var(--c-text3); padding: 10px 0;
-  font-style: italic; border-top: 1px solid var(--c-ba-border); margin-top: 4px;
+  font-size: 12.5px; color: var(--c-text3); padding: 9px 0;
+  font-style: italic;
+  border-top: 1px solid var(--c-ba-border);
+  margin-top: 4px;
 }
-
-/* Admit footer */
 .ba-admit-footer {
-  padding-top: 14px; border-top: 1px solid var(--c-ba-border);
-  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  padding-top: 13px;
+  border-top: 1px solid var(--c-ba-border);
+  display: flex; align-items: center; gap: 11px; flex-wrap: wrap;
 }
-.ba-admit-btn { font-size: 14px; font-weight: 800; }
-.ba-admit-note { font-size: 11px; color: var(--c-text3); flex: 1; min-width: 160px; }
+.ba-admit-btn  { font-size: 13.5px; font-weight: 800; }
+.ba-admit-note { font-size: 10.5px; color: var(--c-text3); flex: 1; min-width: 150px; }
 
 /* ════════════════════════════════════════════════════════════════
    STEP 2 — COLUMN MAPPING
 ════════════════════════════════════════════════════════════════ */
 #udme-map-warn {
-  background: var(--c-amber-dim); border: 1px solid rgba(245,166,35,0.28);
-  border-radius: var(--radius); padding: 11px 14px;
-  font-size: 13px; color: #fbbf24; font-weight: 600; margin-bottom: 14px;
+  background: var(--c-amber-dim);
+  border: 1px solid rgba(248,180,42,0.30);
+  border-radius: var(--radius);
+  padding: 10px 13px;
+  font-size: 13px; color: #ffc94d; font-weight: 600;
+  margin-bottom: 12px;
 }
 #udme-map-grid {
-  display: flex; flex-direction: column; gap: 8px;
-  max-height: calc(100vh - 260px); overflow-y: auto;
-  -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
-  scrollbar-width: thin; scrollbar-color: var(--c-surface3) transparent;
+  display: flex; flex-direction: column; gap: 7px;
+  /* No fixed max-height: body itself scrolls */
 }
 .map-card {
-  display: grid; grid-template-columns: 1fr 28px 1fr;
-  align-items: start; gap: 8px; padding: 14px 16px;
-  border-radius: var(--radius-lg); background: var(--c-surface);
-  border: 1px solid var(--c-border); transition: border-color .15s, box-shadow .15s;
+  display: grid;
+  grid-template-columns: 1fr 24px 1fr;
+  align-items: start;
+  gap: 8px;
+  padding: 13px 14px;
+  border-radius: var(--radius-lg);
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  transition: border-color .15s, box-shadow .15s;
 }
-.map-card:hover { border-color: rgba(79,142,247,0.28); box-shadow: var(--shadow-sm); }
+.map-card:hover {
+  border-color: rgba(77,142,248,0.30);
+  box-shadow: var(--shadow-sm);
+}
 .map-card.mapped { border-left: 3px solid var(--c-blue); }
-@media (max-width: 520px) { .map-card { grid-template-columns: 1fr; gap: 6px; } .mc-arrow { display: none; } }
+@media (max-width: 480px) {
+  .map-card { grid-template-columns: 1fr; gap: 6px; }
+  .mc-arrow  { display: none; }
+}
 .mc-left { display: flex; flex-direction: column; gap: 4px; }
-.mc-name { font-weight: 700; font-size: 14px; color: var(--c-text); }
+.mc-name { font-weight: 700; font-size: 13.5px; color: var(--c-text); }
 .mc-type {
-  display: inline-block; font-size: 10px; font-weight: 800;
+  display: inline-block;
+  font-size: 10px; font-weight: 800;
   padding: 2px 7px; border-radius: var(--radius-sm);
 }
-.mc-type.student    { background: var(--c-blue-glow);  color: #7db4fb; }
-.mc-type.attendance { background: var(--c-green-dim);  color: #4ade80; }
-.mc-type.results    { background: var(--c-amber-dim);  color: #fbbf24; }
+.mc-type.student    { background: var(--c-blue-glow);  color: #88baff; }
+.mc-type.attendance { background: var(--c-green-dim);  color: #5af09a; }
+.mc-type.results    { background: var(--c-amber-dim);  color: #ffc94d; }
 .mc-type.fees       { background: var(--c-violet-dim); color: #c084fc; }
 .mc-type.unknown    { background: var(--c-surface3);   color: var(--c-text3); }
 .mc-samples { display: flex; gap: 4px; flex-wrap: wrap; }
 .sv {
-  background: var(--c-surface3); border-radius: var(--radius-sm);
-  padding: 2px 6px; font-size: 10px; color: var(--c-text2);
-  max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  background: var(--c-surface3);
+  border-radius: var(--radius-sm);
+  padding: 2px 6px;
+  font-size: 10px; color: var(--c-text2);
+  max-width: 100px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
   font-family: var(--font-mono);
 }
 .no-s { font-size: 10px; color: var(--c-text3); font-style: italic; }
-.mc-arrow { text-align: center; color: var(--c-text3); font-size: 16px; padding-top: 12px; }
+.mc-arrow { text-align: center; color: var(--c-text3); font-size: 15px; padding-top: 12px; }
 .mc-right { display: flex; flex-direction: column; gap: 4px; }
 .mc-sel {
-  width: 100%; padding: 8px 10px; border: 1.5px solid var(--c-border);
-  border-radius: var(--radius); font-size: 13px; font-family: var(--font);
+  width: 100%; padding: 8px 10px;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--radius);
+  font-size: 13px; font-family: var(--font);
   background: var(--c-surface2); color: var(--c-text);
-  min-height: var(--min-touch); transition: border-color .15s;
+  min-height: var(--min-touch);
+  transition: border-color .15s;
+  -webkit-appearance: none;
 }
 .mc-sel:focus { border-color: var(--c-blue); outline: none; }
-.mc-ai { font-size: 10px; color: #7db4fb; font-weight: 700; }
+.mc-ai { font-size: 10px; color: #88baff; font-weight: 700; }
 .udme-learn-note {
   font-size: 11px; color: var(--c-text3);
   padding: 10px 0 0; border-top: 1px solid var(--c-border); margin-top: 12px;
@@ -6137,48 +6735,68 @@ tr:hover .udme-td, tr:hover .udme-td-fix { background: var(--c-surface2); }
 ════════════════════════════════════════════════════════════════ */
 .studio-header {
   display: flex; align-items: center; gap: 10px;
-  margin-bottom: 14px; padding-bottom: 12px;
+  margin-bottom: 13px; padding-bottom: 11px;
   border-bottom: 1px solid var(--c-border);
+  flex-wrap: wrap;
 }
-.studio-header span:first-child { font-size: 14px; color: var(--c-text2); font-weight: 600; }
+.studio-header span:first-child { font-size: 13.5px; color: var(--c-text2); font-weight: 600; }
 .studio-cls-badge {
-  background: var(--c-blue-glow2); color: #93c5fd;
-  border: 1px solid rgba(79,142,247,0.28); border-radius: var(--radius);
-  padding: 5px 14px; font-size: 13px; font-weight: 800;
+  background: linear-gradient(135deg, var(--c-blue-glow2), rgba(77,142,248,0.05));
+  color: #93c5fd;
+  border: 1px solid rgba(77,142,248,0.30);
+  border-radius: var(--radius);
+  padding: 5px 13px;
+  font-size: 13px; font-weight: 800;
+  box-shadow: inset 0 0 12px rgba(77,142,248,0.05);
 }
 .studio-row {
-  background: var(--c-surface); border: 1px solid var(--c-border);
-  border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 10px;
+  background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  padding: 13px 14px;
+  margin-bottom: 9px;
   transition: border-color .15s;
 }
-.studio-row:hover { border-color: rgba(79,142,247,0.28); }
-.sr-match { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
-.sr-imported { font-weight: 700; font-size: 14px; color: var(--c-text); min-width: 100px; }
-.sr-arrow { color: var(--c-text3); font-size: 16px; }
+.studio-row:hover { border-color: rgba(77,142,248,0.30); }
+.sr-match {
+  display: flex; align-items: center; gap: 9px;
+  flex-wrap: wrap; margin-bottom: 9px;
+}
+.sr-imported { font-weight: 700; font-size: 13.5px; color: var(--c-text); min-width: 90px; }
+.sr-arrow { color: var(--c-text3); font-size: 15px; }
 .sr-student-sel {
-  flex: 1; min-width: 140px; padding: 8px 10px;
-  border: 1.5px solid var(--c-border); border-radius: var(--radius);
-  font-size: 13px; font-family: var(--font); background: var(--c-surface2);
-  color: var(--c-text); min-height: var(--min-touch);
+  flex: 1; min-width: 130px; padding: 8px 10px;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--radius);
+  font-size: 13px; font-family: var(--font);
+  background: var(--c-surface2); color: var(--c-text);
+  min-height: var(--min-touch);
+  -webkit-appearance: none;
 }
 .sr-student-sel:focus { border-color: var(--c-blue); outline: none; }
 .sr-conf {
-  font-size: 11px; font-weight: 800; padding: 3px 10px; border-radius: 20px;
+  font-size: 11px; font-weight: 800; padding: 3px 9px; border-radius: 20px;
 }
-.sr-conf.high { background: var(--c-green-dim); color: #4ade80; }
-.sr-conf.med  { background: var(--c-amber-dim); color: #fbbf24; }
-.sr-conf.low  { background: var(--c-red-dim);   color: #f87171; }
-.sr-zones { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px,1fr)); gap: 8px; }
+.sr-conf.high { background: var(--c-green-dim); color: #5af09a; }
+.sr-conf.med  { background: var(--c-amber-dim); color: #ffc94d; }
+.sr-conf.low  { background: var(--c-red-dim);   color: #f98080; }
+.sr-zones {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px,1fr));
+  gap: 7px;
+}
 .sr-zone {
-  background: var(--c-surface2); border: 1px solid var(--c-border);
-  border-radius: var(--radius); padding: 10px 12px;
-  cursor: pointer; transition: all .15s; min-height: 64px;
+  background: var(--c-surface2);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius);
+  padding: 9px 11px;
+  cursor: pointer; transition: all .15s; min-height: 58px;
 }
-.sr-zone:hover { border-color: var(--c-blue); background: rgba(79,142,247,0.07); }
+.sr-zone:hover { border-color: var(--c-blue); background: rgba(77,142,248,0.07); }
 .att-zone { border-left: 3px solid var(--c-green); }
 .res-zone { border-left: 3px solid var(--c-amber); }
 .fee-zone { border-left: 3px solid var(--c-violet); }
-.sz-title { font-size: 11px; font-weight: 800; color: var(--c-text2); margin-bottom: 5px; }
+.sz-title { font-size: 10.5px; font-weight: 800; color: var(--c-text2); margin-bottom: 5px; }
 .sz-data  { display: flex; gap: 4px; flex-wrap: wrap; }
 .sz-empty { font-size: 10px; color: var(--c-text3); font-style: italic; }
 .sz-more  { font-size: 10px; color: var(--c-text3); }
@@ -6187,10 +6805,10 @@ tr:hover .udme-td, tr:hover .udme-td-fix { background: var(--c-surface2); }
   border-radius: 50%; background: var(--c-surface3);
   font-size: 9px; font-weight: 800; text-align: center; line-height: 22px;
 }
-.att-dot.att-p { background: var(--c-green-dim); color: #4ade80; }
-.att-dot.att-a { background: var(--c-red-dim);   color: #f87171; }
+.att-dot.att-p { background: var(--c-green-dim); color: #5af09a; }
+.att-dot.att-a { background: var(--c-red-dim);   color: #f98080; }
 .res-dot {
-  font-size: 10px; background: var(--c-amber-dim); color: #fbbf24;
+  font-size: 10px; background: var(--c-amber-dim); color: #ffc94d;
   border-radius: var(--radius-sm); padding: 1px 6px; font-family: var(--font-mono);
 }
 .fee-dot {
@@ -6201,26 +6819,26 @@ tr:hover .udme-td, tr:hover .udme-td-fix { background: var(--c-surface2); }
 
 /* Empty class panel */
 .qa-empty-panel {
-  text-align: center; padding: 32px 20px; max-width: 500px; margin: 0 auto;
+  text-align: center; padding: 28px 16px; max-width: 480px; margin: 0 auto;
 }
-.qa-ep-icon  { font-size: 52px; margin-bottom: 12px; }
+.qa-ep-icon  { font-size: 48px; margin-bottom: 11px; }
 .qa-ep-title {
-  font-size: 18px; font-weight: 800; color: var(--c-text);
-  margin-bottom: 10px; line-height: 1.3;
+  font-size: 17px; font-weight: 800; color: var(--c-text);
+  margin-bottom: 9px; line-height: 1.3;
 }
 .qa-ep-title em { color: var(--c-ba); font-style: normal; }
 .qa-ep-sub {
-  font-size: 13px; color: var(--c-text2); line-height: 1.7;
-  margin-bottom: 20px;
+  font-size: 13px; color: var(--c-text2); line-height: 1.7; margin-bottom: 18px;
 }
 .qa-ep-actions {
-  display: flex; gap: 10px; justify-content: center;
-  flex-wrap: wrap; margin-bottom: 18px;
+  display: flex; gap: 8px; justify-content: center;
+  flex-wrap: wrap; margin-bottom: 16px;
 }
 .qa-ep-note {
-  font-size: 12px; color: var(--c-text3);
-  background: var(--c-surface); border-radius: var(--radius);
-  padding: 12px 16px; text-align: left;
+  font-size: 11.5px; color: var(--c-text3);
+  background: var(--c-surface);
+  border-radius: var(--radius);
+  padding: 11px 14px; text-align: left;
   border: 1px solid var(--c-border);
 }
 
@@ -6228,207 +6846,337 @@ tr:hover .udme-td, tr:hover .udme-td-fix { background: var(--c-surface2); }
    STEP 4 — STUDENT CARDS PREVIEW
 ════════════════════════════════════════════════════════════════ */
 .udme-dup-bar {
-  background: rgba(79,142,247,0.07); border: 1px solid rgba(79,142,247,0.22);
-  border-radius: var(--radius); padding: 10px 14px;
-  font-size: 13px; color: #7db4fb; font-weight: 600;
-  display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 12px;
+  background: rgba(77,142,248,0.07);
+  border: 1px solid rgba(77,142,248,0.24);
+  border-radius: var(--radius);
+  padding: 9px 13px;
+  font-size: 13px; color: #88baff; font-weight: 600;
+  display: flex; align-items: center; gap: 9px;
+  flex-wrap: wrap; margin-bottom: 11px;
 }
 .udme-cards-grid {
-  display: grid; grid-template-columns: 1fr; gap: 12px;
-  max-height: calc(100vh - 260px); overflow-y: auto;
-  -webkit-overflow-scrolling: touch; scroll-behavior: smooth;
-  scrollbar-width: thin; scrollbar-color: var(--c-surface3) transparent;
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 11px;
+  /* No max-height — body scrolls */
 }
-@media (min-width: 540px)  { .udme-cards-grid { grid-template-columns: repeat(2,1fr); } }
-@media (min-width: 900px)  { .udme-cards-grid { grid-template-columns: repeat(3,1fr); } }
-@media (min-width: 1200px) { .udme-cards-grid { grid-template-columns: repeat(4,1fr); } }
+@media (min-width: 480px)  { .udme-cards-grid { grid-template-columns: repeat(2,1fr); } }
+@media (min-width: 860px)  { .udme-cards-grid { grid-template-columns: repeat(3,1fr); } }
+@media (min-width: 1180px) { .udme-cards-grid { grid-template-columns: repeat(4,1fr); } }
+
 .s-card {
-  border: 1px solid var(--c-border); border-radius: var(--radius-lg);
-  overflow: hidden; background: var(--c-surface);
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: var(--c-surface);
   transition: border-color .15s, box-shadow .15s;
 }
-.s-card:hover { border-color: rgba(79,142,247,0.28); box-shadow: var(--shadow); }
+.s-card:hover { border-color: rgba(77,142,248,0.30); box-shadow: var(--shadow); }
 .s-card.card-ok   { border-left: 3px solid var(--c-green); }
 .s-card.card-warn { border-left: 3px solid var(--c-amber); }
-.s-card.card-err  { border-left: 3px solid var(--c-red); background: rgba(240,71,71,0.05); }
+.s-card.card-err  { border-left: 3px solid var(--c-red); background: rgba(242,68,68,0.05); }
 .sc-head {
-  display: flex; align-items: center; gap: 10px; padding: 11px 13px;
-  background: var(--c-surface2); border-bottom: 1px solid var(--c-border);
+  display: flex; align-items: center; gap: 9px; padding: 10px 12px;
+  background: var(--c-surface2);
+  border-bottom: 1px solid var(--c-border);
 }
-.sc-av   { font-size: 24px; flex-shrink: 0; }
+.sc-av   { font-size: 22px; flex-shrink: 0; }
 .sc-name {
-  flex: 1; font-size: 14px; font-weight: 700; color: var(--c-text);
+  flex: 1; font-size: 13.5px; font-weight: 700; color: var(--c-text);
   border: none; background: transparent; outline: none;
   font-family: var(--font); padding: 0; min-width: 0;
 }
 .sc-name:focus { border-bottom: 2px solid var(--c-blue); }
-.sc-st   { font-size: 16px; flex-shrink: 0; }
+.sc-st   { font-size: 15px; flex-shrink: 0; }
 .dup-tag {
-  font-size: 9px; font-weight: 800;
-  background: var(--c-amber-dim); color: #fbbf24;
+  font-size: 8.5px; font-weight: 800;
+  background: var(--c-amber-dim); color: #ffc94d;
   padding: 2px 6px; border-radius: var(--radius-sm);
 }
-.sc-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 11px 13px; }
+.sc-fields { display: grid; grid-template-columns: 1fr 1fr; gap: 5px; padding: 10px 12px; }
 .sc-f label {
   display: block; font-size: 9px; font-weight: 800; color: var(--c-text3);
-  text-transform: uppercase; letter-spacing: .06em; margin-bottom: 3px;
+  text-transform: uppercase; letter-spacing: .06em; margin-bottom: 2px;
 }
 .sc-f input, .sc-f select {
-  width: 100%; padding: 5px 8px;
-  border: 1px solid var(--c-border); border-radius: var(--radius-sm);
-  font-size: 12px; font-family: var(--font);
+  width: 100%; padding: 5px 7px;
+  border: 1px solid var(--c-border);
+  border-radius: var(--radius-sm);
+  font-size: 11.5px; font-family: var(--font);
   background: var(--c-surface2); color: var(--c-text);
+  -webkit-appearance: none;
 }
 .sc-f input:focus, .sc-f select:focus { border-color: var(--c-blue); outline: none; }
 .sc-issues {
-  padding: 6px 13px; background: var(--c-amber-dim);
-  border-top: 1px solid rgba(245,166,35,0.22);
+  padding: 5px 12px;
+  background: var(--c-amber-dim);
+  border-top: 1px solid rgba(248,180,42,0.24);
   display: flex; flex-wrap: wrap; gap: 4px;
 }
-.sc-issues span { font-size: 10px; color: #fbbf24; font-weight: 600; }
+.sc-issues span { font-size: 10px; color: #ffc94d; font-weight: 600; }
 .data-summary-card {
-  background: var(--c-green-dim); border: 1px solid rgba(35,209,96,0.2);
-  border-radius: var(--radius-xl); padding: 28px; text-align: center;
-  margin: 0 auto; max-width: 480px;
+  background: var(--c-green-dim);
+  border: 1px solid rgba(30,219,107,0.22);
+  border-radius: var(--radius-xl);
+  padding: 26px; text-align: center;
+  margin: 0 auto; max-width: 460px;
 }
-.ds-icon  { font-size: 46px; margin-bottom: 12px; }
-.ds-title { font-size: 18px; font-weight: 800; color: var(--c-text); margin-bottom: 16px; }
-.ds-rows  { display: flex; flex-direction: column; gap: 8px; text-align: left; }
-.ds-row   {
-  font-size: 13px; color: var(--c-text2); padding: 9px 13px;
+.ds-icon  { font-size: 44px; margin-bottom: 11px; }
+.ds-title { font-size: 17px; font-weight: 800; color: var(--c-text); margin-bottom: 14px; }
+.ds-rows  { display: flex; flex-direction: column; gap: 7px; text-align: left; }
+.ds-row {
+  font-size: 13px; color: var(--c-text2); padding: 8px 12px;
   background: var(--c-surface); border-radius: var(--radius);
 }
 .ds-row code {
-  font-size: 11px; color: #7db4fb; background: var(--c-blue-glow2);
-  padding: 1px 6px; border-radius: 4px; font-family: var(--font-mono);
+  font-size: 10.5px; color: #88baff;
+  background: var(--c-blue-glow2);
+  padding: 1px 5px; border-radius: 4px; font-family: var(--font-mono);
 }
 
 /* ════════════════════════════════════════════════════════════════
    STEP 5 — REPORT
 ════════════════════════════════════════════════════════════════ */
-.rpt-hero  { font-size: 60px; text-align: center; padding-top: 28px; }
+.rpt-hero  { font-size: 56px; text-align: center; padding-top: 24px; }
 .rpt-title {
-  font-size: 26px; font-weight: 900; color: var(--c-text);
-  text-align: center; margin-top: 12px; letter-spacing: -.5px;
+  font-size: 24px; font-weight: 900; color: var(--c-text);
+  text-align: center; margin-top: 10px; letter-spacing: -.45px;
 }
-.rpt-sub   { font-size: 13px; color: var(--c-text2); text-align: center; margin: 6px 0 22px; }
-.rpt-grid  { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; margin: 22px 0; }
+.rpt-sub { font-size: 13px; color: var(--c-text2); text-align: center; margin: 5px 0 20px; }
+.rpt-grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 10px; margin: 20px 0;
+}
 @media (min-width: 480px) { .rpt-grid { grid-template-columns: repeat(4,1fr); } }
-.rg-stat { border-radius: var(--radius-lg); padding: 20px; text-align: center; }
-.rg-stat.green { background: var(--c-green-dim); border: 1px solid rgba(35,209,96,0.18); }
-.rg-stat.blue  { background: var(--c-blue-glow2);border: 1px solid rgba(79,142,247,0.18); }
-.rg-stat.amber { background: var(--c-amber-dim); border: 1px solid rgba(245,166,35,0.18); }
-.rg-stat.red   { background: var(--c-red-dim);   border: 1px solid rgba(240,71,71,0.18); }
-.rg-n { font-size: 36px; font-weight: 900; color: var(--c-text); line-height: 1; }
-.rg-l { font-size: 12px; font-weight: 600; color: var(--c-text2); margin-top: 6px; }
-.rpt-ts { text-align: center; font-size: 11px; color: var(--c-text3); margin-top: 6px; }
+.rg-stat { border-radius: var(--radius-lg); padding: 18px; text-align: center; }
+.rg-stat.green { background: var(--c-green-dim); border: 1px solid rgba(30,219,107,0.20); }
+.rg-stat.blue  { background: var(--c-blue-glow2);border: 1px solid rgba(77,142,248,0.20); }
+.rg-stat.amber { background: var(--c-amber-dim); border: 1px solid rgba(248,180,42,0.20); }
+.rg-stat.red   { background: var(--c-red-dim);   border: 1px solid rgba(242,68,68,0.20); }
+.rg-n { font-size: 34px; font-weight: 900; color: var(--c-text); line-height: 1; }
+.rg-l { font-size: 11.5px; font-weight: 600; color: var(--c-text2); margin-top: 5px; }
+.rpt-ts { text-align: center; font-size: 11px; color: var(--c-text3); margin-top: 5px; }
 
 /* ════════════════════════════════════════════════════════════════
    SHARED BUTTONS
 ════════════════════════════════════════════════════════════════ */
 .udme-btn {
-  display: inline-flex; align-items: center; gap: 6px;
-  padding: 11px 20px; border-radius: var(--radius);
-  font-size: 14px; font-weight: 700; cursor: pointer; border: none;
-  font-family: var(--font); transition: all .15s; white-space: nowrap;
-  -webkit-tap-highlight-color: transparent; touch-action: manipulation;
-  min-height: var(--min-touch); letter-spacing: -.1px; position: relative; overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 10px 18px;
+  border-radius: var(--radius);
+  font-size: 13.5px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  font-family: var(--font);
+  transition: all .15s cubic-bezier(.16,1,.3,1);
+  white-space: nowrap;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  min-height: var(--min-touch);
+  letter-spacing: -.05px;
+  position: relative;
+  overflow: hidden;
+  -webkit-appearance: none;
 }
 .udme-btn::after {
-  content: ''; position: absolute; inset: 0;
-  background: rgba(255,255,255,0); transition: background .15s;
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,0);
+  transition: background .15s;
 }
+.udme-btn:active { transform: scale(.97); }
 .udme-btn:active::after { background: rgba(255,255,255,0.07); }
 
 .udme-btn.primary {
-  background: linear-gradient(135deg, var(--c-blue), var(--c-blue-d));
-  color: #fff; box-shadow: 0 2px 12px rgba(79,142,247,0.3);
+  background: linear-gradient(135deg, var(--c-blue) 0%, var(--c-blue-d) 100%);
+  color: #fff;
+  box-shadow: 0 2px 14px rgba(77,142,248,0.32), inset 0 1px 0 rgba(255,255,255,0.12);
 }
-.udme-btn.primary:hover { box-shadow: 0 4px 20px rgba(79,142,247,0.45); filter: brightness(1.08); }
+.udme-btn.primary:hover {
+  box-shadow: 0 4px 22px rgba(77,142,248,0.50), inset 0 1px 0 rgba(255,255,255,0.15);
+  filter: brightness(1.08);
+}
 
 .udme-btn.green {
-  background: linear-gradient(135deg, #22c55e, var(--c-green-d));
-  color: #fff; box-shadow: 0 2px 12px rgba(34,197,94,0.25);
+  background: linear-gradient(135deg, #22c55e 0%, var(--c-green-d) 100%);
+  color: #fff;
+  box-shadow: 0 2px 14px rgba(34,197,94,0.28), inset 0 1px 0 rgba(255,255,255,0.12);
 }
-.udme-btn.green:hover { box-shadow: 0 4px 20px rgba(34,197,94,0.4); filter: brightness(1.08); }
+.udme-btn.green:hover {
+  box-shadow: 0 4px 22px rgba(34,197,94,0.44), inset 0 1px 0 rgba(255,255,255,0.15);
+  filter: brightness(1.08);
+}
 
 .udme-btn.ghost {
-  background: var(--c-surface2); color: var(--c-text2);
+  background: var(--c-surface2);
+  color: var(--c-text2);
   border: 1px solid var(--c-border3);
 }
-.udme-btn.ghost:hover { background: var(--c-surface3); color: var(--c-text); border-color: var(--c-border3); }
+.udme-btn.ghost:hover {
+  background: var(--c-surface3);
+  color: var(--c-text);
+  border-color: rgba(255,255,255,0.20);
+}
 
 .udme-btn.danger {
-  background: var(--c-red-dim); color: #f87171;
-  border: 1px solid rgba(240,71,71,0.28);
+  background: var(--c-red-dim);
+  color: #f98080;
+  border: 1px solid rgba(242,68,68,0.30);
 }
-.udme-btn.danger:hover { background: rgba(240,71,71,0.22); }
-.udme-btn:disabled { opacity: .3; cursor: not-allowed; }
+.udme-btn.danger:hover { background: rgba(242,68,68,0.22); }
+.udme-btn:disabled { opacity: .28; cursor: not-allowed; pointer-events: none; }
 .udme-btn:focus-visible { outline: 2px solid var(--c-blue); outline-offset: 3px; }
 
 .udme-sel {
-  padding: 9px 12px; border: 1.5px solid var(--c-border);
-  border-radius: var(--radius); font-size: 13px; font-family: var(--font);
-  background: var(--c-surface2); color: var(--c-text);
-  cursor: pointer; min-height: var(--min-touch);
+  padding: 9px 11px;
+  border: 1.5px solid var(--c-border);
+  border-radius: var(--radius);
+  font-size: 13px;
+  font-family: var(--font);
+  background: var(--c-surface2);
+  color: var(--c-text);
+  cursor: pointer;
+  min-height: var(--min-touch);
   transition: border-color .15s;
+  -webkit-appearance: none;
 }
 .udme-sel:focus { border-color: var(--c-blue); outline: none; }
 
 .udme-empty {
-  text-align: center; padding: 44px; color: var(--c-text3);
-  font-size: 14px; font-style: italic;
+  text-align: center; padding: 40px 16px;
+  color: var(--c-text3); font-size: 13.5px; font-style: italic;
 }
 
 /* ════════════════════════════════════════════════════════════════
    FOOTER
 ════════════════════════════════════════════════════════════════ */
 .udme-footer {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 14px 20px; border-top: 1px solid var(--c-border);
-  background: var(--c-surface);
-  flex-shrink: 0; gap: 10px; flex-wrap: wrap;
-  padding-bottom: max(14px, env(safe-area-inset-bottom));
-  box-shadow: 0 -6px 30px rgba(0,0,0,0.35);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-top: 1px solid var(--c-border);
+  background: linear-gradient(180deg, var(--c-surface) 0%, rgba(8,15,30,0.95) 100%);
+  flex-shrink: 0;
+  gap: 8px;
+  flex-wrap: wrap;
+  /* iOS safe area */
+  padding-bottom: max(12px, env(safe-area-inset-bottom));
+  box-shadow: 0 -8px 32px rgba(0,0,0,0.40);
 }
-.udme-footer-l { display: flex; gap: 8px; }
-.udme-footer-r { display: flex; gap: 8px; align-items: center; }
+.udme-footer-l { display: flex; gap: 7px; }
+.udme-footer-r { display: flex; gap: 7px; align-items: center; }
 
 /* ════════════════════════════════════════════════════════════════
-   GLOBAL FORM ELEMENTS
+   GLOBAL FORM ELEMENTS INSIDE MODAL
 ════════════════════════════════════════════════════════════════ */
-input, select, textarea { color: var(--c-text) !important; }
-input::placeholder { color: var(--c-text3) !important; }
-select option { background: var(--c-surface2); color: var(--c-text); }
+#modal-udme input,
+#modal-udme select,
+#modal-udme textarea { color: var(--c-text) !important; }
+#modal-udme input::placeholder { color: var(--c-text3) !important; }
+#modal-udme select option { background: var(--c-surface2); color: var(--c-text); }
+
+/* Checkboxes — slightly larger for touch */
+#modal-udme input[type="checkbox"] {
+  width: 16px; height: 16px;
+  accent-color: var(--c-blue);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+════════════════════════════════════════════════════════════════ */
+
+/* ── Very small phones (< 360px) ──────────────────────────── */
+@media (max-width: 359px) {
+  .udme-hdr { height: 54px; min-height: 54px; padding: 0 12px; }
+  .udme-hdr-title { font-size: 14px; }
+  .udme-hdr-sub   { display: none; }
+  .udme-hdr-icon  { width: 34px; height: 34px; font-size: 16px; }
+  .udme-stepper   { height: 44px; min-height: 44px; padding: 0 8px; }
+  .udme-pill      { font-size: 10px; padding: 4px 8px; }
+  .udme-body      { padding: 12px 11px; }
+  .udme-step-title { font-size: 17px; }
+  .udme-footer    { padding: 10px 11px; }
+  .ba-panel       { padding: 12px 11px; }
+  .ws-toolbar     { gap: 5px; }
+  /* Stack action controls on tiny screens */
+  .udme-action-controls { flex-direction: column; align-items: stretch; }
+}
+
+/* ── Small phones (360–479px) ──────────────────────────────── */
+@media (max-width: 479px) {
+  .udme-body { padding: 14px 13px; }
+  .udme-step-title { font-size: 18px; }
+  /* Footer buttons full-width on very small */
+  .udme-footer { flex-wrap: wrap; }
+}
+
+/* ── Medium phones / tablets (480–767px) ─────────────────── */
+@media (min-width: 480px) and (max-width: 767px) {
+  .udme-hdr { height: 62px; min-height: 62px; }
+}
+
+/* ── Desktop and large screens (1024px+) ─────────────────── */
+@media (min-width: 1024px) {
+  .udme-hdr { padding: 0 28px; }
+  .udme-stepper { padding: 0 24px; gap: 4px; }
+  .udme-body { padding: 22px 28px; }
+  .udme-footer { padding: 14px 28px; padding-bottom: 14px; }
+  .udme-step-title { font-size: 22px; }
+  .udme-table { font-size: 13.5px; }
+  .udme-td    { font-size: 13.5px; }
+  .udme-th-sort { font-size: 12.5px; }
+  /* More generous table height on desktop */
+  .udme-table-scroll { max-height: min(58vh, 560px); }
+  /* Two-column layout for mapping grid on wide screens */
+  #udme-map-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    align-items: start;
+  }
+}
+
+/* ── Ultra-wide (1440px+) ──────────────────────────────────── */
+@media (min-width: 1440px) {
+  .udme-body { max-width: 1320px; width: 100%; margin: 0 auto; padding: 24px 40px; }
+  #udme-map-grid { grid-template-columns: 1fr 1fr 1fr; }
+}
 
 /* ════════════════════════════════════════════════════════════════
    ACCESSIBILITY
 ════════════════════════════════════════════════════════════════ */
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+  *, *::before, *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
 }
 
-/* ════════════════════════════════════════════════════════════════
-   RESPONSIVE
-════════════════════════════════════════════════════════════════ */
-@media (max-width: 360px) {
-  .udme-hdr-title { font-size: 15px; }
-  .udme-hdr-sub   { display: none; }
-  .udme-pill      { font-size: 10px; padding: 5px 9px; }
-  .udme-step-title { font-size: 18px; }
-  .udme-body { padding: 13px; }
-  .ba-panel { padding: 14px; }
+/* Focus ring for keyboard navigation */
+#modal-udme *:focus-visible {
+  outline: 2px solid var(--c-blue);
+  outline-offset: 2px;
 }
-@media (min-width: 1024px) {
-  .udme-table { font-size: 14px; }
-  .udme-td    { font-size: 14px; }
-}
+
+
+
 </style>
 
+
+
 <!-- ═══════════════════════════════════════════════════════════════
-     TEACHMATE DME v5.2 — COMPLETE HTML MODAL
+     TEACHMATE DME v7.0 — COMPLETE HTML MODAL
      Drop this in place of your old modal-udme block.
-     Requires: dme_v52_styles.css  +  dme_v52_engine.js
+     Requires: dme_v7_styles.css  +  dme_v7_engine.js
+     The HTML structure is identical to v5.2 — only class
+     references and the bootstrap script have been updated.
      ═══════════════════════════════════════════════════════════════ -->
 
 <div id="modal-udme" onclick="if(event.target===this)closeDMEModal()">
@@ -6510,10 +7258,6 @@ select option { background: var(--c-surface2); color: var(--c-text); }
 
       <!-- ══════════════════════════════════════════════════
            STEP 1 — WORKSPACE
-           Normal mode: row select + class assign
-           Bulk Admit mode: column selector panel appears above table,
-                           clicking column headers toggles them,
-                           selected rows × selected cols compose names
       ══════════════════════════════════════════════════ -->
       <div id="udme-step-workspace" style="display:none">
         <div class="udme-step-title">🔬 Extraction Workspace</div>
@@ -6541,16 +7285,19 @@ select option { background: var(--c-surface2); color: var(--c-text); }
         <!-- Status chips -->
         <div id="udme-ws-info" role="status" aria-live="polite"></div>
 
-        <!-- Column type hints (hidden in bulk admit mode) -->
+        <!-- Column type hints -->
         <div id="udme-col-hints"></div>
 
-        <!-- ⚡ Bulk Admit Panel — injected by JS when mode is active -->
+        <!-- Sheet/page tabs — injected by JS when multiple sheets exist -->
+        <!-- #udme-sheet-tabs is created and inserted here by _dmeRenderSheetTabs() -->
+
+        <!-- Bulk Admit Panel — injected by JS when mode is active -->
         <!-- #udme-bulk-admit-panel is created and inserted here by _dmeRenderBulkAdmitPanel() -->
 
-        <!-- Virtual scroll table -->
+        <!-- Table — injected by JS -->
         <div id="udme-table-wrap"></div>
 
-        <!-- Action bar: row-select actions / bulk admit hint -->
+        <!-- Action bar -->
         <div id="udme-action-bar">
           <div class="udme-hint-text">
             👆 Tap rows to select · Assign a class to continue
@@ -6559,7 +7306,7 @@ select option { background: var(--c-surface2); color: var(--c-text); }
       </div>
 
       <!-- ══════════════════════════════════════════════════
-           STEP 2 — COLUMN MAPPING (student import only)
+           STEP 2 — COLUMN MAPPING
       ══════════════════════════════════════════════════ -->
       <div id="udme-step-map" style="display:none">
         <div class="udme-step-title">🗂️ Column Mapping</div>
@@ -6579,7 +7326,7 @@ select option { background: var(--c-surface2); color: var(--c-text); }
         <div class="udme-learn-note">
           💡 Corrections saved per school.
           <button onclick="dmeClearLearned()"
-            style="background:none;border:none;color:#7db4fb;cursor:pointer;
+            style="background:none;border:none;color:#88baff;cursor:pointer;
                    font-size:11px;text-decoration:underline;padding:0;
                    margin-left:4px;font-family:inherit;">
             Clear learned mappings
@@ -6589,11 +7336,6 @@ select option { background: var(--c-surface2); color: var(--c-text); }
 
       <!-- ══════════════════════════════════════════════════
            STEP 3 — DATA ASSIGNMENT STUDIO
-           Also hosts:
-           • Empty-class panel (no students in target class)
-           • No-match panel (all matches < 85%)
-           Both panels have a "Bulk Admit from File" button that
-           switches the workspace back to Bulk Admit mode.
       ══════════════════════════════════════════════════ -->
       <div id="udme-step-studio" style="display:none">
         <div class="udme-step-title">🎯 Data Assignment Studio</div>
@@ -6608,10 +7350,6 @@ select option { background: var(--c-surface2); color: var(--c-text); }
           <span class="studio-cls-badge" id="udme-studio-class-name">—</span>
         </div>
 
-        <!-- Content injected by JS:
-             • _dmeRenderAssignmentStudio() — normal match rows
-             • _dmeRenderEmptyClassPanel()  — no-student / no-match panel
-        -->
         <div id="udme-studio-body"></div>
       </div>
 
@@ -6658,17 +7396,17 @@ select option { background: var(--c-surface2); color: var(--c-text); }
         <button class="udme-btn ghost" onclick="closeDMEModal()">Cancel</button>
       </div>
       <div class="udme-footer-r">
-        <!-- Step 1: normal "Continue" (hidden when bulk admit is active) -->
+        <!-- Step 1: workspace continue -->
         <button class="udme-btn primary" id="udme-btn-ws" style="display:none"
                 onclick="dmeProceedFromWorkspace()">
           Continue →
         </button>
-        <!-- Step 2: column mapping confirmed -->
+        <!-- Step 2: mapping confirmed -->
         <button class="udme-btn primary" id="udme-btn-map" style="display:none"
                 onclick="dmeConfirmMapping()">
           Continue → Preview
         </button>
-        <!-- Step 3: assignment studio confirmed -->
+        <!-- Step 3: assignment confirmed -->
         <button class="udme-btn primary" id="udme-btn-studio" style="display:none"
                 onclick="dmeConfirmAssignment()">
           Continue → Preview
@@ -6686,40 +7424,34 @@ select option { background: var(--c-surface2); color: var(--c-text); }
 
 
 <!-- ═══════════════════════════════════════════════════════════════
-     BOOTSTRAP SCRIPT
-     • Wires footer buttons per step
+     DME v7.0 BOOTSTRAP SCRIPT
+     • Wires footer buttons visibility per step
+     • Hides workspace "Continue" when bulk admit is active
      • Keyboard Escape → close
      • Syncs openExcelImportModal alias
      ═══════════════════════════════════════════════════════════════ -->
 <script>
 (function () {
 
-  // ── Footer visibility map per step ────────────────────────
-  // step 1 "Continue" button is hidden when bulkAdmitMode is active;
-  // the panel's own "Admit" button drives the flow instead.
+  // ── Footer visibility per step ────────────────────────────
   function _dmeFooterHook(n) {
-    const cfg = {
-      'udme-back-btn':   { type: 'visibility', show: n > 0 && n < 5 },
-      'udme-btn-ws':     { type: 'display',    show: n === 1 },
-      'udme-btn-map':    { type: 'display',    show: n === 2 },
-      'udme-btn-studio': { type: 'display',    show: n === 3 },
-      'udme-import-btn': { type: 'display',    show: n === 4 },
+    const show   = (id, visible) => {
+      const el = document.getElementById(id);
+      if (el) el.style.display = visible ? 'inline-flex' : 'none';
+    };
+    const reveal = (id, visible) => {
+      const el = document.getElementById(id);
+      if (el) el.style.visibility = visible ? 'visible' : 'hidden';
     };
 
-    Object.entries(cfg).forEach(([id, rule]) => {
-      const el = document.getElementById(id);
-      if (!el) return;
-      if (rule.type === 'visibility') {
-        el.style.visibility = rule.show ? 'visible' : 'hidden';
-      } else {
-        // Hide "Continue" on workspace if bulk admit mode is active
-        if (id === 'udme-btn-ws' && rule.show && typeof _dme !== 'undefined' && _dme.bulkAdmitMode) {
-          el.style.display = 'none';
-        } else {
-          el.style.display = rule.show ? 'inline-flex' : 'none';
-        }
-      }
-    });
+    reveal('udme-back-btn',   n > 0 && n < 5);
+
+    // Hide workspace "Continue" when bulk admit mode is running
+    const wsBtnVisible = n === 1 && !(typeof _dme !== 'undefined' && _dme.bulkAdmitMode);
+    show('udme-btn-ws',     wsBtnVisible);
+    show('udme-btn-map',    n === 2);
+    show('udme-btn-studio', n === 3);
+    show('udme-import-btn', n === 4);
   }
 
   window._dmeFooterHook = _dmeFooterHook;
@@ -6730,7 +7462,7 @@ select option { background: var(--c-surface2); color: var(--c-text); }
     if (typeof initDMEDropZone === 'function') initDMEDropZone();
   });
 
-  // ── Keyboard: Escape closes the modal ─────────────────────
+  // ── Keyboard: Escape closes modal ─────────────────────────
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') {
       const m = document.getElementById('modal-udme');
@@ -6747,8 +7479,19 @@ select option { background: var(--c-surface2); color: var(--c-text); }
     }
   });
 
+  // ── Viewport height fix for mobile browsers ────────────────
+  // Sets --dvh custom property to real inner height, avoiding
+  // the mobile chrome bar collapsing the modal unexpectedly
+  function _dmeFix100dvh() {
+    const dvh = window.innerHeight * 0.01;
+    document.documentElement.style.setProperty('--dvh', dvh + 'px');
+  }
+  _dmeFix100dvh();
+  window.addEventListener('resize', _dmeFix100dvh);
+
 })();
 </script>
+
 
 
 
